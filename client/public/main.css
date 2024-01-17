@@ -1,0 +1,17 @@
+.boxing-cursor:hover {
+  cursor: url("./assets/images/glove.png"), auto;
+}
+
+img {
+    user-select: none;
+}
+
+@keyframes blow-up-parsnip {
+    0% { transform: scale(1); /* Initial size (100%) */ }
+    50% { transform: scale(1.1); /* Increased size (110%) */ }
+    100% { transform: scale(1); /* Back to the original size (100%) */ }
+}
+
+.parsnip-animation:active {
+    animation: blow-up-parsnip 0.1s ease-in-out; 
+}
