@@ -1,0 +1,7 @@
+GET at "/user" get 200 reponse with a body of the User
+
+GET at "/user/parsnipCount" get 200 response with body of parsnipCount
+
+POST at "/user" gets 200 response increments the parsnipCount by parsnipsPerClick
+
+PATCH at "/user" buys powerup: 200 response on success and 403 if not enough parsnip
