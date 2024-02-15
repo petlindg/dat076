@@ -26,7 +26,7 @@ function App() {
   
   async function incrementParsnip() {
     try {
-      await axios.post<User>(url + "user", {});
+      await axios.post<User>(url + "user/punch", {});
       await updateUser();
     } catch (e : any) {
       console.log(e);
@@ -35,7 +35,7 @@ function App() {
 
   async function purchasePowerup() {
     try {
-      const response: AxiosResponse<String, any> = await axios.patch<String>(url + "user", {});
+      const response: AxiosResponse<String, any> = await axios.patch<String>(url + "user/powerUp", {});
       if(response.status === 403){
         alert("Not enoug balance for this purchase")
       }else if(response.status === 200){
@@ -59,11 +59,11 @@ function App() {
       <div>
         <p id="lblParsnips">Parsnips: {user?.parsnipCount}</p>
         <div className="boxing-cursor parsnip-animation" onClick={incrementParsnip}>
-        <img
-          draggable="false"  
-          alt='The main parsnip'
-          src={ require('./assets/images/parsnip.png') }
-        />
+          <img
+            draggable="false"  
+            alt='The main parsnip'
+            src={ require('./assets/images/parsnip.png') }
+          />
         </div>
       </div>
       <p id="lblPPC">{user?.parsnipsPerClick} Parsnips Per Click (PPC)</p>
