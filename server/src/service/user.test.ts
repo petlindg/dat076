@@ -22,3 +22,11 @@ test("If we buy a powerUp, user.parsnipsPerClick increases if we can afford it, 
     userData = await user.getUser()
     expect(userData.parsnipsPerClick).toEqual(2)
 })
+
+test("If we create a new user and update his userName, the userName should be updated", async () => {
+    const userService : UserService = new UserService();
+    await userService.updateUserName("TestName");
+    const userData : User = await userService.getUser();
+
+    expect(userData.userName).toEqual("TestName");
+})
