@@ -76,7 +76,6 @@ export class UserDataService implements IUserDataService {
             userBalance -= price;
             userParsnipPerClick += powerupActive.parsnipsPerClick;
         } else {
-            console.log("drugi")
             if (userBalance < powerupActive.basePrice) return false;
 
             userPowerupsActivePurchased.push({
@@ -85,13 +84,9 @@ export class UserDataService implements IUserDataService {
             });
 
             userBalance -= powerupActive.basePrice;
-            console.log(userParsnipPerClick)
-            console.log(powerupActive.parsnipsPerClick)
             userParsnipPerClick += powerupActive.parsnipsPerClick;
-            console.log(userParsnipPerClick)
         }
 
-        console.log(userParsnipPerClick)
         const res: UpdateWriteOpResult = await userDataModel.updateOne(
             {credentialsId: userId},
             {

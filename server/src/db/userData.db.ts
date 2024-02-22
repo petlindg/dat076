@@ -21,6 +21,7 @@ const userDataSchema: Schema = new Schema({
     credentialsId: {
         type: ObjectId,
         required: true,
+        ref: "UserCredentials",
         unique: true,
     },
 
