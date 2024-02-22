@@ -4,7 +4,6 @@ import {IUserCredentialsService} from "../service/interfaces/IuserCredentials";
 import {UserCredentialsService} from "../service/userCredentials";
 import {StringHelpers} from "../helpers/stringHelpers";
 import {ObjectId} from "mongodb";
-import {userDataModel} from "../db/userData.db";
 
 const userCredentialsService: IUserCredentialsService =
     new UserCredentialsService();
