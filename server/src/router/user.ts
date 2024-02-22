@@ -1,7 +1,7 @@
-import express, { Request, Response, Router } from "express";
-import { userCredentialsModel } from "../db/userCredentials.db";
-import { userDataModel } from "../db/userData.db";
-import { UserCredentials } from "../model/userCredentials";
+import express, {Request, Response, Router} from "express";
+import {userCredentialsModel} from "../db/userCredentials.db";
+import {userDataModel} from "../db/userData.db";
+import {UserCredentials} from "../model/userCredentials";
 // import { User } from "../model/userData";
 // import { UserService } from "../service/user";
 //
@@ -81,52 +81,52 @@ export const userRouter: Router = express.Router();
 //
 //
 userRouter.get(
-  "/test",
-  async (_: Request<{}, {}, {}>, res: Response<string>) => {
-    try {
-      userCredentialsModel.create({
-        userName: "Test",
-        email: "test@mail.com",
-        password: "plzencode",
-      });
-      res.status(201).send("OK");
-    } catch (error: any) {
-      res.status(500).send("Neki ni ok");
-    }
-  },
+    "/test",
+    async (_: Request<{}, {}, {}>, res: Response<string>) => {
+        try {
+            userCredentialsModel.create({
+                userName: "Test",
+                email: "test@mail.com",
+                password: "plzencode",
+            });
+            res.status(201).send("OK");
+        } catch (error: any) {
+            res.status(500).send("Neki ni ok");
+        }
+    },
 );
 userRouter.get(
-  "/test2",
-  async (_: Request<{}, {}, {}>, res: Response<string>) => {
-    try {
-      userDataModel.create({
-        credentialsId: 2,
-        parsnipsPerClick: 1,
-        parsnipBalance: 10,
-        powerupsActivePurchased: [
-          { idPowerup: 1, purchaseCount: 0 },
-          { idPowerup: 2, purchaseCount: 4 },
-        ],
-        powerupsPassivePurchased: [{ idPowerup: 1, purchaseCount: 0 }],
-      });
-      res.status(201).send("OK");
-    } catch (error: any) {
-      res.status(500).send("Neki ni ok");
-    }
-  },
+    "/test2",
+    async (_: Request<{}, {}, {}>, res: Response<string>) => {
+        try {
+            userDataModel.create({
+                credentialsId: 2,
+                parsnipsPerClick: 1,
+                parsnipBalance: 10,
+                powerupsActivePurchased: [
+                    {idPowerup: 1, purchaseCount: 0},
+                    {idPowerup: 2, purchaseCount: 4},
+                ],
+                powerupsPassivePurchased: [{idPowerup: 1, purchaseCount: 0}],
+            });
+            res.status(201).send("OK");
+        } catch (error: any) {
+            res.status(500).send("Neki ni ok");
+        }
+    },
 );
 
 userRouter.get(
-  "/test3",
-  async (_: Request<{}, {}, {}>, res: Response<UserCredentials | string>) => {
-    try {
-      const userC: UserCredentials | null =
-        await userCredentialsModel.findOne();
-      if (userC === null) throw "err";
-      console.log(userC.id);
-      res.status(200).send(userC);
-    } catch (error: any) {
-      res.status(500).send("Neki ni ok");
-    }
-  },
+    "/test3",
+    async (_: Request<{}, {}, {}>, res: Response<UserCredentials | string>) => {
+        try {
+            const userC: UserCredentials | null =
+                await userCredentialsModel.findOne();
+            if (userC === null) throw "err";
+            console.log(userC.id);
+            res.status(200).send(userC);
+        } catch (error: any) {
+            res.status(500).send("Neki ni ok");
+        }
+    },
 );

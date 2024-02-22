@@ -1,5 +1,5 @@
-import { Powerup } from "./powerup";
+import {Powerup} from "./powerup";
 
 export interface PowerupActive extends Powerup {
-    parsnipsPerClick : number;
+    parsnipsPerClick: number;
 }
