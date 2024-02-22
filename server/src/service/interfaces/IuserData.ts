@@ -10,7 +10,7 @@ export interface IUserDataService {
     getUserData(userId: ObjectId): Promise<UserData | null>;
 
     /**
-     * Increments parsnip of the given user
+     * Increments parsnip of the given user by their parsnipPerClick
      * @param userId - id of user to have parsnip incremented
      * @returns the new number of parsnips the user has
      */

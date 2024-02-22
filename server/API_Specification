@@ -1,9 +1,0 @@
-GET at "/user" get 200 reponse with a body of the User
-
-PATCH at "/user" changes username, 200 ok
-
-GET at "/user/parsnipCount" get 200 response with body of parsnipCount
-
-POST at "/user/punch" gets 200 response increments the parsnipCount by parsnipsPerClick
-
-PATCH at "/user/powerup" buys powerup: 200 response on success and 403 if not enough parsnip
