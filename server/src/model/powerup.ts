@@ -1,6 +1,8 @@
+import { ObjectId } from "mongodb";
+
 export interface Powerup {
-    id : number;
-    powerupName : String;
-    basePrice : number;
-    increment : number;
+  id: ObjectId;
+  powerupName: String;
+  basePrice: number;
+  increment: number;
 }

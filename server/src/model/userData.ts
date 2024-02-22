@@ -1,14 +1,16 @@
+import { ObjectId } from "mongodb";
+
 interface UserPurchases {
-    idPowerup : Number;
-    purchaseCount : Number;
+  idPowerup: ObjectId;
+  purchaseCount: Number;
 }
 
 export interface UserData {
-    id : number;
-    credentialsId : number;
-    parsnipsPerClick : number;
-    parsnipBalance : number;
-    powerupsActivePurchased : UserPurchases[];
-    powerupsPassivePurchased : UserPurchases[];
-    // TODO add all statistics
+  id: ObjectId;
+  credentialsId: number;
+  parsnipsPerClick: number;
+  parsnipBalance: number;
+  powerupsActivePurchased: UserPurchases[];
+  powerupsPassivePurchased: UserPurchases[];
+  // TODO add all statistics
 }
