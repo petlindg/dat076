@@ -5,6 +5,7 @@ import {userDataModel} from "../db/userData.db";
 import {UpdateWriteOpResult} from "mongoose";
 import {PowerupActive} from "../model/powerupActive";
 import {powerupActiveModel} from "../db/powerupActive.db";
+import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
 
 export class UserDataService implements IUserDataService {
     async getUserData(userId: ObjectId): Promise<UserData | null> {
@@ -60,11 +61,8 @@ export class UserDataService implements IUserDataService {
             const purchaseCount: number =
                 userPowerupsActivePurchased[i].purchaseCount;
 
-            let price: number = powerupActive.basePrice;
-            for (let j = 0; j < purchaseCount; j++)
-                price += price * powerupActive.increment
 
-            price = Math.ceil(price)
+            let price: number = PowerupPriceHelpers.computePrice(powerupActive.basePrice, powerupActive.increment, purchaseCount)
 
             if (userBalance < price) return false;
 
