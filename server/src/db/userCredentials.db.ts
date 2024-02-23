@@ -1,4 +1,4 @@
-import {Schema} from "mongoose";
+import {Model, Schema} from "mongoose";
 import {UserCredentials} from "../model/userCredentials";
 import {db} from "./conn";
 
@@ -25,7 +25,8 @@ const userCredentialsSchema: Schema = new Schema(
     {timestamps: true},
 );
 
-export const userCredentialsModel = db.model<UserCredentials>(
-    "UserCredentials",
-    userCredentialsSchema,
-);
+async function modelAsPromise(): Promise<Model<UserCredentials>> {
+    return (await db).model<UserCredentials>("UserCredentials", userCredentialsSchema,);
+}
+
+export const userCredentialsModel: Promise<Model<UserCredentials>> = modelAsPromise()

@@ -9,7 +9,7 @@ import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
 
 export class UserDataService implements IUserDataService {
     async getUserData(userId: ObjectId): Promise<UserData> {
-        const userData: UserData | null = await userDataModel.findOne({
+        const userData: UserData | null = await (await userDataModel).findOne({
             credentialsId: userId,
         });
 
@@ -20,7 +20,7 @@ export class UserDataService implements IUserDataService {
     }
 
     async incrementParsnip(userId: ObjectId): Promise<number> {
-        const userData: UserData | null = await userDataModel.findOne({
+        const userData: UserData | null = await (await userDataModel).findOne({
             credentialsId: userId,
         });
 
@@ -29,7 +29,7 @@ export class UserDataService implements IUserDataService {
 
         const newBalance = userData.parsnipBalance + userData.parsnipsPerClick;
 
-        const res: UpdateWriteOpResult = await userDataModel.updateOne(
+        const res: UpdateWriteOpResult = await (await userDataModel).updateOne(
             {credentialsId: userId},
             {parsnipBalance: newBalance},
         );
@@ -44,7 +44,7 @@ export class UserDataService implements IUserDataService {
         userId: ObjectId,
         powerupActiveId: ObjectId,
     ): Promise<boolean> {
-        const userData: UserData | null = await userDataModel.findOne({
+        const userData: UserData | null = await (await userDataModel).findOne({
             credentialsId: userId,
         });
 
@@ -52,7 +52,7 @@ export class UserDataService implements IUserDataService {
             throw "No user with the provided Id has been found"
 
         const powerupActive: PowerupActive | null =
-            await powerupActiveModel.findById(powerupActiveId);
+            await (await powerupActiveModel).findById(powerupActiveId);
 
         if (powerupActive === null)
             throw "No powerup with the provided Id has been found"
@@ -92,7 +92,7 @@ export class UserDataService implements IUserDataService {
             userParsnipPerClick += powerupActive.parsnipsPerClick;
         }
 
-        const res: UpdateWriteOpResult = await userDataModel.updateOne(
+        const res: UpdateWriteOpResult = await (await userDataModel).updateOne(
             {credentialsId: userId},
             {
                 parsnipBalance: userBalance,

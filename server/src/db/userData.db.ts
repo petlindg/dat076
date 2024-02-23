@@ -1,4 +1,4 @@
-import {Schema} from "mongoose";
+import {Model, Schema} from "mongoose";
 import {UserData} from "../model/userData";
 import {db} from "./conn";
 import {ObjectId} from "mongodb";
@@ -56,4 +56,8 @@ const userDataSchema: Schema = new Schema({
     powerupsPassivePurchased: [userPassivePurchasesSchema],
 });
 
-export const userDataModel = db.model<UserData>("UserData", userDataSchema);
+async function modelAsPromise(): Promise<Model<UserData>> {
+    return (await db).model<UserData>("UserData", userDataSchema)
+}
+
+export const userDataModel: Promise<Model<UserData>> = modelAsPromise()

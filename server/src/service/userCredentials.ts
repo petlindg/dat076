@@ -7,7 +7,7 @@ import {UpdateWriteOpResult} from "mongoose";
 export class UserCredentialsService implements IUserCredentialsService {
     async getUserCredentials(userId: ObjectId): Promise<UserCredentials> {
         const userCredentials: UserCredentials | null =
-            await userCredentialsModel.findById(userId);
+            await (await userCredentialsModel).findById(userId);
 
         if (userCredentials === null)
             throw "No user with the provided Id has been found"
@@ -19,7 +19,7 @@ export class UserCredentialsService implements IUserCredentialsService {
         userId: ObjectId,
         newUsername: string,
     ): Promise<boolean> {
-        const res: UpdateWriteOpResult = await userCredentialsModel.updateOne(
+        const res: UpdateWriteOpResult = await (await userCredentialsModel).updateOne(
             {_id: userId},
             {userName: newUsername},
         );

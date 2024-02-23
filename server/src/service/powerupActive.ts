@@ -9,14 +9,14 @@ import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
 
 export class PowerupActiveService implements IpowerupActiveService {
     async getPowerupActiveList(userId: ObjectId): Promise<PowerupActiveResponseModel[]> {
-        const userData: UserData | null = await userDataModel.findOne({
+        const userData: UserData | null = await (await userDataModel).findOne({
             credentialsId: userId,
         });
 
         if (userData === null)
             throw "No user with the provided Id has been found"
 
-        const powerupsActive: PowerupActive[] = await powerupActiveModel.find();
+        const powerupsActive: PowerupActive[] = await (await powerupActiveModel).find();
         let result: PowerupActiveResponseModel[] = []
 
         for (let i = 0; i < powerupsActive.length; i++) {

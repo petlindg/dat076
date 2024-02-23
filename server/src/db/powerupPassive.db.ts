@@ -1,4 +1,4 @@
-import {Schema} from "mongoose";
+import {Model, Schema} from "mongoose";
 import {PowerupPassive} from "../model/powerupPassive";
 import {db} from "./conn";
 
@@ -25,7 +25,8 @@ const powerupPassiveSchema: Schema = new Schema({
     },
 });
 
-export const powerupPassiveModel = db.model<PowerupPassive>(
-    "PowerupPassive",
-    powerupPassiveSchema,
-);
+async function modelAsPromise(): Promise<Model<PowerupPassive>> {
+    return (await db).model<PowerupPassive>("PowerupPassive", powerupPassiveSchema,);
+}
+
+export const powerupPassiveModel: Promise<Model<PowerupPassive>> = modelAsPromise()
