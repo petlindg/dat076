@@ -4,9 +4,8 @@ import {userCredentialsModel} from "../db/userCredentials.db";
 import {IUserCredentialsService} from "./interfaces/IuserCredentials";
 import {UserCredentialsService} from "./userCredentials";
 import {ObjectId} from "mongodb";
-import mongoose from "mongoose";
 
-afterEach(async () => {
+afterEach(async (): Promise<void> => {
     await (await userCredentialsModel).deleteMany()
 })
 
@@ -52,7 +51,7 @@ describe("User Credentials Service tests", () => {
             password: password,
         })
 
-        const newUsername : string = "kosobrin"
+        const newUsername: string = "kosobrin"
         const success: boolean = await userCredentialsService.changeUsername(userCredentials.id, newUsername)
 
         expect(success).toBeTruthy()

@@ -1,13 +1,13 @@
 import {ObjectId} from "mongodb";
 import {PowerupActiveResponseModel} from "../model/powerupActiveResponseModel";
-import {IpowerupActiveService} from "./interfaces/IpowerupActive";
+import {IPowerupActiveService} from "./interfaces/IpowerupActive";
 import {UserData} from "../model/userData";
 import {userDataModel} from "../db/userData.db";
 import {PowerupActive} from "../model/powerupActive";
 import {powerupActiveModel} from "../db/powerupActive.db";
 import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
 
-export class PowerupActiveService implements IpowerupActiveService {
+export class PowerupActiveService implements IPowerupActiveService {
     async getPowerupActiveList(userId: ObjectId): Promise<PowerupActiveResponseModel[]> {
         const userData: UserData | null = await (await userDataModel).findOne({
             credentialsId: userId,

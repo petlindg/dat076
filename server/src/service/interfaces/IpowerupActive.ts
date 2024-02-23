@@ -1,7 +1,7 @@
 import {ObjectId} from "mongodb";
 import {PowerupActiveResponseModel} from "../../model/powerupActiveResponseModel";
 
-export interface IpowerupActiveService {
+export interface IPowerupActiveService {
 
     /**
      * Return a list on all powerups in the DB while adjusting the "priceForUser" based on amount of previous purchases
