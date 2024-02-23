@@ -2,7 +2,7 @@ import {ObjectId} from "mongodb";
 import {UserDataService} from "../service/userData";
 import {IUserDataService} from "../service/interfaces/userData.interface";
 import express, {Request, Response, Router} from "express";
-import {UserData} from "../model/userData";
+import {UserData, UserStatistics} from "../model/userData";
 import {objectIdHelpers} from "../helpers/objecIdHelpers";
 
 const userDataService: IUserDataService = new UserDataService()
@@ -36,8 +36,7 @@ userDataRouter.post("/purchaseActivePowerUp", async (
     res: Response<string>
 ) => {
     try {
-        if(!objectIdHelpers.isStringValidObjectId(req.body.powerupActiveId))
-        {
+        if (!objectIdHelpers.isStringValidObjectId(req.body.powerupActiveId)) {
             res.status(400).send("Invalid ObjectId")
             return
         }
@@ -52,6 +51,16 @@ userDataRouter.post("/purchaseActivePowerUp", async (
         }
 
         res.status(200).send("Successfully purchased the product")
+    } catch (error: any) {
+        res.status(500).send(error.message ?? error)
+    }
+})
+
+userDataRouter.get("/statistics", async (_, res: Response<UserStatistics | string>) => {
+    try {
+        const userStatistics: UserStatistics = await userDataService.getUserStatistic(userId)
+
+        res.status(200).send(userStatistics)
     } catch (error: any) {
         res.status(500).send(error.message ?? error)
     }

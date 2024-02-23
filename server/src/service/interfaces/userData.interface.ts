@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {UserData} from "../../model/userData";
+import {UserData, UserStatistics} from "../../model/userData";
 
 export interface IUserDataService {
     /**
@@ -30,4 +30,12 @@ export interface IUserDataService {
         userId: ObjectId,
         powerupActiveId: ObjectId,
     ): Promise<boolean>;
+
+    /**
+     * Reads the statistic from the DB and calculates the rest
+     * @param userId id of the user to get statistics for
+     * @returns UserStatistics
+     * @throws if there is no user data for userId
+     */
+    getUserStatistic(userId: ObjectId): Promise<UserStatistics>
 }

@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {UserData} from "../model/userData";
+import {UserData, UserStatistics} from "../model/userData";
 import {IUserDataService} from "./interfaces/userData.interface";
 import {userDataModel} from "../db/userData.db";
 import {UpdateWriteOpResult} from "mongoose";
@@ -109,5 +109,25 @@ export class UserDataService implements IUserDataService {
         );
 
         return res.acknowledged;
+    }
+
+    async getUserStatistic(userId: ObjectId): Promise<UserStatistics> {
+        const userData: UserData = await this.getUserData(userId)
+
+        const totalPowerupsPurchased: number =
+            userData.powerupsPassivePurchased
+            .reduce((sum: number, up) => sum + up.purchaseCount, 0) +
+            userData.powerupsActivePurchased
+            .reduce((sum: number, up) => sum + up.purchaseCount, 0)
+
+        return {
+            idUserCredentials: userData.credentialsId,
+            parsnipsPerClick: userData.parsnipsPerClick,
+            parsnipBalance: userData.parsnipBalance,
+            totalPowerupsPurchased: totalPowerupsPurchased,
+            lifetimeClicks: userData.lifetimeClicks,
+            lifetimeParsnipEarned: userData.lifetimeParsnipsEarned,
+            lifetimeParsnipSpent: userData.lifetimeParsnipsSpent,
+        }
     }
 }
