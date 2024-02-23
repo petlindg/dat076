@@ -37,6 +37,8 @@ describe("User Credentials Service tests", () => {
             password: password,
         }))._id
 
+        await expect(userCredentialsService.getUserCredentials(new ObjectId("65d8947a15e5748f2ed42b99"))).rejects.toThrow()
+
         const userCredentials: UserCredentials = await userCredentialsService.getUserCredentials(userId)
 
         expect(userCredentials.userName).toEqual(userName)
@@ -52,6 +54,8 @@ describe("User Credentials Service tests", () => {
         })
 
         const newUsername: string = "kosobrin"
+        await expect(userCredentialsService.changeUsername(new ObjectId("65d8947a15e5748f2ed42b99"), newUsername)).rejects.toThrow()
+        await expect(userCredentialsService.changeUsername(userCredentials.id, "")).rejects.toThrow()
         const success: boolean = await userCredentialsService.changeUsername(userCredentials.id, newUsername)
 
         expect(success).toBeTruthy()

@@ -67,8 +67,7 @@ describe("User Data Service tests", () => {
         const powerUpActive1: PowerupActive = await buildPowerupActive()
         const userData: UserData = await buildUserData(userCredentials.id, powerUpActive1.id)
 
-        // won't work unless you: throw new Error("")
-        // await expect(userDataService.getUserData(userData.id)).rejects.toThrow()
+        await expect(userDataService.getUserData(userData.id)).rejects.toThrow()
 
         const result: UserData = await userDataService.getUserData(userCredentials.id)
 
@@ -87,6 +86,8 @@ describe("User Data Service tests", () => {
         const userCredentials: UserCredentials = await buildUserCredentials()
         const powerUpActive1: PowerupActive = await buildPowerupActive()
         const userData: UserData = await buildUserData(userCredentials.id, powerUpActive1.id)
+
+        await expect(userDataService.getUserData(powerUpActive1.id)).rejects.toThrow()
 
         const result: number = await userDataService.incrementParsnip(userCredentials.id)
         const newUserData: UserData = await userDataService.getUserData(userCredentials.id)
@@ -107,6 +108,9 @@ describe("User Data Service tests", () => {
         let balance : number = userData.parsnipBalance
         for(let i = 0; i < 10; i++)
             balance = await userDataService.incrementParsnip(userCredentials.id)
+
+        await expect(userDataService.purchasePowerupActive(userCredentials.id, userData.id)).rejects.toThrow()
+        await expect(userDataService.purchasePowerupActive(userData.id, powerUpActive1.id)).rejects.toThrow()
 
         const result2 : boolean = await userDataService.purchasePowerupActive(userCredentials.id, powerUpActive1.id)
         const userData2 : UserData = await userDataService.getUserData(userCredentials.id)

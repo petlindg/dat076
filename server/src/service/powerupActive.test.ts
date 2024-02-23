@@ -65,6 +65,8 @@ describe("Powerup Active Service tests", () => {
             powerupsPassivePurchased: [],
         })
 
+        await expect(powerupActiveService.getPowerupActiveList(userData.id)).rejects.toThrow()
+
         const result: PowerupActiveResponseModel[] = await powerupActiveService.getPowerupActiveList(userCredentials.id)
 
         expect(result.length).toEqual(3)
