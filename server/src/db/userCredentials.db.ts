@@ -2,8 +2,7 @@ import {Model, Schema} from "mongoose";
 import {UserCredentials} from "../model/userCredentials";
 import {db} from "./conn";
 
-const userCredentialsSchema: Schema = new Schema(
-    {
+const userCredentialsSchema: Schema = new Schema({
         userName: {
             type: String,
             required: true,

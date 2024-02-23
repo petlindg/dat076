@@ -16,6 +16,11 @@ authRouter.post("/register", async (req: Request<{}, {}, RegisterModel>, res: Re
         return
     }
 
+    if (req.session.user && req.session.user.id) {
+        res.status(403).send("Already logged in, can not register another account, logout first")
+        return
+    }
+
     try {
         const userId: ObjectId = await authService.register(req.body)
         req.session.user = {
