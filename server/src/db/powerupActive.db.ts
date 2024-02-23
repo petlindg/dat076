@@ -26,6 +26,6 @@ const powerupActiveSchema: Schema = new Schema({
 });
 
 export const powerupActiveModel = db.model<PowerupActive>(
-    "PoweupActive",
+    "PowerupActive",
     powerupActiveSchema,
 );

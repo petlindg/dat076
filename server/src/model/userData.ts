@@ -7,7 +7,7 @@ interface UserPurchases {
 
 export interface UserData {
     id: ObjectId;
-    credentialsId: number;
+    credentialsId: ObjectId;
     parsnipsPerClick: number;
     parsnipBalance: number;
     powerupsActivePurchased: UserPurchases[];

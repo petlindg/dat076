@@ -3,11 +3,27 @@ import {UserData} from "../model/userData";
 import {db} from "./conn";
 import {ObjectId} from "mongodb";
 
-const userPurchasesSchema: Schema = new Schema(
+const userActivePurchasesSchema: Schema = new Schema(
     {
         idPowerup: {
             type: ObjectId,
             required: true,
+            ref: "PowerupActive"
+        },
+        purchaseCount: {
+            type: Number,
+            required: true,
+        },
+    },
+    {_id: false},
+);
+
+const userPassivePurchasesSchema: Schema = new Schema(
+    {
+        idPowerup: {
+            type: ObjectId,
+            required: true,
+            ref: "PowerupPassive"
         },
         purchaseCount: {
             type: Number,
@@ -35,9 +51,9 @@ const userDataSchema: Schema = new Schema({
         required: true,
     },
 
-    powerupsActivePurchased: [userPurchasesSchema],
+    powerupsActivePurchased: [userActivePurchasesSchema],
 
-    powerupsPassivePurchased: [userPurchasesSchema],
+    powerupsPassivePurchased: [userPassivePurchasesSchema],
 });
 
 export const userDataModel = db.model<UserData>("UserData", userDataSchema);
