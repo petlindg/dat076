@@ -10,7 +10,7 @@ export class UserCredentialsService implements IUserCredentialsService {
             await (await userCredentialsModel).findById(userId);
 
         if (userCredentials === null)
-            throw "No user with the provided Id has been found"
+            throw new Error("No user with the provided Id has been found")
 
         return userCredentials;
     }

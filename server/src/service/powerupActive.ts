@@ -14,7 +14,7 @@ export class PowerupActiveService implements IPowerupActiveService {
         });
 
         if (userData === null)
-            throw "No user with the provided Id has been found"
+            throw new Error("No user with the provided Id has been found")
 
         const powerupsActive: PowerupActive[] = await (await powerupActiveModel).find();
         let result: PowerupActiveResponseModel[] = []

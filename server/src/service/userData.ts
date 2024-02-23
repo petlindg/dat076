@@ -14,7 +14,7 @@ export class UserDataService implements IUserDataService {
         });
 
         if (userData === null)
-            throw "No user with the provided Id has been found"
+            throw new Error("No user with the provided Id has been found")
 
         return userData;
     }
@@ -25,7 +25,7 @@ export class UserDataService implements IUserDataService {
         });
 
         if (userData === null)
-            throw "No user with the provided Id has been found"
+            throw new Error("No user with the provided Id has been found")
 
         const newBalance = userData.parsnipBalance + userData.parsnipsPerClick;
 
@@ -35,7 +35,7 @@ export class UserDataService implements IUserDataService {
         );
 
         if (!res.acknowledged)
-            throw "An error has occurred while writing results to the DB"
+            throw new Error("An error has occurred while writing results to the DB")
 
         return newBalance;
     }
@@ -49,13 +49,13 @@ export class UserDataService implements IUserDataService {
         });
 
         if (userData === null)
-            throw "No user with the provided Id has been found"
+            throw new Error("No user with the provided Id has been found")
 
         const powerupActive: PowerupActive | null =
             await (await powerupActiveModel).findById(powerupActiveId);
 
         if (powerupActive === null)
-            throw "No powerup with the provided Id has been found"
+            throw new Error("No powerup with the provided Id has been found")
 
         let userBalance: number = userData.parsnipBalance;
         let userPowerupsActivePurchased = userData.powerupsActivePurchased;

@@ -21,7 +21,7 @@ userCredentialsRouter.get(
 
             res.status(200).send(userCredentials);
         } catch (error: any) {
-            res.status(500).send(error);
+            res.status(500).send(error.message ?? error)
         }
     },
 );
@@ -51,7 +51,7 @@ userCredentialsRouter.patch(
                     .status(500)
                     .send("Unknown error occurred while calling userCredentialsService");
         } catch (error: any) {
-            res.status(500).send(error);
+            res.status(500).send(error.message ?? error)
         }
     },
 );

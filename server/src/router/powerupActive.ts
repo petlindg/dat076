@@ -15,7 +15,7 @@ powerupActiveRouter.get("", async (_: Request<{}, {}, {}>, res: Response<Powerup
 
         res.status(200).send(powerupsActive)
     } catch (error: any) {
-        res.status(500).send(error);
+        res.status(500).send(error.message ?? error);
     }
 
 })
