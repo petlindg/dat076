@@ -13,6 +13,7 @@ import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
 afterEach(async (): Promise<void> => {
     await (await userCredentialsModel).deleteMany()
     await (await userDataModel).deleteMany()
+    await (await powerupActiveModel).deleteMany()
 })
 
 jest.mock("../db/conn")
