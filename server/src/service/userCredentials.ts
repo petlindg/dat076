@@ -5,9 +5,12 @@ import {userCredentialsModel} from "../db/userCredentials.db";
 import {UpdateWriteOpResult} from "mongoose";
 
 export class UserCredentialsService implements IUserCredentialsService {
-    async getUserCredentials(userId: ObjectId): Promise<UserCredentials | null> {
+    async getUserCredentials(userId: ObjectId): Promise<UserCredentials> {
         const userCredentials: UserCredentials | null =
             await userCredentialsModel.findById(userId);
+
+        if (userCredentials === null)
+            throw "No user with the provided Id has been found"
 
         return userCredentials;
     }

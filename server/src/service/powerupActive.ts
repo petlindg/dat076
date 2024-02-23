@@ -13,6 +13,9 @@ export class PowerupActiveService implements IpowerupActiveService {
             credentialsId: userId,
         });
 
+        if (userData === null)
+            throw "No user with the provided Id has been found"
+
         const powerupsActive: PowerupActive[] = await powerupActiveModel.find();
         let result: PowerupActiveResponseModel[] = []
 
@@ -27,11 +30,9 @@ export class PowerupActiveService implements IpowerupActiveService {
                 priceForUser: pa.basePrice
             })
 
-            if (userData !== null) {
-                const userPurchase = userData.powerupsActivePurchased.find(up => up.idPowerup.toString() == pa.id.toString())
-                let userPurchaseCount: number = (userPurchase === undefined) ? 0 : userPurchase.purchaseCount
-                responseModel.priceForUser = PowerupPriceHelpers.computePrice(pa.basePrice, pa.increment, userPurchaseCount)
-            }
+            const userPurchase = userData.powerupsActivePurchased.find(up => up.idPowerup.toString() == pa.id.toString())
+            let userPurchaseCount: number = (userPurchase === undefined) ? 0 : userPurchase.purchaseCount
+            responseModel.priceForUser = PowerupPriceHelpers.computePrice(pa.basePrice, pa.increment, userPurchaseCount)
 
             result.push(responseModel)
         }

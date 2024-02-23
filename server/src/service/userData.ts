@@ -8,20 +8,24 @@ import {powerupActiveModel} from "../db/powerupActive.db";
 import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
 
 export class UserDataService implements IUserDataService {
-    async getUserData(userId: ObjectId): Promise<UserData | null> {
+    async getUserData(userId: ObjectId): Promise<UserData> {
         const userData: UserData | null = await userDataModel.findOne({
             credentialsId: userId,
         });
+
+        if (userData === null)
+            throw "No user with the provided Id has been found"
 
         return userData;
     }
 
-    async incrementParsnip(userId: ObjectId): Promise<number | null> {
+    async incrementParsnip(userId: ObjectId): Promise<number> {
         const userData: UserData | null = await userDataModel.findOne({
             credentialsId: userId,
         });
 
-        if (userData === null) return null;
+        if (userData === null)
+            throw "No user with the provided Id has been found"
 
         const newBalance = userData.parsnipBalance + userData.parsnipsPerClick;
 
@@ -30,7 +34,8 @@ export class UserDataService implements IUserDataService {
             {parsnipBalance: newBalance},
         );
 
-        if (!res.acknowledged) return null;
+        if (!res.acknowledged)
+            throw "An error has occurred while writing results to the DB"
 
         return newBalance;
     }
@@ -43,12 +48,14 @@ export class UserDataService implements IUserDataService {
             credentialsId: userId,
         });
 
-        if (userData === null) return false;
+        if (userData === null)
+            throw "No user with the provided Id has been found"
 
         const powerupActive: PowerupActive | null =
             await powerupActiveModel.findById(powerupActiveId);
 
-        if (powerupActive === null) return false;
+        if (powerupActive === null)
+            throw "No powerup with the provided Id has been found"
 
         let userBalance: number = userData.parsnipBalance;
         let userPowerupsActivePurchased = userData.powerupsActivePurchased;

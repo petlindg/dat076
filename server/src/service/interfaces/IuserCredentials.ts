@@ -5,8 +5,9 @@ export interface IUserCredentialsService {
     /**
      * @param userId id of the user to fetch
      * @returns user credentials of the given user, null if the user does not exist (shouldn't happen)
+     * @throws exception if user not found
      */
-    getUserCredentials(userId: ObjectId): Promise<UserCredentials | null>;
+    getUserCredentials(userId: ObjectId): Promise<UserCredentials>;
 
     /**
      * Changes the username of the user given user to newUsername

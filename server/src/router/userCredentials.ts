@@ -16,17 +16,12 @@ userCredentialsRouter.get(
     "/",
     async (_, res: Response<UserCredentials | string>) => {
         try {
-            const userCredentials: UserCredentials | null =
+            const userCredentials: UserCredentials =
                 await userCredentialsService.getUserCredentials(userId);
-
-            if (userCredentials === null) {
-                res.status(404).send("User not found");
-                return;
-            }
 
             res.status(200).send(userCredentials);
         } catch (error: any) {
-            res.status(500).send(error.message);
+            res.status(500).send(error);
         }
     },
 );
@@ -42,6 +37,7 @@ userCredentialsRouter.patch(
                 res
                     .status(400)
                     .send("Invalid username, username can not be null or empty");
+                return
             }
 
             const success: boolean = await userCredentialsService.changeUsername(
@@ -53,9 +49,9 @@ userCredentialsRouter.patch(
             else
                 res
                     .status(500)
-                    .send("Unknown error occureed while calling userCredentialsService");
+                    .send("Unknown error occurred while calling userCredentialsService");
         } catch (error: any) {
-            res.status(500).send(error.message);
+            res.status(500).send(error);
         }
     },
 );
