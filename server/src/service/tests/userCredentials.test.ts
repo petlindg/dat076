@@ -1,15 +1,15 @@
 import {describe} from "node:test";
-import {UserCredentials} from "../model/userCredentials";
-import {userCredentialsModel} from "../db/userCredentials.db";
-import {IUserCredentialsService} from "./interfaces/IuserCredentials";
-import {UserCredentialsService} from "./userCredentials";
+import {UserCredentials} from "../../model/userCredentials";
+import {userCredentialsModel} from "../../db/userCredentials.db";
+import {IUserCredentialsService} from "../interfaces/userCredentials.interface";
+import {UserCredentialsService} from "../userCredentials";
 import {ObjectId} from "mongodb";
 
 afterEach(async (): Promise<void> => {
     await (await userCredentialsModel).deleteMany()
 })
 
-jest.mock("../db/conn")
+jest.mock("../../db/conn")
 const userCredentialsService: IUserCredentialsService = new UserCredentialsService()
 describe("User Credentials Service tests", () => {
 

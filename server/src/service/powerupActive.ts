@@ -1,6 +1,6 @@
 import {ObjectId} from "mongodb";
 import {PowerupActiveResponseModel} from "../model/powerupActiveResponseModel";
-import {IPowerupActiveService} from "./interfaces/IpowerupActive";
+import {IPowerupActiveService} from "./interfaces/powerupActive.interface";
 import {UserData} from "../model/userData";
 import {userDataModel} from "../db/userData.db";
 import {PowerupActive} from "../model/powerupActive";

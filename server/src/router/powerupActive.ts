@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {IPowerupActiveService} from "../service/interfaces/IpowerupActive";
+import {IPowerupActiveService} from "../service/interfaces/powerupActive.interface";
 import {PowerupActiveService} from "../service/powerupActive";
 import express, {Request, Response, Router} from "express";
 import {PowerupActiveResponseModel} from "../model/powerupActiveResponseModel";

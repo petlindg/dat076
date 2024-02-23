@@ -1,6 +1,6 @@
 import {ObjectId} from "mongodb";
 import {UserDataService} from "../service/userData";
-import {IUserDataService} from "../service/interfaces/IuserData";
+import {IUserDataService} from "../service/interfaces/userData.interface";
 import express, {Request, Response, Router} from "express";
 import {UserData} from "../model/userData";
 import {objectIdHelpers} from "../helpers/objecIdHelpers";

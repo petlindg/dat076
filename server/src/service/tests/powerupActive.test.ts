@@ -1,14 +1,14 @@
 import {describe} from "node:test";
-import {userCredentialsModel} from "../db/userCredentials.db";
-import {PowerupActiveService} from "./powerupActive";
-import {IPowerupActiveService} from "./interfaces/IpowerupActive";
-import {UserCredentials} from "../model/userCredentials";
-import {userDataModel} from "../db/userData.db";
-import {UserData} from "../model/userData";
-import {PowerupActive} from "../model/powerupActive";
-import {powerupActiveModel} from "../db/powerupActive.db";
-import {PowerupActiveResponseModel} from "../model/powerupActiveResponseModel";
-import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
+import {userCredentialsModel} from "../../db/userCredentials.db";
+import {PowerupActiveService} from "../powerupActive";
+import {IPowerupActiveService} from "../interfaces/powerupActive.interface";
+import {UserCredentials} from "../../model/userCredentials";
+import {userDataModel} from "../../db/userData.db";
+import {UserData} from "../../model/userData";
+import {PowerupActive} from "../../model/powerupActive";
+import {powerupActiveModel} from "../../db/powerupActive.db";
+import {PowerupActiveResponseModel} from "../../model/powerupActiveResponseModel";
+import {PowerupPriceHelpers} from "../../helpers/powerupPriceHelpers";
 
 afterEach(async (): Promise<void> => {
     await (await userCredentialsModel).deleteMany()
@@ -16,7 +16,7 @@ afterEach(async (): Promise<void> => {
     await (await powerupActiveModel).deleteMany()
 })
 
-jest.mock("../db/conn")
+jest.mock("../../db/conn")
 const powerupActiveService: IPowerupActiveService = new PowerupActiveService()
 describe("Powerup Active Service tests", () => {
 

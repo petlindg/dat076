@@ -1,6 +1,6 @@
 import {ObjectId} from "mongodb";
 import {UserCredentials} from "../model/userCredentials";
-import {IUserCredentialsService} from "./interfaces/IuserCredentials";
+import {IUserCredentialsService} from "./interfaces/userCredentials.interface";
 import {userCredentialsModel} from "../db/userCredentials.db";
 import {Model, UpdateWriteOpResult} from "mongoose";
 import {UserData} from "../model/userData";

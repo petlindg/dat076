@@ -3,6 +3,7 @@ import {Response} from "supertest";
 import {app} from "./start";
 
 const request = SuperTest.default(app);
+jest.mock("./db/conn")
 test("End-to-end test", async () => {
     expect(true).toBeTruthy()
 

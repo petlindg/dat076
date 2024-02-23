@@ -1,6 +1,6 @@
 import {ObjectId} from "mongodb";
 import {UserData} from "../model/userData";
-import {IUserDataService} from "./interfaces/IuserData";
+import {IUserDataService} from "./interfaces/userData.interface";
 import {userDataModel} from "../db/userData.db";
 import {UpdateWriteOpResult} from "mongoose";
 import {PowerupActive} from "../model/powerupActive";

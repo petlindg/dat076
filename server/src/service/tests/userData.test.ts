@@ -1,13 +1,13 @@
-import {userCredentialsModel} from "../db/userCredentials.db";
-import {IUserDataService} from "./interfaces/IuserData";
-import {UserDataService} from "./userData";
-import {userDataModel} from "../db/userData.db";
-import {powerupActiveModel} from "../db/powerupActive.db";
-import {UserCredentials} from "../model/userCredentials";
-import {UserData} from "../model/userData";
-import {PowerupActive} from "../model/powerupActive";
+import {userCredentialsModel} from "../../db/userCredentials.db";
+import {IUserDataService} from "../interfaces/userData.interface";
+import {UserDataService} from "../userData";
+import {userDataModel} from "../../db/userData.db";
+import {powerupActiveModel} from "../../db/powerupActive.db";
+import {UserCredentials} from "../../model/userCredentials";
+import {UserData} from "../../model/userData";
+import {PowerupActive} from "../../model/powerupActive";
 import {ObjectId} from "mongodb";
-import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
+import {PowerupPriceHelpers} from "../../helpers/powerupPriceHelpers";
 
 afterEach(async (): Promise<void> => {
     await (await userCredentialsModel).deleteMany()
@@ -15,7 +15,7 @@ afterEach(async (): Promise<void> => {
     await (await powerupActiveModel).deleteMany()
 })
 
-jest.mock("../db/conn")
+jest.mock("../../db/conn")
 const userDataService: IUserDataService = new UserDataService()
 
 const userName: string = "TestUserName";

@@ -1,6 +1,6 @@
 import express, {Request, Response, Router} from "express";
 import {UserCredentials} from "../model/userCredentials";
-import {IUserCredentialsService} from "../service/interfaces/IuserCredentials";
+import {IUserCredentialsService} from "../service/interfaces/userCredentials.interface";
 import {UserCredentialsService} from "../service/userCredentials";
 import {StringHelpers} from "../helpers/stringHelpers";
 import {ObjectId} from "mongodb";
