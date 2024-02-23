@@ -11,8 +11,15 @@ const userId = new ObjectId("65d75e0b5df275c5654b67a3"); // TODO get form cookie
 
 export const userDataRouter: Router = express.Router();
 
-userDataRouter.get("/", async (_, res: Response<UserData | string>) => {
+userDataRouter.get("/", async (req, res: Response<UserData | string>) => {
     try {
+
+        if (!req.session.user) {
+            res.status(401).send("Not logged in")
+            return
+        }
+        const userId: ObjectId = req.session.user.id
+
         const userData: UserData = await userDataService.getUserData(userId)
 
         res.status(200).send(userData)
@@ -21,8 +28,15 @@ userDataRouter.get("/", async (_, res: Response<UserData | string>) => {
     }
 })
 
-userDataRouter.post("/incrementParsnip", async (_, res: Response<string>) => {
+userDataRouter.post("/incrementParsnip", async (req, res: Response<string>) => {
     try {
+
+        if (!req.session.user) {
+            res.status(401).send("Not logged in")
+            return
+        }
+        const userId: ObjectId = req.session.user.id
+
         const newBalance: number = await userDataService.incrementParsnip(userId)
 
         res.status(200).send(newBalance.toString())
@@ -36,6 +50,13 @@ userDataRouter.post("/purchaseActivePowerUp", async (
     res: Response<string>
 ) => {
     try {
+
+        if (!req.session.user) {
+            res.status(401).send("Not logged in")
+            return
+        }
+        const userId: ObjectId = req.session.user.id
+
         if (!objectIdHelpers.isStringValidObjectId(req.body.powerupActiveId)) {
             res.status(400).send("Invalid ObjectId")
             return
@@ -56,8 +77,15 @@ userDataRouter.post("/purchaseActivePowerUp", async (
     }
 })
 
-userDataRouter.get("/statistics", async (_, res: Response<UserStatistics | string>) => {
+userDataRouter.get("/statistics", async (req, res: Response<UserStatistics | string>) => {
     try {
+
+        if (!req.session.user) {
+            res.status(401).send("Not logged in")
+            return
+        }
+        const userId: ObjectId = req.session.user.id
+
         const userStatistics: UserStatistics = await userDataService.getUserStatistic(userId)
 
         res.status(200).send(userStatistics)

@@ -14,8 +14,13 @@ export const userCredentialsRouter: Router = express.Router();
 
 userCredentialsRouter.get(
     "/",
-    async (_, res: Response<UserCredentials | string>) => {
+    async (req, res: Response<UserCredentials | string>) => {
         try {
+            if (!req.session.user) {
+                res.status(401).send("Not logged in")
+                return
+            }
+            const userId: ObjectId = req.session.user.id
             const userCredentials: UserCredentials =
                 await userCredentialsService.getUserCredentials(userId);
 
@@ -33,6 +38,13 @@ userCredentialsRouter.patch(
         res: Response<string>,
     ) => {
         try {
+
+            if (!req.session.user) {
+                res.status(401).send("Not logged in")
+                return
+            }
+            const userId: ObjectId = req.session.user.id
+
             if (StringHelpers.isNullOrEmpty(req.body.newUsername)) {
                 res
                     .status(400)
