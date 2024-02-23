@@ -4,6 +4,7 @@ import {IUserDataService} from "../service/interfaces/IuserData";
 import express, {Request, Response, Router} from "express";
 import {UserData} from "../model/userData";
 import {isValidObjectId} from "mongoose";
+import {objectIdHelpers} from "../helpers/objecIdHelpers";
 
 const userDataService: IUserDataService = new UserDataService()
 
@@ -36,7 +37,7 @@ userDataRouter.post("/purchaseActivePowerUp", async (
     res: Response<string>
 ) => {
     try {
-        if(!isValidObjectId(req.body.powerupActiveId))
+        if(!objectIdHelpers.isStringValidObjectId(req.body.powerupActiveId))
         {
             res.status(400).send("Invalid ObjectId")
             return
