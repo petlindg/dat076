@@ -5,6 +5,7 @@ import {UserCredentials} from "../model/userCredentials";
 import {userCredentialsModel} from "../db/userCredentials.db";
 import {Error} from "mongoose";
 import {userDataModel} from "../db/userData.db";
+import bcrypt from "bcryptjs";
 
 export class AuthService implements IAuthService {
     async register(registerModel: RegisterModel): Promise<ObjectId> {
@@ -17,7 +18,7 @@ export class AuthService implements IAuthService {
         const userCredentials: UserCredentials = await (await userCredentialsModel).create({
             email: registerModel.email,
             userName: registerModel.username,
-            password: registerModel.password
+            password: bcrypt.hashSync(registerModel.password, 8)
         })
 
         await (await userDataModel).create({
@@ -38,10 +39,9 @@ export class AuthService implements IAuthService {
 
         const userCredentials : UserCredentials | null = await (await userCredentialsModel).findOne({
             email : loginModel.email,
-            password : loginModel.password
         })
 
-        if(!userCredentials)
+        if(!userCredentials || !bcrypt.compareSync(loginModel.password, userCredentials.password))
             throw new Error("Invalid credentials")
 
         return userCredentials.id
