@@ -27,11 +27,13 @@ export class UserDataService implements IUserDataService {
         if (userData === null)
             throw new Error("No user with the provided Id has been found")
 
-        const newBalance = userData.parsnipBalance + userData.parsnipsPerClick;
+        const newBalance: number = userData.parsnipBalance + userData.parsnipsPerClick;
+        const newLifetimeClicks: number = userData.lifetimeClicks + 1
+        const newLifetimeEarned: number = userData.lifetimeParsnipsEarned + userData.parsnipsPerClick
 
         const res: UpdateWriteOpResult = await (await userDataModel).updateOne(
             {credentialsId: userId},
-            {parsnipBalance: newBalance},
+            {parsnipBalance: newBalance, lifetimeClicks: newLifetimeClicks, lifetimeParsnipsEarned: newLifetimeEarned},
         );
 
         if (!res.acknowledged)
@@ -64,12 +66,13 @@ export class UserDataService implements IUserDataService {
             (upap) => upap.idPowerup.toString() === powerupActiveId.toString(),
         );
 
+        let price: number = 0
         if (i >= 0) {
             const purchaseCount: number =
                 userPowerupsActivePurchased[i].purchaseCount;
 
 
-            let price: number = PowerupPriceHelpers.computePrice(powerupActive.basePrice, powerupActive.increment, purchaseCount)
+            price = PowerupPriceHelpers.computePrice(powerupActive.basePrice, powerupActive.increment, purchaseCount)
 
             if (userBalance < price) return false;
 
@@ -90,7 +93,10 @@ export class UserDataService implements IUserDataService {
 
             userBalance -= powerupActive.basePrice;
             userParsnipPerClick += powerupActive.parsnipsPerClick;
+            price = powerupActive.basePrice
         }
+
+        const newLifetimeSpent: number = userData.lifetimeParsnipsSpent + price;
 
         const res: UpdateWriteOpResult = await (await userDataModel).updateOne(
             {credentialsId: userId},
@@ -98,6 +104,7 @@ export class UserDataService implements IUserDataService {
                 parsnipBalance: userBalance,
                 parsnipsPerClick: userParsnipPerClick,
                 powerupsActivePurchased: userPowerupsActivePurchased,
+                lifetimeParsnipsSpent: newLifetimeSpent,
             },
         );
 

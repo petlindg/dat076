@@ -23,6 +23,9 @@ const email: string = "noumailcist@email.com";
 const password: string = "plzencodeme";
 const parsnipsPerClickUser: 7 = 7;
 const parsnipBalance: 2 = 2;
+const lifetimeClicks: number = 100;
+const lifetimeParsnipEarned: number = 236;
+const lifetimeParsnipSpent: number = 54;
 const powerupName: string = "a";
 const basePrice: number = 10;
 const increment: number = 0.15;
@@ -55,6 +58,9 @@ async function buildUserData(ucId: ObjectId, paId: ObjectId): Promise<UserData> 
             {idPowerup: paId, purchaseCount: powerup1PurchaseCount},
         ],
         powerupsPassivePurchased: [],
+        lifetimeClicks: 100,
+        lifetimeParsnipsEarned: 236,
+        lifetimeParsnipsSpent: 54,
     })
 }
 
@@ -79,6 +85,9 @@ describe("User Data Service tests", () => {
         expect(result.powerupsActivePurchased[0].idPowerup.toString()).toEqual(powerUpActive1.id.toString())
         expect(result.powerupsActivePurchased[0].purchaseCount).toEqual(powerup1PurchaseCount)
         expect(result.powerupsPassivePurchased).toEqual([])
+        expect(result.lifetimeClicks).toEqual(lifetimeClicks)
+        expect(result.lifetimeParsnipsEarned).toEqual(lifetimeParsnipEarned)
+        expect(result.lifetimeParsnipsSpent).toEqual(lifetimeParsnipSpent)
     });
 
     it("Incrementing user parsnip should increase their balance by their parsnip per click", async () => {
@@ -93,6 +102,8 @@ describe("User Data Service tests", () => {
         const newUserData: UserData = await userDataService.getUserData(userCredentials.id)
 
         expect(newUserData.parsnipBalance).toEqual(userData.parsnipBalance + userData.parsnipsPerClick)
+        expect(newUserData.lifetimeClicks).toEqual(userData.lifetimeClicks + 1)
+        expect(newUserData.lifetimeParsnipsEarned).toEqual(userData.lifetimeParsnipsEarned + userData.parsnipsPerClick)
         expect(result).toEqual(newUserData.parsnipBalance)
     })
 
@@ -105,15 +116,15 @@ describe("User Data Service tests", () => {
         const result1: boolean = await userDataService.purchasePowerupActive(userCredentials.id, powerUpActive1.id)
         expect(result1).toBeFalsy()
 
-        let balance : number = userData.parsnipBalance
-        for(let i = 0; i < 10; i++)
+        let balance: number = userData.parsnipBalance
+        for (let i = 0; i < 10; i++)
             balance = await userDataService.incrementParsnip(userCredentials.id)
 
         await expect(userDataService.purchasePowerupActive(userCredentials.id, userData.id)).rejects.toThrow()
         await expect(userDataService.purchasePowerupActive(userData.id, powerUpActive1.id)).rejects.toThrow()
 
-        const result2 : boolean = await userDataService.purchasePowerupActive(userCredentials.id, powerUpActive1.id)
-        const userData2 : UserData = await userDataService.getUserData(userCredentials.id)
+        const result2: boolean = await userDataService.purchasePowerupActive(userCredentials.id, powerUpActive1.id)
+        const userData2: UserData = await userDataService.getUserData(userCredentials.id)
 
         expect(result2).toBeTruthy()
         expect(userData2.parsnipBalance).toEqual(balance - PowerupPriceHelpers.computePrice(powerUpActive1.basePrice, powerUpActive1.increment, powerup1PurchaseCount))
@@ -121,5 +132,6 @@ describe("User Data Service tests", () => {
         expect(userData2.powerupsActivePurchased.find(pap => pap.idPowerup.toString() === powerUpActive1.id.toString())).toBeDefined()
         expect(userData2.powerupsActivePurchased.find(pap => pap.idPowerup.toString() === powerUpActive1.id.toString())!.purchaseCount)
             .toEqual(userData.powerupsActivePurchased.find(pap => pap.idPowerup.toString() === powerUpActive1.id.toString())!.purchaseCount + 1)
+        expect(userData2.lifetimeParsnipsSpent).toEqual(userData.lifetimeParsnipsSpent + PowerupPriceHelpers.computePrice(powerUpActive1.basePrice, powerUpActive1.increment, powerup1PurchaseCount))
     })
 })

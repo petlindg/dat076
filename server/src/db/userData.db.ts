@@ -44,16 +44,36 @@ const userDataSchema: Schema = new Schema({
     parsnipsPerClick: {
         type: Number,
         required: true,
+        default: 1,
     },
 
     parsnipBalance: {
         type: Number,
         required: true,
+        default: 0,
     },
 
     powerupsActivePurchased: [userActivePurchasesSchema],
 
     powerupsPassivePurchased: [userPassivePurchasesSchema],
+
+    lifetimeClicks: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+
+    lifetimeParsnipsEarned: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+
+    lifetimeParsnipsSpent: {
+        type: Number,
+        required: true,
+        default: 0
+    },
 });
 
 async function modelAsPromise(): Promise<Model<UserData>> {
