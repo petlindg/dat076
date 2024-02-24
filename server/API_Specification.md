@@ -29,3 +29,20 @@ Updates the username of the currentlly logged in user 200 if successful, 400 if 
 GET /powerupActive
 Returns a list of all available powerups. Objects include a field, where the current price is precomputed for the user, based on the amount of times they've purchased it already
 ```
+
+## authRouter (base route: /auth)
+```
+POST /auth/register
+Request Body { email: string, password: string, username: string } - credentials of a new user
+Creates a new user and automatically logs them in, 201 on success 400 on bad request, 403 if already logged in, 500 on other errors
+Password is encrypted automatically
+```
+```
+POST /auth/login
+Request Body { email: string, password: string } - credentials of the user
+Logs in an existing user, 200 on success, 400 on bad request, 500 on other errors
+```
+```
+DELETE /auth/logout
+Logs the user out by destorying their session, 200 on success, 500 on error
+```

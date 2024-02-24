@@ -9,7 +9,6 @@ import bcrypt from "bcryptjs";
 import {UserData} from "../../model/userData";
 
 jest.mock("../../db/conn")
-
 afterEach(async (): Promise<void> => {
     await (await userCredentialsModel).deleteMany()
     await (await userDataModel).deleteMany()

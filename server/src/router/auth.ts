@@ -26,7 +26,7 @@ authRouter.post("/register", async (req: Request<{}, {}, RegisterModel>, res: Re
         req.session.user = {
             id: userId
         }
-        res.status(200).send("Successfully registered")
+        res.status(201).send("Successfully registered")
     } catch (error: any) {
         res.status(500).send(error.message ?? error)
     }
