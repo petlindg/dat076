@@ -14,11 +14,7 @@ userCredentialsRouter.get(
     "/",
     async (req, res: Response<UserCredentials | string>) => {
         try {
-            if (!req.session.user) {
-                res.status(401).send("Not logged in")
-                return
-            }
-            const userId: ObjectId = req.session.user.id
+            const userId: ObjectId = req.session.user!.id
             const userCredentials: UserCredentials =
                 await userCredentialsService.getUserCredentials(userId);
 
@@ -37,11 +33,7 @@ userCredentialsRouter.patch(
     ) => {
         try {
 
-            if (!req.session.user) {
-                res.status(401).send("Not logged in")
-                return
-            }
-            const userId: ObjectId = req.session.user.id
+            const userId: ObjectId = req.session.user!.id
 
             if (StringHelpers.isNullOrEmpty(req.body.newUsername)) {
                 res

@@ -6,6 +6,7 @@ import {powerupActiveRouter} from "./router/powerupActive";
 import session from "express-session";
 import {ObjectId} from "mongodb";
 import {authRouter} from "./router/auth";
+import {authMiddleware} from "./middleware/auth";
 
 const env = require("../env.json");
 
@@ -31,6 +32,8 @@ app.use(cors({
     origin: true,
     credentials: true
 }));
+
+app.use(authMiddleware)
 
 app.get("/", (_, res) => res.status(200).send("Server running...  :)"));
 app.use("/userCredentials", userCredentialsRouter);

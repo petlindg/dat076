@@ -51,8 +51,7 @@ authRouter.post("/login", async (req: Request<{}, {}, LoginModel>, res: Response
 
 authRouter.delete("/logout", async (req: Request<{}, {}, {}>, res: Response<string>) => {
     try {
-        req.session.destroy(() => {
-        })
+        req.session.destroy(() => {})
         // res.redirect("/account")
         res.status(200).send("Successfully logged out")
     } catch (error: any) {

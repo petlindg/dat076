@@ -10,12 +10,8 @@ export const powerupActiveRouter: Router = express.Router();
 
 powerupActiveRouter.get("", async (req: Request<{}, {}, {}>, res: Response<PowerupActiveResponseModel[] | string>): Promise<void> => {
     try {
-        if (!req.session.user) {
-            res.status(401).send("Not logged in")
-            return
-        }
-        const userId: ObjectId = req.session.user.id
 
+        const userId: ObjectId = req.session.user!.id
         const powerupsActive: PowerupActiveResponseModel[] = await powerupActiveService.getPowerupActiveList(userId)
 
         res.status(200).send(powerupsActive)

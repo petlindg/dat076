@@ -12,11 +12,7 @@ export const userDataRouter: Router = express.Router();
 userDataRouter.get("/", async (req, res: Response<UserData | string>) => {
     try {
 
-        if (!req.session.user) {
-            res.status(401).send("Not logged in")
-            return
-        }
-        const userId: ObjectId = req.session.user.id
+        const userId: ObjectId = req.session.user!.id
 
         const userData: UserData = await userDataService.getUserData(userId)
 
@@ -29,11 +25,7 @@ userDataRouter.get("/", async (req, res: Response<UserData | string>) => {
 userDataRouter.post("/incrementParsnip", async (req, res: Response<string>) => {
     try {
 
-        if (!req.session.user) {
-            res.status(401).send("Not logged in")
-            return
-        }
-        const userId: ObjectId = req.session.user.id
+        const userId: ObjectId = req.session.user!.id
 
         const newBalance: number = await userDataService.incrementParsnip(userId)
 
@@ -49,11 +41,7 @@ userDataRouter.post("/purchaseActivePowerUp", async (
 ) => {
     try {
 
-        if (!req.session.user) {
-            res.status(401).send("Not logged in")
-            return
-        }
-        const userId: ObjectId = req.session.user.id
+        const userId: ObjectId = req.session.user!.id
 
         if (!objectIdHelpers.isStringValidObjectId(req.body.powerupActiveId)) {
             res.status(400).send("Invalid ObjectId")
@@ -78,11 +66,7 @@ userDataRouter.post("/purchaseActivePowerUp", async (
 userDataRouter.get("/statistics", async (req, res: Response<UserStatistics | string>) => {
     try {
 
-        if (!req.session.user) {
-            res.status(401).send("Not logged in")
-            return
-        }
-        const userId: ObjectId = req.session.user.id
+        const userId: ObjectId = req.session.user!.id
 
         const userStatistics: UserStatistics = await userDataService.getUserStatistic(userId)
 
