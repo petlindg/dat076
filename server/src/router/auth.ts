@@ -28,7 +28,7 @@ authRouter.post("/register", async (req: Request<{}, {}, RegisterModel>, res: Re
         }
         res.status(201).send("Successfully registered")
     } catch (error: any) {
-        res.status(500).send(error.message ?? error)
+        res.status(error.statusCode ?? 500).send(error.message ?? error)
     }
 })
 
@@ -45,7 +45,7 @@ authRouter.post("/login", async (req: Request<{}, {}, LoginModel>, res: Response
         }
         res.status(200).send("Successfully logged in")
     } catch (error: any) {
-        res.status(500).send(error.message ?? error)
+        res.status(error.statusCode ?? 500).send(error.message ?? error)
     }
 })
 
@@ -56,7 +56,7 @@ authRouter.delete("/logout", async (req: Request<{}, {}, {}>, res: Response<stri
         // res.redirect("/account")
         res.status(200).send("Successfully logged out")
     } catch (error: any) {
-        res.status(500).send(error.message ?? error)
+        res.status(error.statusCode ?? 500).send(error.message ?? error)
     }
 })
 
@@ -69,6 +69,6 @@ authRouter.get("", async (req: Request<{}, {}, {}>, res: Response<string>) => {
 
         res.status(200).send(req.session.user.id.toString())
     } catch (error: any) {
-        res.status(500).send(error.message ?? error)
+        res.status(error.statusCode ?? 500).send(error.message ?? error)
     }
 })

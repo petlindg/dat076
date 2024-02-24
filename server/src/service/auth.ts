@@ -3,9 +3,9 @@ import {RegisterModel, LoginModel} from "../model/auth";
 import {IAuthService} from "./interfaces/auth.interface";
 import {UserCredentials} from "../model/userCredentials";
 import {userCredentialsModel} from "../db/userCredentials.db";
-import {Error} from "mongoose";
 import {userDataModel} from "../db/userData.db";
 import bcrypt from "bcryptjs";
+import {WebError} from "../model/error";
 
 export class AuthService implements IAuthService {
     async register(registerModel: RegisterModel): Promise<ObjectId> {
@@ -13,7 +13,7 @@ export class AuthService implements IAuthService {
         const existingUserCredentials: UserCredentials | null = await (await userCredentialsModel).findOne({email: registerModel.email})
 
         if (existingUserCredentials)
-            throw new Error("User with the given email already exists")
+            throw new WebError("User with the given email already exists", 409)
 
         const userCredentials: UserCredentials = await (await userCredentialsModel).create({
             email: registerModel.email,
@@ -42,7 +42,7 @@ export class AuthService implements IAuthService {
         })
 
         if(!userCredentials || !bcrypt.compareSync(loginModel.password, userCredentials.password))
-            throw new Error("Invalid credentials")
+            throw new WebError("Invalid credentials", 401)
 
         return userCredentials.id
     }
