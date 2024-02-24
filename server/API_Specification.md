@@ -1,48 +1,57 @@
 ## userDataRouter (base route: /userData)
 ```
 GET /userData
-returns 200 and UserData body with user data of the currentlly logged in user, 404 if user not found
+return UserData body with user data of the currentlly logged in user
+200 on success, 404 if user not found, 500 on other errors
 ```
 ```
 POST /userData/incrementParsnip
-increments parsnip balance by their parsnipPerClick for the logged in user, returns the new count in string. 404 if user not found
+increments parsnip balance by their parsnipPerClick for the logged in user, returns the new count in string
+200 on success, 404 if user not found, 500 on other errors
 ```
 ```
 POST /userData/purchaseActivePowerUp 
 Request Body : { powerupActiveId: string } - ObjectId of the powerup to purchase as a string
-Increments the parsnipPerClick of logged in user by parsnipPerClick of purchased object and notes the purchase. Price is calculated automatically. 200 if success, 403 if user can not afford the purchase
+Increments the parsnipPerClick of logged in user by parsnipPerClick of purchased object and notes the purchase. Price is calculated automatically
+200 if success, 403 if user can not afford the purchase, 404 if user or powerup not found, 500 on other errors
 ```
 
 ## userCredentialsRouter (base route: /userCredentials)
 ```
 GET /userCredentials
-Returns 200 and UserCredentials of the currently logged in user, 404 if user not found
+Returns and UserCredentials of the currently logged in user
+200 on success 404 if user not found, 500 on other errors
 ```
 ```
 PATCH /userCredentials
 Request Body { newUsername: string } - new username to be applied
-Updates the username of the currentlly logged in user 200 if successful, 400 if null or empty username
+Updates the username of the currentlly logged in user
+200 if successful, 400 if null or empty username, 404 if user not found, 500 on other errors
 ```
 
 ## powerupActiveRouter (base route: /powerupActive)
 ```
 GET /powerupActive
 Returns a list of all available powerups. Objects include a field, where the current price is precomputed for the user, based on the amount of times they've purchased it already
+200 on success, 404 on user not found, 500 on other errors
 ```
 
 ## authRouter (base route: /auth)
 ```
 POST /auth/register
 Request Body { email: string, password: string, username: string } - credentials of a new user
-Creates a new user and automatically logs them in, 201 on success 400 on bad request, 403 if already logged in, 500 on other errors
+Creates a new user and automatically logs them in
+201 on success 400 on bad request, 403 if already logged in, 409 if account with the email already exists, 500 on other errors
 Password is encrypted automatically
 ```
 ```
 POST /auth/login
 Request Body { email: string, password: string } - credentials of the user
-Logs in an existing user, 200 on success, 400 on bad request, 500 on other errors
+Logs in an existing user
+200 on success, 400 on bad request, 401 on invalid credentials, 500 on other errors
 ```
 ```
 DELETE /auth/logout
-Logs the user out by destorying their session, 200 on success, 500 on error
+Logs the user out by destorying their session
+200 on success, 500 on error
 ```

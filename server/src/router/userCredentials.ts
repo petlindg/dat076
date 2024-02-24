@@ -8,8 +8,6 @@ import {ObjectId} from "mongodb";
 const userCredentialsService: IUserCredentialsService =
     new UserCredentialsService();
 
-const userId = new ObjectId("65d75e0b5df275c5654b67a3"); // TODO get form cookies
-
 export const userCredentialsRouter: Router = express.Router();
 
 userCredentialsRouter.get(
@@ -26,7 +24,7 @@ userCredentialsRouter.get(
 
             res.status(200).send(userCredentials);
         } catch (error: any) {
-            res.status(500).send(error.message ?? error)
+            res.status(error.statusCode ?? 500).send(error.message ?? error)
         }
     },
 );
@@ -59,11 +57,10 @@ userCredentialsRouter.patch(
 
             if (success) res.status(200).send("Successfully updated username");
             else
-                res
-                    .status(500)
-                    .send("Unknown error occurred while calling userCredentialsService");
+                res.status(500).send("Unknown error occurred while calling userCredentialsService");
+
         } catch (error: any) {
-            res.status(500).send(error.message ?? error)
+            res.status(error.statusCode ?? 500).send(error.message ?? error)
         }
     },
 );

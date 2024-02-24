@@ -7,8 +7,6 @@ import {objectIdHelpers} from "../helpers/objecIdHelpers";
 
 const userDataService: IUserDataService = new UserDataService()
 
-const userId = new ObjectId("65d75e0b5df275c5654b67a3"); // TODO get form cookies
-
 export const userDataRouter: Router = express.Router();
 
 userDataRouter.get("/", async (req, res: Response<UserData | string>) => {
@@ -24,7 +22,7 @@ userDataRouter.get("/", async (req, res: Response<UserData | string>) => {
 
         res.status(200).send(userData)
     } catch (error: any) {
-        res.status(500).send(error.message ?? error)
+        res.status(error.statusCode ?? 500).send(error.message ?? error)
     }
 })
 
@@ -41,7 +39,7 @@ userDataRouter.post("/incrementParsnip", async (req, res: Response<string>) => {
 
         res.status(200).send(newBalance.toString())
     } catch (error: any) {
-        res.status(500).send(error.message ?? error)
+        res.status(error.statusCode ?? 500).send(error.message ?? error)
     }
 })
 
@@ -73,7 +71,7 @@ userDataRouter.post("/purchaseActivePowerUp", async (
 
         res.status(200).send("Successfully purchased the product")
     } catch (error: any) {
-        res.status(500).send(error.message ?? error)
+        res.status(error.statusCode ?? 500).send(error.message ?? error)
     }
 })
 
@@ -90,6 +88,6 @@ userDataRouter.get("/statistics", async (req, res: Response<UserStatistics | str
 
         res.status(200).send(userStatistics)
     } catch (error: any) {
-        res.status(500).send(error.message ?? error)
+        res.status(error.statusCode ?? 500).send(error.message ?? error)
     }
 })

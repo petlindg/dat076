@@ -5,6 +5,7 @@ import {userCredentialsModel} from "../db/userCredentials.db";
 import {Model, UpdateWriteOpResult} from "mongoose";
 import {UserData} from "../model/userData";
 import {StringHelpers} from "../helpers/stringHelpers";
+import {WebError} from "../model/error";
 
 export class UserCredentialsService implements IUserCredentialsService {
     async getUserCredentials(userId: ObjectId): Promise<UserCredentials> {
@@ -12,7 +13,7 @@ export class UserCredentialsService implements IUserCredentialsService {
             await (await userCredentialsModel).findById(userId);
 
         if (userCredentials === null)
-            throw new Error("No user with the provided Id has been found")
+            throw new WebError("No user with the provided Id has been found", 404)
 
         return userCredentials;
     }
@@ -24,10 +25,10 @@ export class UserCredentialsService implements IUserCredentialsService {
         let userCredentials : UserCredentials | null = await (await  userCredentialsModel).findById(userId)
 
         if (userCredentials === null)
-            throw new Error("No user with the provided Id has been found")
+            throw new WebError("No user with the provided Id has been found", 404)
 
         if(StringHelpers.isNullOrEmpty(newUsername))
-            throw new Error("newUsername may not be null or empty")
+            throw new WebError("newUsername may not be null or empty", 400)
 
         const res: UpdateWriteOpResult = await (await userCredentialsModel).updateOne(
             {_id: userId},

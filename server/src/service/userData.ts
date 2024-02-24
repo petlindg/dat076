@@ -6,6 +6,7 @@ import {UpdateWriteOpResult} from "mongoose";
 import {PowerupActive} from "../model/powerupActive";
 import {powerupActiveModel} from "../db/powerupActive.db";
 import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
+import {WebError} from "../model/error";
 
 export class UserDataService implements IUserDataService {
     async getUserData(userId: ObjectId): Promise<UserData> {
@@ -14,7 +15,7 @@ export class UserDataService implements IUserDataService {
         });
 
         if (userData === null)
-            throw new Error("No user with the provided Id has been found")
+            throw new WebError("No user with the provided Id has been found", 404)
 
         return userData;
     }
@@ -25,7 +26,7 @@ export class UserDataService implements IUserDataService {
         });
 
         if (userData === null)
-            throw new Error("No user with the provided Id has been found")
+            throw new WebError("No user with the provided Id has been found", 404)
 
         const newBalance: number = userData.parsnipBalance + userData.parsnipsPerClick;
         const newLifetimeClicks: number = userData.lifetimeClicks + 1
@@ -37,7 +38,7 @@ export class UserDataService implements IUserDataService {
         );
 
         if (!res.acknowledged)
-            throw new Error("An error has occurred while writing results to the DB")
+            throw new WebError("An error has occurred while writing results to the DB", 500)
 
         return newBalance;
     }
@@ -51,13 +52,13 @@ export class UserDataService implements IUserDataService {
         });
 
         if (userData === null)
-            throw new Error("No user with the provided Id has been found")
+            throw new WebError("No user with the provided Id has been found", 404)
 
         const powerupActive: PowerupActive | null =
             await (await powerupActiveModel).findById(powerupActiveId);
 
         if (powerupActive === null)
-            throw new Error("No powerup with the provided Id has been found")
+            throw new WebError("No powerup with the provided Id has been found", 404)
 
         let userBalance: number = userData.parsnipBalance;
         let userPowerupsActivePurchased = userData.powerupsActivePurchased;
@@ -113,6 +114,9 @@ export class UserDataService implements IUserDataService {
 
     async getUserStatistic(userId: ObjectId): Promise<UserStatistics> {
         const userData: UserData = await this.getUserData(userId)
+
+        if (userData === null)
+            throw new WebError("No user with the provided Id has been found", 404)
 
         const totalPowerupsPurchased: number =
             userData.powerupsPassivePurchased

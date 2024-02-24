@@ -6,6 +6,7 @@ import {userDataModel} from "../db/userData.db";
 import {PowerupActive} from "../model/powerupActive";
 import {powerupActiveModel} from "../db/powerupActive.db";
 import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
+import {WebError} from "../model/error";
 
 export class PowerupActiveService implements IPowerupActiveService {
     async getPowerupActiveList(userId: ObjectId): Promise<PowerupActiveResponseModel[]> {
@@ -14,7 +15,7 @@ export class PowerupActiveService implements IPowerupActiveService {
         });
 
         if (userData === null)
-            throw new Error("No user with the provided Id has been found")
+            throw new WebError("No user with the provided Id has been found", 404)
 
         const powerupsActive: PowerupActive[] = await (await powerupActiveModel).find();
         let result: PowerupActiveResponseModel[] = []
