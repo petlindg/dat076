@@ -42,7 +42,7 @@ export class AuthService implements IAuthService {
         })
 
         if(!userCredentials || !bcrypt.compareSync(loginModel.password, userCredentials.password))
-            throw new WebError("Invalid credentials", 401)
+            throw new WebError("Invalid credentials", 403)
 
         return userCredentials.id
     }

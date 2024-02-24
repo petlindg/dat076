@@ -48,7 +48,7 @@ Password is encrypted automatically
 POST /auth/login
 Request Body { email: string, password: string } - credentials of the user
 Logs in an existing user
-200 on success, 400 on bad request, 401 on invalid credentials, 500 on other errors
+200 on success, 400 on bad request, 403 on invalid credentials, 500 on other errors
 ```
 ```
 DELETE /auth/logout

@@ -4,6 +4,7 @@ import {IUserDataService} from "../service/interfaces/userData.interface";
 import express, {Request, Response, Router} from "express";
 import {UserData, UserStatistics} from "../model/userData";
 import {objectIdHelpers} from "../helpers/objecIdHelpers";
+import {IncrementParsnipsResponseModel} from "../model/incrementParsnipsResponseModel";
 
 const userDataService: IUserDataService = new UserDataService()
 
@@ -22,14 +23,14 @@ userDataRouter.get("/", async (req, res: Response<UserData | string>) => {
     }
 })
 
-userDataRouter.post("/incrementParsnip", async (req, res: Response<string>) => {
+userDataRouter.post("/incrementParsnip", async (req, res: Response<IncrementParsnipsResponseModel>) => {
     try {
 
         const userId: ObjectId = req.session.user!.id
 
         const newBalance: number = await userDataService.incrementParsnip(userId)
 
-        res.status(200).send(newBalance.toString())
+        res.status(200).send({newParsnipBalance: newBalance})
     } catch (error: any) {
         res.status(error.statusCode ?? 500).send(error.message ?? error)
     }

@@ -42,7 +42,7 @@ describe("End-to-end tests", () => {
 
         // login without registering
         const res1: Response = await request.post("/auth/login").send({email: mail, password: password})
-        expect(res1.statusCode).toEqual(401)
+        expect(res1.statusCode).toEqual(403)
 
         // register with invalid form of credentials
         const res2: Response = await request.post("/auth/register").send({
@@ -78,7 +78,7 @@ describe("End-to-end tests", () => {
 
         // login with invalid credentials
         const res7: Response = await request.post("/auth/login").send({email: mail, password: "wrongpass"})
-        expect(res7.statusCode).toEqual(401)
+        expect(res7.statusCode).toEqual(403)
 
         // login
         const res8: Response = await request.post("/auth/login").send({email: mail, password: password})
