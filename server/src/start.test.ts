@@ -1,39 +1,63 @@
 import * as SuperTest from "supertest";
 import {Response} from "supertest";
 import {app} from "./start";
+import {describe} from "node:test";
+import {userCredentialsModel} from "./db/userCredentials.db";
+import {userDataModel} from "./db/userData.db";
 
-const request = SuperTest.default(app);
+const request: any = SuperTest.agent(app);
+
 jest.mock("./db/conn")
-test("End-to-end test", async () => {
-    expect(true).toBeTruthy()
+afterEach(async (): Promise<void> => {
+    await (await userCredentialsModel).deleteMany()
+    await (await userDataModel).deleteMany()
+})
+describe("End-to-end tests", () => {
 
-    // const res1: Response = await request.get("/user").send();
-    // expect(res1.statusCode).toEqual(200);
-    // expect(res1.body.parsnipCount).toEqual(0);
-    //
-    // const newUserName : string = "TestUserName"
-    // const resUserName : Response = await request.patch("/user").send({userName : newUserName});
-    // expect(resUserName.statusCode).toEqual(200);
-    //
-    // const res2: Response = await request.post("/user/punch");
-    // expect(res2.statusCode).toEqual(200);
-    //
-    // for (let i = 0; i < 24; i++) {
-    //   const res3: Response = await request.post("/user/punch");
-    //   expect(res3.statusCode).toEqual(200);
-    // }
-    //
-    // const res4: Response = await request.get("/user").send();
-    // expect(res4.statusCode).toEqual(200);
-    // expect(res4.body.parsnipCount).toEqual(25);
-    //
-    // const res5: Response = await request.patch("/user/powerUp");
-    // expect(res5.statusCode).toEqual(200);
-    //
-    // const res6: Response = await request.get("/user").send();
-    // expect(res6.statusCode).toEqual(200);
-    // const user : User = res6.body;
-    // expect(user.parsnipCount).toEqual(0);
-    // expect(user.parsnipsPerClick).toEqual(2);
-    // expect(user.userName).toEqual(newUserName);
-});
+    it("Auth end-to-end test", async () => {
+        const username: string = "TheTestGuy"
+        const mail: string = "thetestguy@jest.com"
+        const password: string = "besterJester123"
+
+        // login without registering
+        const res1: Response = await request.post("/auth/login").send({email: mail, password: password})
+        expect(res1.statusCode).toEqual(500)
+
+        // register with invalid credentials
+        const res2: Response = await request.post("/auth/register").send({email: "", password: password, username: username})
+        expect(res2.statusCode).toEqual(400)
+
+        // register
+        const res3: Response = await request.post("/auth/register").send({email: mail, password: password, username: username})
+        expect(res3.statusCode).toEqual(201)
+
+        // check if logged in
+        const res4 : Response = await request.get("/auth").send()
+        expect(res4.statusCode).toEqual(200)
+
+        // try to register when already logged in
+        const res5: Response = await request.post("/auth/register").send({email: mail, password: password, username: username})
+        expect(res5.statusCode).toEqual(403)
+
+        // logout
+        const res6: Response = await request.delete("/auth/logout").send()
+        expect(res6.statusCode).toEqual(200)
+
+        // login with invalid credentials
+        const res7: Response = await request.post("/auth/login").send({email: mail, password: "wrongpass"})
+        expect(res7.statusCode).toEqual(500)
+
+        // login
+        const res8: Response = await request.post("/auth/login").send({email: mail, password: password})
+        expect(res8.statusCode).toEqual(200)
+
+        // check if logged in
+        const res9 : Response = await request.get("/auth").send()
+        expect(res9.statusCode).toEqual(200)
+
+        // logout
+        const res10: Response = await request.delete("/auth/logout").send()
+        expect(res10.statusCode).toEqual(200)
+    })
+
+})
