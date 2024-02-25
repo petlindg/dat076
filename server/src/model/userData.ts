@@ -46,10 +46,10 @@ export interface UserLeaderboard {
 }
 
 export enum leaderboardSortBy {
-    parsnipPerClick = "parsnipPerClick",
+    parsnipsPerClick = "parsnipsPerClick",
     lifetimeClicks = "lifetimeClicks",
-    lifetimeParsnipEarned = "lifetimeParsnipEarned",
-    lifetimeParsnipSpent = "lifetimeParsnipSpent",
+    lifetimeParsnipsEarned = "lifetimeParsnipsEarned",
+    lifetimeParsnipsSpent = "lifetimeParsnipsSpent",
 }
 
 export interface LeaderboardQuery {

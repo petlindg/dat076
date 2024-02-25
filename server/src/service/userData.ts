@@ -143,13 +143,13 @@ export class UserDataService implements IUserDataService {
             case leaderboardSortBy.lifetimeClicks:
                 allUserData.sort((ud1, ud2) => ud2.lifetimeClicks - ud1.lifetimeClicks)
                 break
-            case leaderboardSortBy.lifetimeParsnipEarned:
+            case leaderboardSortBy.lifetimeParsnipsEarned:
                 allUserData.sort((ud1, ud2) => ud2.lifetimeParsnipsEarned - ud1.lifetimeParsnipsEarned)
                 break
-            case leaderboardSortBy.lifetimeParsnipSpent:
+            case leaderboardSortBy.lifetimeParsnipsSpent:
                 allUserData.sort((ud1, ud2) => ud2.lifetimeParsnipsSpent - ud1.lifetimeParsnipsSpent)
                 break
-            case leaderboardSortBy.parsnipPerClick:
+            case leaderboardSortBy.parsnipsPerClick:
                 allUserData.sort((ud1, ud2) => ud2.parsnipsPerClick - ud1.parsnipsPerClick)
                 break
             default:

@@ -155,20 +155,30 @@ describe("End-to-end tests", () => {
         expect(res8.statusCode).toEqual(200)
         expect(res8.body.totalPowerupsPurchased).toEqual(1)
 
-        // get list of available powerups
-        const res9: Response = await request.get("/powerUpActive").send()
+        // get the leaderboard
+        const res9: Response = await request.get("/userData/leaderboard").query({sortBy: "parsnipsPerClick", limit:"10"}).send()
         expect(res9.statusCode).toEqual(200)
         expect(res9.body.length).toEqual(1)
-        expect(res9.body[0].powerupName).toEqual(name1)
-        expect(res9.body[0].priceForUser).toEqual(PowerupPriceHelpers.computePrice(basePrice1, 0.15, 1))
+        expect(res9.body[0].sortedBy).toEqual("parsnipsPerClick")
+
+        // get the leaderboard with invalid query
+        const res10: Response = await request.get("/userData/leaderboard").query({sortBy: "ppc", limit:"10"}).send()
+        expect(res10.statusCode).toEqual(400)
+
+        // get list of available powerups
+        const res11: Response = await request.get("/powerUpActive").send()
+        expect(res11.statusCode).toEqual(200)
+        expect(res11.body.length).toEqual(1)
+        expect(res11.body[0].powerupName).toEqual(name1)
+        expect(res11.body[0].priceForUser).toEqual(PowerupPriceHelpers.computePrice(basePrice1, 0.15, 1))
 
         // logout
-        const res10: Response = await request.delete("/auth/logout").send()
-        expect(res10.statusCode).toEqual(200)
+        const res12: Response = await request.delete("/auth/logout").send()
+        expect(res12.statusCode).toEqual(200)
 
         // attempt access without logging in
-        const res11: Response = await request.patch("/userCredentials").send({newUsername: newUsername})
-        expect(res11.statusCode).toEqual(401)
+        const res13: Response = await request.patch("/userCredentials").send({newUsername: newUsername})
+        expect(res13.statusCode).toEqual(401)
     })
 
 })

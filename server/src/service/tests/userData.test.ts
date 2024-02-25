@@ -198,7 +198,7 @@ describe("User Data Service tests", () => {
         await buildUserData(userCredentials2.id, powerUpActive1.id, parsnipBalance2, parsnipsPerClick2, lifetimeClicks2, lifetimeParsnipEarned2, lifetimeParsnipSpent2)
         await buildUserData(userCredentials3.id, powerUpActive1.id, parsnipBalance3, parsnipsPerClick3, lifetimeClicks3, lifetimeParsnipEarned3, lifetimeParsnipSpent3)
 
-        const result: UserLeaderboard[] = await userDataService.getUserLeaderboard("parsnipPerClick" as leaderboardSortBy, 3)
+        const result: UserLeaderboard[] = await userDataService.getUserLeaderboard("parsnipsPerClick" as leaderboardSortBy, 3)
 
         expect(result.length).toEqual(3)
         expect(result[0].place).toEqual(1)
@@ -206,9 +206,9 @@ describe("User Data Service tests", () => {
         expect(result[2].place).toEqual(3)
         expect(result[0].parsnipsPerClick).toBeGreaterThanOrEqual(result[1].parsnipsPerClick)
         expect(result[1].parsnipsPerClick).toBeGreaterThanOrEqual(result[2].parsnipsPerClick)
-        expect(result[0].sortedBy).toEqual("parsnipPerClick")
+        expect(result[0].sortedBy).toEqual("parsnipsPerClick")
 
-        const result2: UserLeaderboard[] = await userDataService.getUserLeaderboard("parsnipPerClick" as leaderboardSortBy, 2)
+        const result2: UserLeaderboard[] = await userDataService.getUserLeaderboard("parsnipsPerClick" as leaderboardSortBy, 2)
         expect(result2.length).toEqual(2)
     })
 })
