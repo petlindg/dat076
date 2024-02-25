@@ -86,7 +86,7 @@ userDataRouter.get("/leaderboard", async (req: Request<{}, {}, LeaderboardQuery>
         if(!Object.values(leaderboardSortBy).includes(sortBy) || isNaN(limit))
             return res.status(400).send("Invalid request query")
 
-        const userLeaderboard : UserLeaderboard[] = await userDataService.getUserLeaderBoard(sortBy, limit)
+        const userLeaderboard : UserLeaderboard[] = await userDataService.getUserLeaderboard(sortBy, limit)
 
         res.status(200).send(userLeaderboard)
 

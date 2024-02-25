@@ -135,7 +135,7 @@ export class UserDataService implements IUserDataService {
         }
     }
 
-    async getUserLeaderBoard(sortBy: leaderboardSortBy, limit: number): Promise<UserLeaderboard[]> {
+    async getUserLeaderboard(sortBy: leaderboardSortBy, limit: number): Promise<UserLeaderboard[]> {
 
         let allUserData: UserData[] = await (await userDataModel).find()
 

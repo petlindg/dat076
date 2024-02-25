@@ -46,5 +46,5 @@ export interface IUserDataService {
      * @returns UserLeaderboard[] - a list of users sorted by sortBy
      * @throws WebError - if sorted by is not of type leaderboardSortBy
      */
-    getUserLeaderBoard(sortBy: leaderboardSortBy, limit: number): Promise<UserLeaderboard[]>
+    getUserLeaderboard(sortBy: leaderboardSortBy, limit: number): Promise<UserLeaderboard[]>
 }
