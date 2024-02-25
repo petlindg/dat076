@@ -8,6 +8,8 @@ import {PowerupActive} from "./model/powerupActive";
 import {powerupActiveModel} from "./db/powerupActive.db";
 import TestAgent from "supertest/lib/agent";
 import {PowerupPriceHelpers} from "./helpers/powerupPriceHelpers";
+import {PowerupPassive} from "./model/powerupPassive";
+import {powerupPassiveModel} from "./db/powerupPassive.db";
 
 const request: TestAgent = SuperTest.agent(app);
 
@@ -28,15 +30,29 @@ describe("End-to-end tests", () => {
         })
     }
 
+    async function buildPowerupPassive(name: string, basePrice: number, parsnipsPerSecond: number): Promise<PowerupPassive> {
+        return await (await powerupPassiveModel).create({
+            powerupName: name,
+            basePrice: basePrice,
+            increment: 0.15,
+            parsnipsPerSecond: parsnipsPerSecond
+        })
+    }
+
     const username: string = "TheTestGuy"
     const mail: string = "thetestguy@jest.com"
     const password: string = "besterJester123"
     const newUsername: string = "TheJestGuy"
 
-    //powerup1
-    const name1 = "a"
-    const basePrice1 = 10
-    const parsnipPerClick1 = 1
+    //powerupActive1
+    const name1a = "a"
+    const basePrice1a = 10
+    const parsnipPerClick1a = 1
+
+    //powerupPassive1
+    const name1p = "p"
+    const basePrice1p = 25
+    const parsnipsPerSecond1p = 0.1
 
     it("Auth end-to-end test", async () => {
 
@@ -118,14 +134,14 @@ describe("End-to-end tests", () => {
         expect(res3.body.userName).toEqual(newUsername)
         expect(res3.body.email).toEqual(mail)
 
-        // attempt to purchase a non-existing powerup
+        // attempt to purchase a non-existing active powerup
         const res4: Response = await request.post("/userData/purchaseActivePowerUp").send({powerupActiveId: res3.body._id})
         expect(res4.statusCode).toEqual(404)
 
-        // add a powerup
-        const powerupActive: PowerupActive = await buildPowerupActive(name1, basePrice1, parsnipPerClick1)
+        // add an active powerup
+        const powerupActive: PowerupActive = await buildPowerupActive(name1a, basePrice1a, parsnipPerClick1a)
 
-        // attempt to purchase a powerup when you can not afford it
+        // attempt to purchase an active powerup when you can not afford it
         const res5: Response = await request.post("/userData/purchaseActivePowerUp").send({powerupActiveId: powerupActive.id})
         expect(res5.statusCode).toEqual(403)
 
@@ -135,51 +151,74 @@ describe("End-to-end tests", () => {
             expect(resClick.statusCode).toEqual(200)
         }
 
-        // purchase the powerup, this time with enough balance
+        // purchase the active powerup, this time with enough balance
         const res6: Response = await request.post("/userData/purchaseActivePowerUp").send({powerupActiveId: powerupActive.id})
         expect(res6.statusCode).toEqual(200)
 
+        //--------------//
+
+        // attempt to purchase a non-existing passive powerup
+        const res7: Response = await request.post("/userData/purchasePassivePowerUp").send({powerupPassiveId: res3.body._id})
+        expect(res7.statusCode).toEqual(404)
+
+        // add a passive powerup
+        const powerupPassive: PowerupPassive = await buildPowerupPassive(name1p, basePrice1p, parsnipsPerSecond1p)
+
+        // attempt to purchase a passive powerup when you can not afford it
+        const res8: Response = await request.post("/userData/purchasePassivePowerUp").send({powerupPassiveId: powerupPassive.id})
+        expect(res8.statusCode).toEqual(403)
+
+        // click parsnip 30 times
+        for (let i = 0; i < 30; i++) {
+            const resClick: Response = await request.post("/userData/incrementParsnip").send()
+            expect(resClick.statusCode).toEqual(200)
+        }
+
+        // purchase the passive powerup, this time with enough balance
+        const res9: Response = await request.post("/userData/purchasePassivePowerUp").send({powerupPassiveId: powerupPassive.id})
+        expect(res9.statusCode).toEqual(200)
+
         // get your user data
-        const res7: Response = await request.get("/userData").send()
-        expect(res7.statusCode).toEqual(200)
-        expect(res7.body.parsnipsPerClick).toEqual(parsnipPerClick1 + 1)
-        expect(res7.body.parsnipBalance).toEqual(30 - basePrice1)
-        expect(res7.body.powerupsActivePurchased).toEqual([{idPowerup: powerupActive.id.toString(), purchaseCount: 1}])
-        expect(res7.body.powerupsPassivePurchased).toEqual([])
-        expect(res7.body.lifetimeClicks).toEqual(30)
-        expect(res7.body.lifetimeParsnipsEarned).toEqual(30)
-        expect(res7.body.lifetimeParsnipsSpent).toEqual(basePrice1)
+        const res10: Response = await request.get("/userData").send()
+        expect(res10.statusCode).toEqual(200)
+        expect(res10.body.parsnipsPerClick).toEqual(parsnipPerClick1a + 1)
+        expect(res10.body.parsnipsPerSecond).toEqual(parsnipsPerSecond1p)
+        expect(res10.body.parsnipBalance).toEqual(30 + (30*(parsnipPerClick1a+1)) - basePrice1a - basePrice1p)
+        expect(res10.body.powerupsActivePurchased).toEqual([{idPowerup: powerupActive.id.toString(), purchaseCount: 1}])
+        expect(res10.body.powerupsPassivePurchased).toEqual([{idPowerup: powerupPassive.id.toString(), purchaseCount: 1}])
+        expect(res10.body.lifetimeClicks).toEqual(60)
+        expect(res10.body.lifetimeParsnipsEarned).toEqual(30 + (30*(parsnipPerClick1a+1)))
+        expect(res10.body.lifetimeParsnipsSpent).toEqual(basePrice1a + basePrice1p)
 
         // get your statistics
-        const res8: Response = await request.get("/userData/statistics").send()
-        expect(res8.statusCode).toEqual(200)
-        expect(res8.body.totalPowerupsPurchased).toEqual(1)
-        expect(res8.body.parsnipsPerSecond).toEqual(0)
+        const res11: Response = await request.get("/userData/statistics").send()
+        expect(res11.statusCode).toEqual(200)
+        expect(res11.body.totalPowerupsPurchased).toEqual(2)
 
         // get the leaderboard
-        const res9: Response = await request.get("/userData/leaderboard").query({sortBy: "parsnipsPerClick", limit:"10"}).send()
-        expect(res9.statusCode).toEqual(200)
-        expect(res9.body.length).toEqual(1)
-        expect(res9.body[0].sortedBy).toEqual("parsnipsPerClick")
+        const res12: Response = await request.get("/userData/leaderboard").query({sortBy: "parsnipsPerClick", limit:"10"}).send()
+        expect(res12.statusCode).toEqual(200)
+        expect(res12.body.length).toEqual(1)
+        expect(res12.body[0].sortedBy).toEqual("parsnipsPerClick")
 
         // get the leaderboard with invalid query
-        const res10: Response = await request.get("/userData/leaderboard").query({sortBy: "ppc", limit:"10"}).send()
-        expect(res10.statusCode).toEqual(400)
+        const res13: Response = await request.get("/userData/leaderboard").query({sortBy: "ppc", limit:"10"}).send()
+        expect(res13.statusCode).toEqual(400)
 
         // get list of available powerups
-        const res11: Response = await request.get("/powerUpActive").send()
-        expect(res11.statusCode).toEqual(200)
-        expect(res11.body.length).toEqual(1)
-        expect(res11.body[0].powerupName).toEqual(name1)
-        expect(res11.body[0].priceForUser).toEqual(PowerupPriceHelpers.computePrice(basePrice1, 0.15, 1))
+        const res14: Response = await request.get("/powerUpActive").send()
+        expect(res14.statusCode).toEqual(200)
+        expect(res14.body.length).toEqual(1)
+        expect(res14.body[0].powerupName).toEqual(name1a)
+        expect(res14.body[0].priceForUser).toEqual(PowerupPriceHelpers.computePrice(basePrice1a, 0.15, 1))
 
         // logout
-        const res12: Response = await request.delete("/auth/logout").send()
-        expect(res12.statusCode).toEqual(200)
+        const res15: Response = await request.delete("/auth/logout").send()
+        expect(res15.statusCode).toEqual(200)
 
         // attempt access without logging in
-        const res13: Response = await request.patch("/userCredentials").send({newUsername: newUsername})
-        expect(res13.statusCode).toEqual(401)
+        const res16: Response = await request.patch("/userCredentials").send({newUsername: newUsername})
+        expect(res16.statusCode).toEqual(401)
     })
 
 })

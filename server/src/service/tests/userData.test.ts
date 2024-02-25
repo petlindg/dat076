@@ -8,6 +8,8 @@ import {leaderboardSortBy, UserData, UserLeaderboard, UserStatistics} from "../.
 import {PowerupActive} from "../../model/powerupActive";
 import {ObjectId} from "mongodb";
 import {PowerupPriceHelpers} from "../../helpers/powerupPriceHelpers";
+import {PowerupPassive} from "../../model/powerupPassive";
+import {powerupPassiveModel} from "../../db/powerupPassive.db";
 
 afterEach(async (): Promise<void> => {
     await (await userCredentialsModel).deleteMany()
@@ -51,6 +53,7 @@ const powerupName3: string = "c";
 const basePrice: number = 10;
 const increment: number = 0.15;
 const parsnipsPerClickPowerup: number = 3;
+const parsnipsPerSecondPowerup: number = 0.1;
 const powerup1PurchaseCount: number = 2;
 const powerup2PurchaseCount: number = 4;
 const powerup3PurchaseCount: number = 6;
@@ -72,15 +75,23 @@ async function buildPowerupActive(name: string): Promise<PowerupActive> {
     })
 }
 
-async function buildUserData(ucId: ObjectId, paId: ObjectId, parsnipBalance: number, parsnipPerClick: number, lifetimeClicks: number, lifetimeParsnipsEarned: number, lifetimeParsnipsSpent: number, parsnipsPerSecond:number): Promise<UserData> {
+async function buildPowerupPassive(name: string): Promise<PowerupPassive> {
+    return await (await powerupPassiveModel).create({
+        powerupName: name,
+        basePrice: basePrice,
+        increment: increment,
+        parsnipsPerSecond: parsnipsPerSecondPowerup
+    })
+}
+
+async function buildUserData(powerupActive:boolean, ucId: ObjectId, paId: ObjectId, parsnipBalance: number, parsnipPerClick: number, lifetimeClicks: number, lifetimeParsnipsEarned: number, lifetimeParsnipsSpent: number, parsnipsPerSecond: number): Promise<UserData> {
+
     return await (await userDataModel).create({
         credentialsId: ucId,
         parsnipBalance: parsnipBalance,
         parsnipsPerClick: parsnipPerClick,
-        powerupsActivePurchased: [
-            {idPowerup: paId, purchaseCount: powerup1PurchaseCount},
-        ],
-        powerupsPassivePurchased: [],
+        powerupsActivePurchased: (powerupActive)?[{idPowerup: paId, purchaseCount: powerup1PurchaseCount}]:[],
+        powerupsPassivePurchased: (!powerupActive)?[{idPowerup: paId, purchaseCount: powerup1PurchaseCount}]:[],
         lifetimeClicks: lifetimeClicks,
         lifetimeParsnipsEarned: lifetimeParsnipsEarned,
         lifetimeParsnipsSpent: lifetimeParsnipsSpent,
@@ -95,7 +106,7 @@ describe("User Data Service tests", () => {
 
         const userCredentials: UserCredentials = await buildUserCredentials(userName1, email1, password1)
         const powerUpActive1: PowerupActive = await buildPowerupActive(powerupName1)
-        const userData: UserData = await buildUserData(userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
+        const userData: UserData = await buildUserData(true, userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
 
         await expect(userDataService.getUserData(userData.id)).rejects.toThrow()
 
@@ -118,7 +129,7 @@ describe("User Data Service tests", () => {
 
         const userCredentials: UserCredentials = await buildUserCredentials(userName1, email1, password1)
         const powerUpActive1: PowerupActive = await buildPowerupActive(powerupName1)
-        const userData: UserData = await buildUserData(userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
+        const userData: UserData = await buildUserData(true, userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
 
         await expect(userDataService.getUserData(powerUpActive1.id)).rejects.toThrow()
 
@@ -135,7 +146,7 @@ describe("User Data Service tests", () => {
 
         const userCredentials: UserCredentials = await buildUserCredentials(userName1, email1, password1)
         const powerUpActive1: PowerupActive = await buildPowerupActive(powerupName1)
-        const userData: UserData = await buildUserData(userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
+        const userData: UserData = await buildUserData(true, userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
 
         const result1: boolean = await userDataService.purchasePowerupActive(userCredentials.id, powerUpActive1.id)
         expect(result1).toBeFalsy()
@@ -198,9 +209,9 @@ describe("User Data Service tests", () => {
         const userCredentials2: UserCredentials = await buildUserCredentials(userName2, email2, password2)
         const userCredentials3: UserCredentials = await buildUserCredentials(userName3, email3, password3)
         const powerUpActive1: PowerupActive = await buildPowerupActive(powerupName1)
-        await buildUserData(userCredentials1.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
-        await buildUserData(userCredentials2.id, powerUpActive1.id, parsnipBalance2, parsnipsPerClick2, lifetimeClicks2, lifetimeParsnipEarned2, lifetimeParsnipSpent2, parsnipsPerSecond2)
-        await buildUserData(userCredentials3.id, powerUpActive1.id, parsnipBalance3, parsnipsPerClick3, lifetimeClicks3, lifetimeParsnipEarned3, lifetimeParsnipSpent3, parsnipsPerSecond3)
+        await buildUserData(true, userCredentials1.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
+        await buildUserData(true, userCredentials2.id, powerUpActive1.id, parsnipBalance2, parsnipsPerClick2, lifetimeClicks2, lifetimeParsnipEarned2, lifetimeParsnipSpent2, parsnipsPerSecond2)
+        await buildUserData(true, userCredentials3.id, powerUpActive1.id, parsnipBalance3, parsnipsPerClick3, lifetimeClicks3, lifetimeParsnipEarned3, lifetimeParsnipSpent3, parsnipsPerSecond3)
 
         const result: UserLeaderboard[] = await userDataService.getUserLeaderboard("parsnipsPerClick" as leaderboardSortBy, 3)
 
@@ -214,5 +225,33 @@ describe("User Data Service tests", () => {
 
         const result2: UserLeaderboard[] = await userDataService.getUserLeaderboard("parsnipsPerClick" as leaderboardSortBy, 2)
         expect(result2.length).toEqual(2)
+    })
+
+    it("Purchasing a passive powerup, should purchase it, decrease balance and increase parsnipsPerClick if user can afford it", async () => {
+
+        const userCredentials: UserCredentials = await buildUserCredentials(userName1, email1, password1)
+        const powerUpPassive1: PowerupPassive = await buildPowerupPassive(powerupName1)
+        const userData: UserData = await buildUserData(false, userCredentials.id, powerUpPassive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
+
+        const result1: boolean = await userDataService.purchasePowerupPassive(userCredentials.id, powerUpPassive1.id)
+        expect(result1).toBeFalsy()
+
+        let balance: number = userData.parsnipBalance
+        for (let i = 0; i < 10; i++)
+            balance = await userDataService.incrementParsnip(userCredentials.id)
+
+        await expect(userDataService.purchasePowerupPassive(userCredentials.id, userData.id)).rejects.toThrow()
+        await expect(userDataService.purchasePowerupPassive(userData.id, powerUpPassive1.id)).rejects.toThrow()
+
+        const result2: boolean = await userDataService.purchasePowerupPassive(userCredentials.id, powerUpPassive1.id)
+        const userData2: UserData = await userDataService.getUserData(userCredentials.id)
+
+        expect(result2).toBeTruthy()
+        expect(userData2.parsnipBalance).toEqual(balance - PowerupPriceHelpers.computePrice(powerUpPassive1.basePrice, powerUpPassive1.increment, powerup1PurchaseCount))
+        expect(userData2.parsnipsPerSecond).toEqual(userData.parsnipsPerSecond + powerUpPassive1.parsnipsPerSecond)
+        expect(userData2.powerupsPassivePurchased.find(pap => pap.idPowerup.toString() === powerUpPassive1.id.toString())).toBeDefined()
+        expect(userData2.powerupsPassivePurchased.find(pap => pap.idPowerup.toString() === powerUpPassive1.id.toString())!.purchaseCount)
+            .toEqual(userData.powerupsPassivePurchased.find(pap => pap.idPowerup.toString() === powerUpPassive1.id.toString())!.purchaseCount + 1)
+        expect(userData2.lifetimeParsnipsSpent).toEqual(userData.lifetimeParsnipsSpent + PowerupPriceHelpers.computePrice(powerUpPassive1.basePrice, powerUpPassive1.increment, powerup1PurchaseCount))
     })
 })
