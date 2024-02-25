@@ -1,4 +1,4 @@
-import express from "express";
+import express, {Express} from "express";
 import cors from "cors";
 import {userCredentialsRouter} from "./router/userCredentials";
 import {userDataRouter} from "./router/userData";
@@ -8,8 +8,6 @@ import {ObjectId} from "mongodb";
 import {authRouter} from "./router/auth";
 import {authMiddleware} from "./middleware/auth";
 
-const env = require("../env.json");
-
 declare module "express-session" {
     interface SessionData {
         user: {
@@ -18,12 +16,12 @@ declare module "express-session" {
     }
 }
 
-export const app = express();
+export const app: Express = express();
 
 app.use(express.json());
 
 app.use(session({
-    secret: env.sessionSecret,
+    secret: (process.env.SESSION_SECRET as string),
     resave: false,
     saveUninitialized: false
 }))

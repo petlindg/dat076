@@ -13,8 +13,8 @@ function App() {
         <div>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/account" Component={Account}/>
                     <Route path="/" Component={Home}/>
+                    <Route path="/account" Component={Account}/>
                 </Routes>
             </BrowserRouter>
         </div>
