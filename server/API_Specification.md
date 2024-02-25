@@ -13,7 +13,18 @@ increments parsnip balance by their parsnipPerClick for the logged in user, retu
 POST /userData/purchaseActivePowerUp 
 Request Body : { powerupActiveId: string } - ObjectId of the powerup to purchase as a string
 Increments the parsnipPerClick of logged in user by parsnipPerClick of purchased object and notes the purchase. Price is calculated automatically
-200 if success, 403 if user can not afford the purchase, 404 if user or powerup not found, 500 on other errors
+200 on success, 403 if user can not afford the purchase, 404 if user or powerup not found, 500 on other errors
+```
+```
+GET /userData/statistics
+Returns the statistics of the curretly logged in user
+200 on success, 404 if user not found, 500 on other errors
+```
+```
+GET /userData/leaderboard
+Query: sortBy: string REQUIRED, limit: number default=20
+Returns a leaderboard of users sorted from best to worst by sorted by sortBy, returns the best "limit" users
+200 on successs, 400 on bad request (invalid querry), 500 on other errors
 ```
 
 ## userCredentialsRouter (base route: /userCredentials)
@@ -54,4 +65,9 @@ Logs in an existing user
 DELETE /auth/logout
 Logs the user out by destorying their session
 200 on success, 500 on error
+```
+```
+GET /auth
+Returns true is user is logged in, false else
+200 on success, 500 on some unexpected error
 ```

@@ -5,7 +5,6 @@ import express, {Request, Response, Router} from "express";
 import {LeaderboardQuery, leaderboardSortBy, UserData, UserLeaderboard, UserStatistics} from "../model/userData";
 import {objectIdHelpers} from "../helpers/objecIdHelpers";
 import {IncrementParsnipsResponseModel} from "../model/incrementParsnipsResponseModel";
-import {type} from "node:os";
 
 const userDataService: IUserDataService = new UserDataService()
 
