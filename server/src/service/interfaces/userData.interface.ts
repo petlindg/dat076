@@ -22,7 +22,7 @@ export interface IUserDataService {
      * Purchase the given powerup for a given user
      * Automatically calculates the price and increments the number of times it was purchased
      * @param userId id of user to purchase the powerup
-     * @param powerupActiveId if of the powerup to purchase
+     * @param powerupActiveId id of the powerup to purchase
      * @returns true on success, false else (e.g. if user can not afford the powerup)
      * @throws WebError - if user or powerup are not found
      */
@@ -47,4 +47,17 @@ export interface IUserDataService {
      * @throws WebError - if sorted by is not of type leaderboardSortBy
      */
     getUserLeaderboard(sortBy: leaderboardSortBy, limit: number): Promise<UserLeaderboard[]>
+
+    /**
+     * Purchase the given powerup for a given user
+     * Automatically calculates the price and increments the number of times it was purchased
+     * @param userId id of user to purchase the powerup
+     * @param powerupPassiveId id of the powerup to purchase
+     * @returns true on success, false else (e.g. if user can not afford the powerup)
+     * @throws WebError - if user or powerup are not found
+     */
+    purchasePowerupPassive(
+        userId: ObjectId,
+        powerupPassiveId: ObjectId,
+    ): Promise<boolean>;
 }

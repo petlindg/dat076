@@ -7,6 +7,8 @@ import {PowerupActive} from "../model/powerupActive";
 import {powerupActiveModel} from "../db/powerupActive.db";
 import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
 import {WebError} from "../model/error";
+import {powerupPassiveModel} from "../db/powerupPassive.db";
+import {PowerupPassive} from "../model/powerupPassive";
 
 export class UserDataService implements IUserDataService {
     async getUserData(userId: ObjectId): Promise<UserData> {
@@ -69,9 +71,7 @@ export class UserDataService implements IUserDataService {
 
         let price: number = 0
         if (i >= 0) {
-            const purchaseCount: number =
-                userPowerupsActivePurchased[i].purchaseCount;
-
+            const purchaseCount: number = userPowerupsActivePurchased[i].purchaseCount;
 
             price = PowerupPriceHelpers.computePrice(powerupActive.basePrice, powerupActive.increment, purchaseCount)
 
@@ -190,5 +190,69 @@ export class UserDataService implements IUserDataService {
         })
 
         return result
+    }
+
+    async purchasePowerupPassive(userId: ObjectId, powerupPassiveId: ObjectId): Promise<boolean> {
+        const userData: UserData | null = await (await userDataModel).findOne({
+            credentialsId: userId,
+        });
+
+        if (userData === null)
+            throw new WebError("No user with the provided Id has been found", 404)
+
+        const powerupPassive: PowerupPassive | null =
+            await (await powerupPassiveModel).findById(powerupPassiveId);
+
+        if (powerupPassive === null)
+            throw new WebError("No powerup with the provided Id has been found", 404)
+
+        let userBalance: number = userData.parsnipBalance;
+        let userPowerupsPassivePurchased = userData.powerupsPassivePurchased;
+        let userParsnipsPerSecond: number = userData.parsnipsPerSecond;
+        const i: number = userPowerupsPassivePurchased.findIndex(
+            (upap) => upap.idPowerup.toString() === powerupPassiveId.toString(),
+        );
+
+        let price: number = 0
+        if (i >= 0) {
+            const purchaseCount: number = userPowerupsPassivePurchased[i].purchaseCount;
+
+            price = PowerupPriceHelpers.computePrice(powerupPassive.basePrice, powerupPassive.increment, purchaseCount)
+
+            if (userBalance < price) return false;
+
+            userPowerupsPassivePurchased[i] = {
+                idPowerup: powerupPassiveId,
+                purchaseCount: purchaseCount + 1,
+            };
+
+            userBalance -= price;
+            userParsnipsPerSecond += powerupPassive.parsnipsPerSecond;
+        } else {
+            if (userBalance < powerupPassive.basePrice) return false;
+
+            userPowerupsPassivePurchased.push({
+                idPowerup: powerupPassiveId,
+                purchaseCount: 1,
+            });
+
+            userBalance -= powerupPassive.basePrice;
+            userParsnipsPerSecond += powerupPassive.parsnipsPerSecond;
+            price = powerupPassive.basePrice
+        }
+
+        const newLifetimeSpent: number = userData.lifetimeParsnipsSpent + price;
+
+        const res: UpdateWriteOpResult = await (await userDataModel).updateOne(
+            {credentialsId: userId},
+            {
+                parsnipBalance: userBalance,
+                parsnipsPerSecond: userParsnipsPerSecond,
+                powerupsPassivePurchased: userPowerupsPassivePurchased,
+                lifetimeParsnipsSpent: newLifetimeSpent,
+            },
+        );
+
+        return res.acknowledged;
     }
 }
