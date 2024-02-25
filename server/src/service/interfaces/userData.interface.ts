@@ -1,12 +1,12 @@
 import {ObjectId} from "mongodb";
-import {UserData, UserStatistics} from "../../model/userData";
+import {leaderboardSortBy, UserData, UserLeaderboard, UserStatistics} from "../../model/userData";
 
 export interface IUserDataService {
     /**
      * Return user data for the given user, null if the user could not be found
      * @param userId
      * @returns UserData
-     * @throws exception if user not found
+     * @throws WebError - if user not found
      */
     getUserData(userId: ObjectId): Promise<UserData>;
 
@@ -14,7 +14,7 @@ export interface IUserDataService {
      * Increments parsnip of the given user by their parsnipPerClick
      * @param userId - id of user to have parsnip incremented
      * @returns the new number of parsnips the user has
-     * @throws exception if user not found
+     * @throws WebError - if user not found
      */
     incrementParsnip(userId: ObjectId): Promise<number>;
 
@@ -24,7 +24,7 @@ export interface IUserDataService {
      * @param userId id of user to purchase the powerup
      * @param powerupActiveId if of the powerup to purchase
      * @returns true on success, false else (e.g. if user can not afford the powerup)
-     * @throws exception if user or powerup are not found
+     * @throws WebError - if user or powerup are not found
      */
     purchasePowerupActive(
         userId: ObjectId,
@@ -35,7 +35,16 @@ export interface IUserDataService {
      * Reads the statistic from the DB and calculates the rest
      * @param userId id of the user to get statistics for
      * @returns UserStatistics
-     * @throws if there is no user data for userId
+     * @throws WebError - if there is no user data for userId
      */
     getUserStatistic(userId: ObjectId): Promise<UserStatistics>
+
+    /**
+     * Return a leaderboard of "limit" registered users, ranked by sortBy from best to worst
+     * @param sortBy
+     * @param limit
+     * @returns UserLeaderboard[] - a list of users sorted by sortBy
+     * @throws WebError - if sorted by is not of type leaderboardSortBy
+     */
+    getUserLeaderBoard(sortBy: leaderboardSortBy, limit: number): Promise<UserLeaderboard[]>
 }

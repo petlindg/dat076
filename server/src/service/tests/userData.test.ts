@@ -163,8 +163,8 @@ describe("User Data Service tests", () => {
 
         expect(userStatistics.idUserCredentials.toString()).toEqual(userCredentials.id.toString())
         expect(userStatistics.lifetimeClicks).toEqual(lifetimeClicks)
-        expect(userStatistics.lifetimeParsnipEarned).toEqual(lifetimeParsnipEarned)
-        expect(userStatistics.lifetimeParsnipSpent).toEqual(lifetimeParsnipSpent)
+        expect(userStatistics.lifetimeParsnipsEarned).toEqual(lifetimeParsnipEarned)
+        expect(userStatistics.lifetimeParsnipsSpent).toEqual(lifetimeParsnipSpent)
         expect(userStatistics.parsnipsPerClick).toEqual(parsnipsPerClickUser)
         expect(userStatistics.parsnipBalance).toEqual(parsnipBalance)
         expect(userStatistics.totalPowerupsPurchased).toEqual(powerup1PurchaseCount + powerup2PurchaseCount + powerup3PurchaseCount)

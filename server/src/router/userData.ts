@@ -2,9 +2,10 @@ import {ObjectId} from "mongodb";
 import {UserDataService} from "../service/userData";
 import {IUserDataService} from "../service/interfaces/userData.interface";
 import express, {Request, Response, Router} from "express";
-import {UserData, UserStatistics} from "../model/userData";
+import {LeaderboardQuery, leaderboardSortBy, UserData, UserLeaderboard, UserStatistics} from "../model/userData";
 import {objectIdHelpers} from "../helpers/objecIdHelpers";
 import {IncrementParsnipsResponseModel} from "../model/incrementParsnipsResponseModel";
+import {type} from "node:os";
 
 const userDataService: IUserDataService = new UserDataService()
 
@@ -72,6 +73,24 @@ userDataRouter.get("/statistics", async (req, res: Response<UserStatistics | str
         const userStatistics: UserStatistics = await userDataService.getUserStatistic(userId)
 
         res.status(200).send(userStatistics)
+    } catch (error: any) {
+        res.status(error.statusCode ?? 500).send(error.message ?? error)
+    }
+})
+
+userDataRouter.get("/leaderboard", async (req: Request<{}, {}, LeaderboardQuery>, res: Response<UserLeaderboard[] | string>) => {
+    try {
+
+        const limit: number = (req.query.limit === undefined) ? 20 : parseInt(req.query.limit as string)
+        const sortBy: leaderboardSortBy = req.query.sortBy as leaderboardSortBy
+
+        if(!Object.values(leaderboardSortBy).includes(sortBy) || isNaN(limit))
+            return res.status(400).send("Invalid request query")
+
+        const userLeaderboard : UserLeaderboard[] = await userDataService.getUserLeaderBoard(sortBy, limit)
+
+        res.status(200).send(userLeaderboard)
+
     } catch (error: any) {
         res.status(error.statusCode ?? 500).send(error.message ?? error)
     }

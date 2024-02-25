@@ -30,7 +30,29 @@ export interface UserStatistics {
     parsnipBalance: number;
     totalPowerupsPurchased: number;
     lifetimeClicks: number;
-    lifetimeParsnipEarned: number;
-    lifetimeParsnipSpent: number;
+    lifetimeParsnipsEarned: number;
+    lifetimeParsnipsSpent: number;
 }
 
+export interface UserLeaderboard {
+    idUserCredentials: ObjectId;
+    place: number,
+    parsnipsPerClick: number;
+    totalPowerupsPurchased: number;
+    lifetimeClicks: number;
+    lifetimeParsnipsEarned: number;
+    lifetimeParsnipsSpent: number;
+    sortedBy: leaderboardSortBy
+}
+
+export enum leaderboardSortBy {
+    parsnipPerClick = "parsnipPerClick",
+    lifetimeClicks = "lifetimeClicks",
+    lifetimeParsnipEarned = "lifetimeParsnipEarned",
+    lifetimeParsnipSpent = "lifetimeParsnipSpent",
+}
+
+export interface LeaderboardQuery {
+    sortBy: leaderboardSortBy
+    limit?: number
+}

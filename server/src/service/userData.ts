@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {UserData, UserStatistics} from "../model/userData";
+import {leaderboardSortBy, UserData, UserLeaderboard, UserStatistics} from "../model/userData";
 import {IUserDataService} from "./interfaces/userData.interface";
 import {userDataModel} from "../db/userData.db";
 import {UpdateWriteOpResult} from "mongoose";
@@ -120,9 +120,9 @@ export class UserDataService implements IUserDataService {
 
         const totalPowerupsPurchased: number =
             userData.powerupsPassivePurchased
-            .reduce((sum: number, up) => sum + up.purchaseCount, 0) +
+                .reduce((sum: number, up) => sum + up.purchaseCount, 0) +
             userData.powerupsActivePurchased
-            .reduce((sum: number, up) => sum + up.purchaseCount, 0)
+                .reduce((sum: number, up) => sum + up.purchaseCount, 0)
 
         return {
             idUserCredentials: userData.credentialsId,
@@ -130,8 +130,60 @@ export class UserDataService implements IUserDataService {
             parsnipBalance: userData.parsnipBalance,
             totalPowerupsPurchased: totalPowerupsPurchased,
             lifetimeClicks: userData.lifetimeClicks,
-            lifetimeParsnipEarned: userData.lifetimeParsnipsEarned,
-            lifetimeParsnipSpent: userData.lifetimeParsnipsSpent,
+            lifetimeParsnipsEarned: userData.lifetimeParsnipsEarned,
+            lifetimeParsnipsSpent: userData.lifetimeParsnipsSpent,
         }
+    }
+
+    async getUserLeaderBoard(sortBy: leaderboardSortBy, limit: number): Promise<UserLeaderboard[]> {
+
+        let allUserData: UserData[] = await (await userDataModel).find()
+
+        switch (sortBy) {
+            case leaderboardSortBy.lifetimeClicks:
+                allUserData.sort((ud1, ud2) => ud2.lifetimeClicks - ud1.lifetimeClicks)
+                break
+            case leaderboardSortBy.lifetimeParsnipEarned:
+                allUserData.sort((ud1, ud2) => ud2.lifetimeParsnipsEarned - ud1.lifetimeParsnipsEarned)
+                break
+            case leaderboardSortBy.lifetimeParsnipSpent:
+                allUserData.sort((ud1, ud2) => ud2.lifetimeParsnipsSpent - ud1.lifetimeParsnipsSpent)
+                break
+            case leaderboardSortBy.parsnipPerClick:
+                allUserData.sort((ud1, ud2) => ud2.parsnipsPerClick - ud1.parsnipsPerClick)
+                break
+            default:
+                throw new WebError(sortBy + " is not a valid value for the sortBy parameter", 400)
+        }
+
+        allUserData = allUserData.slice(0, limit);
+
+        let result: UserLeaderboard[] = []
+
+        let place: number = 1
+        allUserData.forEach((ud: UserData) => {
+
+            const totalPowerupsPurchased: number =
+                ud.powerupsPassivePurchased
+                    .reduce((sum: number, up) => sum + up.purchaseCount, 0) +
+                ud.powerupsActivePurchased
+                    .reduce((sum: number, up) => sum + up.purchaseCount, 0)
+
+            const userLeaderboard: UserLeaderboard = {
+                idUserCredentials: ud.credentialsId,
+                place: place,
+                parsnipsPerClick: ud.parsnipsPerClick,
+                totalPowerupsPurchased: totalPowerupsPurchased,
+                lifetimeClicks: ud.lifetimeClicks,
+                lifetimeParsnipsEarned: ud.lifetimeParsnipsEarned,
+                lifetimeParsnipsSpent: ud.lifetimeParsnipsSpent,
+                sortedBy: sortBy
+            }
+
+            place++
+            result.push(userLeaderboard)
+        })
+
+        return result
     }
 }
