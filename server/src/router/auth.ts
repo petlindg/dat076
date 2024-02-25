@@ -1,6 +1,6 @@
 import {IAuthService} from "../service/interfaces/auth.interface";
 import {AuthService} from "../service/auth";
-import express, {Router, Request, Response} from "express";
+import express, {Request, Response, Router} from "express";
 import {LoginModel, RegisterModel} from "../model/auth";
 import {StringHelpers} from "../helpers/stringHelpers";
 import {EmailHelpers} from "../helpers/emailHelpers";
@@ -62,7 +62,7 @@ authRouter.delete("/logout", async (req: Request<{}, {}, {}>, res: Response<stri
 authRouter.get("", async (req: Request<{}, {}, {}>, res: Response<string | boolean>) => {
     try {
         if (!req.session.user)
-            return res.status(401).send(false)
+            return res.status(200).send(false)
 
         const resp: boolean = await authService.isLoggedIn(req.session.user.id)
 

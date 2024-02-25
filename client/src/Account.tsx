@@ -4,7 +4,12 @@ import {baseUrl} from "./App";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import {basicErrorHandler} from "./BasicErrorHandler";
 
-function Account() {
+interface AccountProps {
+    isLoggedIn: boolean;
+    setIsLoggedIn: (isLoggedIn: boolean) => void;
+}
+
+const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
     const navigate: NavigateFunction = useNavigate();
     const [userNameRegister, setUserNameRegister] = useState<string>("")
     const [emailRegister, setEmailRegister] = useState<string>("")
@@ -35,8 +40,9 @@ function Account() {
         setUserNameRegister("")
 
         if (errorOccurred)
-            return
+            return setIsLoggedIn(false)
 
+        setIsLoggedIn(true)
         return navigate("/")
     }
 
@@ -61,8 +67,10 @@ function Account() {
         setPasswordLogin("")
 
         if (errorOccurred)
-            return
+            return setIsLoggedIn(false)
 
+
+        setIsLoggedIn(true)
         return navigate("/")
     }
 
