@@ -22,6 +22,8 @@ const password: string = "besterJester123"
 
 describe("Auth service test", () => {
 
+    let saveOneId : ObjectId | null = null
+
     it("When a user is registered, a new user with its data should be in the db. Should fail if duplicate email", async () => {
         const userId: ObjectId = await authService.register({
             username: username,
@@ -61,6 +63,7 @@ describe("Auth service test", () => {
             email: mail,
             password: password
         })
+        saveOneId = userIdRegister
 
         await expect(authService.login({
             email: "some@email.com",
@@ -78,5 +81,21 @@ describe("Auth service test", () => {
         })
 
         expect(userIdLogin.toString()).toEqual(userIdRegister.toString())
+    })
+
+
+    it("After registering or logging in isLoggedIn should return true", async () => {
+
+        if(saveOneId !== null)
+            expect(await authService.isLoggedIn(saveOneId)).toBeFalsy()
+
+
+        const userIdRegister: ObjectId = await authService.register({
+            username: username,
+            email: mail,
+            password: password
+        })
+
+        expect(await authService.isLoggedIn(userIdRegister)).toBeTruthy()
     })
 })

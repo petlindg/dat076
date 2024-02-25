@@ -6,6 +6,7 @@ import {userCredentialsModel} from "../db/userCredentials.db";
 import {userDataModel} from "../db/userData.db";
 import bcrypt from "bcryptjs";
 import {WebError} from "../model/error";
+import {UserCredentialsService} from "./userCredentials";
 
 export class AuthService implements IAuthService {
     async register(registerModel: RegisterModel): Promise<ObjectId> {
@@ -45,5 +46,11 @@ export class AuthService implements IAuthService {
             throw new WebError("Invalid credentials", 403)
 
         return userCredentials.id
+    }
+
+    async isLoggedIn(userId: ObjectId): Promise<boolean>{
+        const userCredentials: UserCredentials | null = await (await  userCredentialsModel).findById(userId)
+
+        return userCredentials !== null
     }
 }

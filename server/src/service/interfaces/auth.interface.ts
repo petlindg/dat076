@@ -18,4 +18,12 @@ export interface IAuthService {
      * @throws Error if user does not exist in the db
      */
     login(loginModel: LoginModel): Promise<ObjectId>
+
+
+    /**
+     * Validates that the logged in object id is indeed a user
+     * @param userId - ObjectId of the user to check
+     * @returns boolean - true if valid login, false else
+     */
+    isLoggedIn(userId: ObjectId): Promise<boolean>
 }

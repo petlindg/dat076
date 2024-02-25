@@ -63,6 +63,7 @@ describe("End-to-end tests", () => {
         // check if logged in
         const res4: Response = await request.get("/auth").send()
         expect(res4.statusCode).toEqual(200)
+        expect(res4.body).toBeTruthy()
 
         // try to register when already logged in
         const res5: Response = await request.post("/auth/register").send({

@@ -59,14 +59,14 @@ authRouter.delete("/logout", async (req: Request<{}, {}, {}>, res: Response<stri
     }
 })
 
-authRouter.get("", async (req: Request<{}, {}, {}>, res: Response<string>) => {
+authRouter.get("", async (req: Request<{}, {}, {}>, res: Response<string | boolean>) => {
     try {
-        if (!req.session.user) {
-            res.status(401).send("Not logged in")
-            return
-        }
+        if (!req.session.user)
+            return res.status(401).send(false)
 
-        res.status(200).send(req.session.user.id.toString())
+        const resp: boolean = await authService.isLoggedIn(req.session.user.id)
+
+        res.status(200).send(resp)
     } catch (error: any) {
         res.status(error.statusCode ?? 500).send(error.message ?? error)
     }
