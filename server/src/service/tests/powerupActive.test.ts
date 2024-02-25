@@ -24,6 +24,7 @@ describe("Powerup Active Service tests", () => {
     const email: string = "noumailcist@email.com";
     const password: string = "plzencodeme";
     const parsnipPerClick: 1 = 1;
+    const parsnipsPerSecond: 0 = 0;
     const parsnipBalance: 0 = 0;
 
     it("Getting all powerups active, should return the powerups in correct order, with correct prices for a given user", async () => {
@@ -58,6 +59,7 @@ describe("Powerup Active Service tests", () => {
             credentialsId: userCredentials.id,
             parsnipBalance: parsnipBalance,
             parsnipsPerClick: parsnipPerClick,
+            parsnipsPerSecond: parsnipsPerSecond,
             powerupsActivePurchased: [
                 {idPowerup: powerUpActive1.id, purchaseCount: 5},
                 {idPowerup: powerUpActive3.id, purchaseCount: 100}

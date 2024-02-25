@@ -127,6 +127,7 @@ export class UserDataService implements IUserDataService {
         return {
             idUserCredentials: userData.credentialsId,
             parsnipsPerClick: userData.parsnipsPerClick,
+            parsnipsPerSecond: userData.parsnipsPerSecond,
             parsnipBalance: userData.parsnipBalance,
             totalPowerupsPurchased: totalPowerupsPurchased,
             lifetimeClicks: userData.lifetimeClicks,
@@ -152,6 +153,9 @@ export class UserDataService implements IUserDataService {
             case leaderboardSortBy.parsnipsPerClick:
                 allUserData.sort((ud1, ud2) => ud2.parsnipsPerClick - ud1.parsnipsPerClick)
                 break
+            case leaderboardSortBy.parsnipsPerSecond:
+                allUserData.sort((ud1, ud2) => ud2.parsnipsPerSecond - ud1.parsnipsPerSecond)
+                break
             default:
                 throw new WebError(sortBy + " is not a valid value for the sortBy parameter", 400)
         }
@@ -173,6 +177,7 @@ export class UserDataService implements IUserDataService {
                 idUserCredentials: ud.credentialsId,
                 place: place,
                 parsnipsPerClick: ud.parsnipsPerClick,
+                parsnipsPerSecond: ud.parsnipsPerSecond,
                 totalPowerupsPurchased: totalPowerupsPurchased,
                 lifetimeClicks: ud.lifetimeClicks,
                 lifetimeParsnipsEarned: ud.lifetimeParsnipsEarned,

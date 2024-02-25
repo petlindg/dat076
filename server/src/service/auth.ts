@@ -6,7 +6,6 @@ import {userCredentialsModel} from "../db/userCredentials.db";
 import {userDataModel} from "../db/userData.db";
 import bcrypt from "bcryptjs";
 import {WebError} from "../model/error";
-import {UserCredentialsService} from "./userCredentials";
 
 export class AuthService implements IAuthService {
     async register(registerModel: RegisterModel): Promise<ObjectId> {
@@ -25,6 +24,7 @@ export class AuthService implements IAuthService {
         await (await userDataModel).create({
             credentialsId: userCredentials.id,
             parsnipsPerClick: 1,
+            parsnipsPerSecond: 0,
             parsnipBalance: 0,
             powerupsActivePurchased: [],
             powerupsPassivePurchased: [],

@@ -14,6 +14,7 @@ export interface UserData {
     // Gameplay
     parsnipsPerClick: number;
     parsnipBalance: number;
+    parsnipsPerSecond: number;
     powerupsActivePurchased: UserPurchases[];
     powerupsPassivePurchased: UserPurchases[];
 
@@ -27,6 +28,7 @@ export interface UserData {
 export interface UserStatistics {
     idUserCredentials: ObjectId;
     parsnipsPerClick: number;
+    parsnipsPerSecond: number;
     parsnipBalance: number;
     totalPowerupsPurchased: number;
     lifetimeClicks: number;
@@ -38,6 +40,7 @@ export interface UserLeaderboard {
     idUserCredentials: ObjectId;
     place: number,
     parsnipsPerClick: number;
+    parsnipsPerSecond: number;
     totalPowerupsPurchased: number;
     lifetimeClicks: number;
     lifetimeParsnipsEarned: number;
@@ -47,6 +50,7 @@ export interface UserLeaderboard {
 
 export enum leaderboardSortBy {
     parsnipsPerClick = "parsnipsPerClick",
+    parsnipsPerSecond = "parsnipsPerSecond",
     lifetimeClicks = "lifetimeClicks",
     lifetimeParsnipsEarned = "lifetimeParsnipsEarned",
     lifetimeParsnipsSpent = "lifetimeParsnipsSpent",

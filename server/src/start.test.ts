@@ -154,6 +154,7 @@ describe("End-to-end tests", () => {
         const res8: Response = await request.get("/userData/statistics").send()
         expect(res8.statusCode).toEqual(200)
         expect(res8.body.totalPowerupsPurchased).toEqual(1)
+        expect(res8.body.parsnipsPerSecond).toEqual(0)
 
         // get the leaderboard
         const res9: Response = await request.get("/userData/leaderboard").query({sortBy: "parsnipsPerClick", limit:"10"}).send()

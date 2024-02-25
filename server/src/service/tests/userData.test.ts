@@ -22,6 +22,7 @@ const userName1: string = "1";
 const email1: string = "1@email.com";
 const password1: string = "pass1";
 const parsnipsPerClick1: 7 = 7;
+const parsnipsPerSecond1: 0 = 0;
 const parsnipBalance1: 2 = 2;
 const lifetimeClicks1: number = 100;
 const lifetimeParsnipEarned1: number = 236;
@@ -30,6 +31,7 @@ const userName2: string = "2";
 const email2: string = "2@email.com";
 const password2: string = "pass2";
 const parsnipsPerClick2: 11 = 11;
+const parsnipsPerSecond2: 0 = 0;
 const parsnipBalance2: 100 = 100;
 const lifetimeClicks2: number = 100;
 const lifetimeParsnipEarned2: number = 109;
@@ -38,6 +40,7 @@ const userName3: string = "3";
 const email3: string = "3@email.com";
 const password3: string = "pass3";
 const parsnipsPerClick3: 15 = 15;
+const parsnipsPerSecond3: 0 = 0;
 const parsnipBalance3: 0 = 0;
 const lifetimeClicks3: number = 200;
 const lifetimeParsnipEarned3: number = 345;
@@ -69,7 +72,7 @@ async function buildPowerupActive(name: string): Promise<PowerupActive> {
     })
 }
 
-async function buildUserData(ucId: ObjectId, paId: ObjectId, parsnipBalance: number, parsnipPerClick: number, lifetimeClicks: number, lifetimeParsnipsEarned: number, lifetimeParsnipsSpent: number): Promise<UserData> {
+async function buildUserData(ucId: ObjectId, paId: ObjectId, parsnipBalance: number, parsnipPerClick: number, lifetimeClicks: number, lifetimeParsnipsEarned: number, lifetimeParsnipsSpent: number, parsnipsPerSecond:number): Promise<UserData> {
     return await (await userDataModel).create({
         credentialsId: ucId,
         parsnipBalance: parsnipBalance,
@@ -81,6 +84,7 @@ async function buildUserData(ucId: ObjectId, paId: ObjectId, parsnipBalance: num
         lifetimeClicks: lifetimeClicks,
         lifetimeParsnipsEarned: lifetimeParsnipsEarned,
         lifetimeParsnipsSpent: lifetimeParsnipsSpent,
+        parsnipsPerSecond: parsnipsPerSecond
     })
 }
 
@@ -91,7 +95,7 @@ describe("User Data Service tests", () => {
 
         const userCredentials: UserCredentials = await buildUserCredentials(userName1, email1, password1)
         const powerUpActive1: PowerupActive = await buildPowerupActive(powerupName1)
-        const userData: UserData = await buildUserData(userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1)
+        const userData: UserData = await buildUserData(userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
 
         await expect(userDataService.getUserData(userData.id)).rejects.toThrow()
 
@@ -114,7 +118,7 @@ describe("User Data Service tests", () => {
 
         const userCredentials: UserCredentials = await buildUserCredentials(userName1, email1, password1)
         const powerUpActive1: PowerupActive = await buildPowerupActive(powerupName1)
-        const userData: UserData = await buildUserData(userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1)
+        const userData: UserData = await buildUserData(userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
 
         await expect(userDataService.getUserData(powerUpActive1.id)).rejects.toThrow()
 
@@ -131,7 +135,7 @@ describe("User Data Service tests", () => {
 
         const userCredentials: UserCredentials = await buildUserCredentials(userName1, email1, password1)
         const powerUpActive1: PowerupActive = await buildPowerupActive(powerupName1)
-        const userData: UserData = await buildUserData(userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1)
+        const userData: UserData = await buildUserData(userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
 
         const result1: boolean = await userDataService.purchasePowerupActive(userCredentials.id, powerUpActive1.id)
         expect(result1).toBeFalsy()
@@ -194,9 +198,9 @@ describe("User Data Service tests", () => {
         const userCredentials2: UserCredentials = await buildUserCredentials(userName2, email2, password2)
         const userCredentials3: UserCredentials = await buildUserCredentials(userName3, email3, password3)
         const powerUpActive1: PowerupActive = await buildPowerupActive(powerupName1)
-        await buildUserData(userCredentials1.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1)
-        await buildUserData(userCredentials2.id, powerUpActive1.id, parsnipBalance2, parsnipsPerClick2, lifetimeClicks2, lifetimeParsnipEarned2, lifetimeParsnipSpent2)
-        await buildUserData(userCredentials3.id, powerUpActive1.id, parsnipBalance3, parsnipsPerClick3, lifetimeClicks3, lifetimeParsnipEarned3, lifetimeParsnipSpent3)
+        await buildUserData(userCredentials1.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
+        await buildUserData(userCredentials2.id, powerUpActive1.id, parsnipBalance2, parsnipsPerClick2, lifetimeClicks2, lifetimeParsnipEarned2, lifetimeParsnipSpent2, parsnipsPerSecond2)
+        await buildUserData(userCredentials3.id, powerUpActive1.id, parsnipBalance3, parsnipsPerClick3, lifetimeClicks3, lifetimeParsnipEarned3, lifetimeParsnipSpent3, parsnipsPerSecond3)
 
         const result: UserLeaderboard[] = await userDataService.getUserLeaderboard("parsnipsPerClick" as leaderboardSortBy, 3)
 

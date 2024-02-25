@@ -47,6 +47,12 @@ const userDataSchema: Schema = new Schema({
         default: 1,
     },
 
+    parsnipsPerSecond: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+
     parsnipBalance: {
         type: Number,
         required: true,
