@@ -7,6 +7,7 @@ import session from "express-session";
 import {ObjectId} from "mongodb";
 import {authRouter} from "./router/auth";
 import {authMiddleware} from "./middleware/auth";
+import {powerupPassiveRouter} from "./router/powerupPassive";
 
 declare module "express-session" {
     interface SessionData {
@@ -34,7 +35,8 @@ app.use(cors({
 app.use(authMiddleware)
 
 app.get("/", (_, res) => res.status(200).send("Server running...  :)"));
+app.use("/auth", authRouter)
 app.use("/userCredentials", userCredentialsRouter);
 app.use("/userData", userDataRouter);
 app.use("/powerupActive", powerupActiveRouter);
-app.use("/auth", authRouter)
+app.use("/powerupPassive", powerupPassiveRouter);
