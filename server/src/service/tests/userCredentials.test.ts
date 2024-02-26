@@ -4,10 +4,9 @@ import {userCredentialsModel} from "../../db/userCredentials.db";
 import {IUserCredentialsService} from "../interfaces/userCredentials.interface";
 import {UserCredentialsService} from "../userCredentials";
 import {ObjectId} from "mongodb";
+import {TestHelpers} from "../../helpers/testHelpers";
 
-afterEach(async (): Promise<void> => {
-    await (await userCredentialsModel).deleteMany()
-})
+afterEach(TestHelpers.TearDownAllCollections)
 
 jest.mock("../../db/conn")
 const userCredentialsService: IUserCredentialsService = new UserCredentialsService()

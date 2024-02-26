@@ -9,12 +9,9 @@ import {PowerupActive} from "../../model/powerupActive";
 import {powerupActiveModel} from "../../db/powerupActive.db";
 import {PowerupActiveResponseModel} from "../../model/powerupActiveResponseModel";
 import {PowerupPriceHelpers} from "../../helpers/powerupPriceHelpers";
+import {TestHelpers} from "../../helpers/testHelpers";
 
-afterEach(async (): Promise<void> => {
-    await (await userCredentialsModel).deleteMany()
-    await (await userDataModel).deleteMany()
-    await (await powerupActiveModel).deleteMany()
-})
+afterEach(TestHelpers.TearDownAllCollections)
 
 jest.mock("../../db/conn")
 const powerupActiveService: IPowerupActiveService = new PowerupActiveService()

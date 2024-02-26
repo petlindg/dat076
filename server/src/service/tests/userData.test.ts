@@ -10,12 +10,9 @@ import {ObjectId} from "mongodb";
 import {PowerupPriceHelpers} from "../../helpers/powerupPriceHelpers";
 import {PowerupPassive} from "../../model/powerupPassive";
 import {powerupPassiveModel} from "../../db/powerupPassive.db";
+import {TestHelpers} from "../../helpers/testHelpers";
 
-afterEach(async (): Promise<void> => {
-    await (await userCredentialsModel).deleteMany()
-    await (await userDataModel).deleteMany()
-    await (await powerupActiveModel).deleteMany()
-})
+afterEach(TestHelpers.TearDownAllCollections)
 
 jest.mock("../../db/conn")
 const userDataService: IUserDataService = new UserDataService()

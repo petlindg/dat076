@@ -2,23 +2,20 @@ import * as SuperTest from "supertest";
 import {Response} from "supertest";
 import {app} from "./start";
 import {describe} from "node:test";
-import {userCredentialsModel} from "./db/userCredentials.db";
-import {userDataModel} from "./db/userData.db";
 import {PowerupActive} from "./model/powerupActive";
 import {powerupActiveModel} from "./db/powerupActive.db";
 import TestAgent from "supertest/lib/agent";
 import {PowerupPriceHelpers} from "./helpers/powerupPriceHelpers";
 import {PowerupPassive} from "./model/powerupPassive";
 import {powerupPassiveModel} from "./db/powerupPassive.db";
+import {TestHelpers} from "./helpers/testHelpers";
 
 const request: TestAgent = SuperTest.agent(app);
 
 jest.mock("./db/conn")
-afterEach(async (): Promise<void> => {
-    await (await userCredentialsModel).deleteMany()
-    await (await userDataModel).deleteMany()
-    await (await powerupActiveModel).deleteMany()
-})
+
+afterEach(TestHelpers.TearDownAllCollections)
+
 describe("End-to-end tests", () => {
 
     async function buildPowerupActive(name: string, basePrice: number, parsnipsPerClick: number): Promise<PowerupActive> {

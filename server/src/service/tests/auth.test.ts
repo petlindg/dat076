@@ -7,12 +7,11 @@ import {ObjectId} from "mongodb";
 import {UserCredentials} from "../../model/userCredentials";
 import bcrypt from "bcryptjs";
 import {UserData} from "../../model/userData";
+import {TestHelpers} from "../../helpers/testHelpers";
 
 jest.mock("../../db/conn")
-afterEach(async (): Promise<void> => {
-    await (await userCredentialsModel).deleteMany()
-    await (await userDataModel).deleteMany()
-})
+
+afterEach(TestHelpers.TearDownAllCollections)
 
 const authService: IAuthService = new AuthService()
 
