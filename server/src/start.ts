@@ -21,16 +21,19 @@ export const app: Express = express();
 
 app.use(express.json());
 
-app.use(session({
+export const sessionMiddleware: express.RequestHandler = session({
     secret: (process.env.SESSION_SECRET as string),
     resave: false,
     saveUninitialized: false
-}))
+})
 
-app.use(cors({
+app.use(sessionMiddleware)
+
+export const corsOptions = {
     origin: true,
     credentials: true
-}));
+}
+app.use(cors(corsOptions));
 
 app.use(authMiddleware)
 

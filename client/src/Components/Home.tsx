@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import axios, {AxiosResponse} from "axios";
-import {baseUrl} from "./App";
-import {basicErrorHandler} from "./BasicErrorHandler";
+import {baseUrl, socket} from "../App";
+import {basicErrorHandler} from "../Helpers/BasicErrorHandler";
 
 interface UserPurchases {
     idPowerup: string;
@@ -56,18 +56,7 @@ function Home() {
     }
 
     async function incrementParsnip() {
-        await axios.post<IncrementParsnipsResponseModel>(baseUrl + "userData/incrementParsnip", {})
-            .then((response: AxiosResponse<IncrementParsnipsResponseModel>) => {
-                setUserData((prevUserData: UserData | undefined) => {
-                    if (prevUserData === undefined)
-                        return undefined
-
-                    return {
-                        ...prevUserData,
-                        parsnipBalance: response.data.newParsnipBalance
-                    };
-                })
-            }).catch(basicErrorHandler);
+        socket.emit("parsnipClick")
     }
 
     async function purchasePowerup() {
@@ -96,6 +85,18 @@ function Home() {
         document.title = 'Parsnip Puncher';
         updateUserCredentials();
         updateUserData();
+        socket.on("parsnipBalance", (data) => {
+            setUserData((prevUserData: UserData | undefined) => {
+                if (prevUserData === undefined)
+                    return undefined
+
+                return {
+                    ...prevUserData,
+                    parsnipBalance: parseInt(data)
+                };
+            })
+        })
+
     }, []);
 
 
@@ -108,7 +109,7 @@ function Home() {
                     <img
                         draggable="false"
                         alt='The main parsnip'
-                        src={require('./assets/images/parsnip.png')}
+                        src={require('../assets/images/parsnip.png')}
                     />
                 </div>
             </div>

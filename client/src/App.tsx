@@ -1,28 +1,40 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import './App.css';
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
-import Account from "./Account";
-import Home from "./Home";
+import Account from "./Components/Account";
+import Home from "./Components/Home";
 import axios, {AxiosResponse} from "axios";
-import {basicErrorHandler} from "./BasicErrorHandler";
+import {basicErrorHandler} from "./Helpers/BasicErrorHandler";
+import io, {Socket} from "socket.io-client";
 
 axios.defaults.withCredentials = true;
 export const baseUrl: string = "http://localhost:8080/"
+export const socket: Socket = io(baseUrl, {withCredentials: true, autoConnect: false});
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
-    async function checkIsLoggedIn() {
-        await axios.get<boolean>(baseUrl + "auth")
-            .then((response: AxiosResponse<boolean>) => {
-                setIsLoggedIn(response.data)
-            }).catch(basicErrorHandler)
-    }
 
     useEffect(() => {
+        async function checkIsLoggedIn() {
+            await axios.get<boolean>(baseUrl + "auth")
+                .then((response: AxiosResponse<boolean>) => {
+                    setIsLoggedIn(response.data)
+                    if (isLoggedIn)
+                        socket.connect()
+                }).catch(basicErrorHandler)
+            setIsLoading(false)
+        }
         checkIsLoggedIn()
     }, [isLoggedIn, setIsLoggedIn]);
 
+    if(isLoading)
+        return (
+            <div>
+                <p>Loading...</p>
+            </div>
+        )
 
     return (
         <div>

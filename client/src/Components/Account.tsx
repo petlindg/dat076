@@ -1,8 +1,8 @@
 import React, {FormEvent, useState} from 'react';
 import axios from "axios";
-import {baseUrl} from "./App";
+import {baseUrl} from "../App";
 import {NavigateFunction, useNavigate} from "react-router-dom";
-import {basicErrorHandler} from "./BasicErrorHandler";
+import {basicErrorHandler} from "../Helpers/BasicErrorHandler";
 
 interface AccountProps {
     isLoggedIn: boolean;
