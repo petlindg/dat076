@@ -60,4 +60,13 @@ export interface IUserDataService {
         userId: ObjectId,
         powerupPassiveId: ObjectId,
     ): Promise<boolean>;
+
+    /**
+     * Increments parsnipBalance of the given user by their parsnipPerSecond
+     * TODO experiment with how often this function should be called for smooth display now that we have a socket (modify amount according to that)
+     * @param userId - id of user to have parsnip incremented
+     * @returns the new number of parsnips the user has
+     * @throws WebError - if user not found
+     */
+    incrementParsnipsPassive(userId: ObjectId): Promise<number>;
 }

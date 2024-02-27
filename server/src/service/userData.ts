@@ -255,4 +255,27 @@ export class UserDataService implements IUserDataService {
 
         return res.acknowledged;
     }
+
+    async incrementParsnipsPassive(userId: ObjectId): Promise<number> {
+        const userData: UserData | null = await (await userDataModel).findOne({
+            credentialsId: userId,
+        });
+
+        if (userData === null)
+            throw new WebError("No user with the provided Id has been found", 404)
+
+        const addedAmount: number = userData.parsnipsPerSecond
+        const newBalance: number = userData.parsnipBalance + addedAmount;
+        const newLifetimeEarned: number = userData.lifetimeParsnipsEarned + addedAmount
+
+        const res: UpdateWriteOpResult = await (await userDataModel).updateOne(
+            {credentialsId: userId},
+            {parsnipBalance: newBalance, lifetimeParsnipsEarned: newLifetimeEarned},
+        );
+
+        if (!res.acknowledged)
+            throw new WebError("An error has occurred while writing results to the DB", 500)
+
+        return newBalance;
+    }
 }
