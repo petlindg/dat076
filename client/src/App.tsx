@@ -15,6 +15,10 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
+    async function passiveParsnips() {
+        if (isLoggedIn)
+            socket.emit('parsnipPassive')
+    }
 
     useEffect(() => {
         async function checkIsLoggedIn() {
@@ -27,9 +31,12 @@ function App() {
             setIsLoading(false)
         }
         checkIsLoggedIn()
+        const interval= setInterval(passiveParsnips, 1000)
+        return () => clearInterval(interval)
+
     }, [isLoggedIn, setIsLoggedIn]);
 
-    if(isLoading)
+    if (isLoading)
         return (
             <div>
                 <p>Loading...</p>
