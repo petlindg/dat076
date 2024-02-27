@@ -21,7 +21,7 @@ const userName1: string = "1";
 const email1: string = "1@email.com";
 const password1: string = "pass1";
 const parsnipsPerClick1: 7 = 7;
-const parsnipsPerSecond1: 0 = 0;
+const parsnipsPerSecond1: 0.4 = 0.4;
 const parsnipBalance1: 2 = 2;
 const lifetimeClicks1: number = 100;
 const lifetimeParsnipEarned1: number = 236;
@@ -81,14 +81,14 @@ async function buildPowerupPassive(name: string): Promise<PowerupPassive> {
     })
 }
 
-async function buildUserData(powerupActive:boolean, ucId: ObjectId, paId: ObjectId, parsnipBalance: number, parsnipPerClick: number, lifetimeClicks: number, lifetimeParsnipsEarned: number, lifetimeParsnipsSpent: number, parsnipsPerSecond: number): Promise<UserData> {
+async function buildUserData(powerupActive: boolean, ucId: ObjectId, paId: ObjectId, parsnipBalance: number, parsnipPerClick: number, lifetimeClicks: number, lifetimeParsnipsEarned: number, lifetimeParsnipsSpent: number, parsnipsPerSecond: number): Promise<UserData> {
 
     return await (await userDataModel).create({
         credentialsId: ucId,
         parsnipBalance: parsnipBalance,
         parsnipsPerClick: parsnipPerClick,
-        powerupsActivePurchased: (powerupActive)?[{idPowerup: paId, purchaseCount: powerup1PurchaseCount}]:[],
-        powerupsPassivePurchased: (!powerupActive)?[{idPowerup: paId, purchaseCount: powerup1PurchaseCount}]:[],
+        powerupsActivePurchased: (powerupActive) ? [{idPowerup: paId, purchaseCount: powerup1PurchaseCount}] : [],
+        powerupsPassivePurchased: (!powerupActive) ? [{idPowerup: paId, purchaseCount: powerup1PurchaseCount}] : [],
         lifetimeClicks: lifetimeClicks,
         lifetimeParsnipsEarned: lifetimeParsnipsEarned,
         lifetimeParsnipsSpent: lifetimeParsnipsSpent,
@@ -250,5 +250,18 @@ describe("User Data Service tests", () => {
         expect(userData2.powerupsPassivePurchased.find(pap => pap.idPowerup.toString() === powerUpPassive1.id.toString())!.purchaseCount)
             .toEqual(userData.powerupsPassivePurchased.find(pap => pap.idPowerup.toString() === powerUpPassive1.id.toString())!.purchaseCount + 1)
         expect(userData2.lifetimeParsnipsSpent).toEqual(userData.lifetimeParsnipsSpent + PowerupPriceHelpers.computePrice(powerUpPassive1.basePrice, powerUpPassive1.increment, powerup1PurchaseCount))
+    })
+
+    it("Passively incrementing user's parsnips, should increase their balance by their parsnips per second", async () => {
+        const userCredentials: UserCredentials = await buildUserCredentials(userName1, email1, password1)
+        const powerUpPassive1: PowerupPassive = await buildPowerupPassive(powerupName1)
+        const userData: UserData = await buildUserData(false, userCredentials.id, powerUpPassive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
+
+        const res: number = await userDataService.incrementParsnipsPassive(userCredentials.id)
+
+        const userData2: UserData = await userDataService.getUserData(userCredentials.id)
+
+        expect(res).toEqual(userData2.parsnipBalance)
+        expect(userData2.parsnipBalance).toEqual(userData.parsnipBalance + userData.parsnipsPerSecond)
     })
 })
