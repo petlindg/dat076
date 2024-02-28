@@ -1,29 +1,10 @@
-import React, {FormEvent, useEffect, useState} from 'react';
-import axios, {AxiosResponse} from "axios";
-import {baseUrl, socket} from "../App";
-import {basicErrorHandler} from "../Helpers/BasicErrorHandler";
-
-interface UserPurchases {
-    idPowerup: string;
-    purchaseCount: number;
-}
-
-export interface UserData {
-    id: string;
-    credentialsId: string;
-    parsnipsPerClick: number;
-    parsnipBalance: number;
-    powerupsActivePurchased: UserPurchases[];
-    powerupsPassivePurchased: UserPurchases[];
-    // TODO add all statistics
-}
-
-export interface UserCredentials {
-    id: string;
-    userName: String;
-    email: String;
-    password: String;
-}
+import React, { FormEvent, useEffect, useState } from 'react';
+import axios, { AxiosResponse } from "axios";
+import { baseUrl, socket } from "../App";
+import { basicErrorHandler } from "../Helpers/BasicErrorHandler";
+import { incrementParsnip } from "./ClickableParsnip";
+import {
+    UserData, UserCredentials, User} from "./User";
 
 export interface IncrementParsnipsResponseModel {
     newParsnipBalance: number
@@ -35,55 +16,17 @@ export interface IncrementParsnipsResponseModel {
 // The home component is then rendered by the app at the "/" link
 // This is mainly to manage routing so "/" and "/something" can display separate views
 function Home() {
-    const [userCredentials, setUserCredentials] = useState<UserCredentials | undefined>(undefined);
-    const [userData, setUserData] = useState<UserData | undefined>(undefined);
-    const [newUserName, setNewUserName] = useState<string>("")
-
-    async function updateUserCredentials(): Promise<void> {
-        await axios.get<UserCredentials>(baseUrl + "userCredentials")
-            .then((response: AxiosResponse<UserCredentials>) => {
-                const newUserCredentials: UserCredentials = response.data;
-                setUserCredentials(newUserCredentials);
-            }).catch(basicErrorHandler)
-    }
-
-    async function updateUserData(): Promise<void> {
-        await axios.get<UserData>(baseUrl + "userData")
-            .then((response: AxiosResponse<UserData>) => {
-                const newUserData: UserData = response.data;
-                setUserData(newUserData);
-            }).catch(basicErrorHandler)
-    }
-
-    async function incrementParsnip() {
-        socket.emit("parsnipClick")
-    }
-
-    async function purchasePowerup() {
+    async function purchasePowerup() {//to powerupactive
         // TODO this hardcoded the powerupActiveId, get it dynamically
         // TODO to do that the list of powerups will have to be retrieved from the API
-        await axios.post<String>(baseUrl + "userData/purchaseActivePowerUp", {powerupActiveId: "65d8947a15e5748f2ed42b99"})
+        await axios.post<String>(baseUrl + "userData/purchaseActivePowerUp", { powerupActiveId: "65d8947a15e5748f2ed42b99" })
             .then(async () => await updateUserData())
             .catch(basicErrorHandler)
     }
 
-    async function changeUsername(e: FormEvent) {
-        e.preventDefault()
-        if (newUserName === "" || newUserName === undefined) {
-            alert("New username may not be empty");
-            return;
-        }
-
-        await axios.patch<String>(baseUrl + "userCredentials", {newUsername: newUserName})
-            .catch(basicErrorHandler)
-
-        setNewUserName("");
-        await updateUserCredentials();
-    }
-
-    useEffect(() => {
+    useEffect(() => {//??
         document.title = 'Parsnip Puncher';
-        updateUserCredentials();
+        User().updateUserCredentials();
         updateUserData();
         socket.on("parsnipBalance", (data) => {
             setUserData((prevUserData: UserData | undefined) => {
@@ -98,7 +41,6 @@ function Home() {
         })
 
     }, []);
-
 
     return (
         <div>
@@ -121,9 +63,9 @@ function Home() {
             <label htmlFor="userNameUpdateInput">Input your new username: </label>
             <form onSubmit={async e => await changeUsername(e)}>
                 <input data-testid="userNameUpdateInput" id="userNameUpdateInput" type="text" value={newUserName}
-                       onChange={e => {
-                           setNewUserName(e.target.value);
-                       }}></input>
+                    onChange={e => {
+                        setNewUserName(e.target.value);
+                    }}></input>
                 <button id="userNameUpdateSubmitButton" type="submit">
                     Submit Username
                 </button>
