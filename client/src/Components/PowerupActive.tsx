@@ -2,6 +2,7 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import axios, {AxiosResponse} from "axios";
 import {baseUrl, socket} from "../App";
 import {basicErrorHandler} from "../Helpers/BasicErrorHandler";
+import {UserData, UserCredentials, User} from "./User";
 
 export async function purchasePowerup() {
     // TODO this hardcoded the powerupActiveId, get it dynamically

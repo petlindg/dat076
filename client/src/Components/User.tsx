@@ -26,11 +26,11 @@ export interface UserCredentials {
     password: String;
 }
 export function User() {
-     const [userCredentials, setUserCredentials] = useState<UserCredentials | undefined>(undefined);
-     const [userData, setUserData] = useState<UserData | undefined>(undefined);
-     const [newUserName, setNewUserName] = useState<string>("")
+    const [userCredentials, setUserCredentials] = useState<UserCredentials | undefined>(undefined);
+    const [userData, setUserData] = useState<UserData | undefined>(undefined);
+    const [newUserName, setNewUserName] = useState<string>("")
 
-     async function updateUserCredentials(): Promise<void> {
+    async function updateUserCredentials(): Promise<void> {
         await axios.get<UserCredentials>(baseUrl + "userCredentials")
             .then((response: AxiosResponse<UserCredentials>) => {
                 const newUserCredentials: UserCredentials = response.data;
@@ -38,7 +38,7 @@ export function User() {
             }).catch(basicErrorHandler)
     }
 
-     async function updateUserData(): Promise<void> {
+    async function updateUserData(): Promise<void> {
         await axios.get<UserData>(baseUrl + "userData")
             .then((response: AxiosResponse<UserData>) => {
                 const newUserData: UserData = response.data;
@@ -46,7 +46,7 @@ export function User() {
             }).catch(basicErrorHandler)
     }
 
-     async function changeUsername(e: FormEvent) {
+    async function changeUsername(e: FormEvent) {
         e.preventDefault()
         if (newUserName === "" || newUserName === undefined) {
             alert("New username may not be empty");
@@ -59,4 +59,33 @@ export function User() {
         setNewUserName("");
         await updateUserCredentials();
     }
+
+    useEffect(() => {
+        updateUserCredentials();
+        updateUserData();
+        
+    }, []);
+
+    return (<div>
+        <form onSubmit={async e => await changeUsername(e)}>
+            <input data-testid="userNameUpdateInput" id="userNameUpdateInput" type="text" value={newUserName}
+                onChange={e => {
+                    setNewUserName(e.target.value);
+                }}></input>
+            <button id="userNameUpdateSubmitButton" type="submit">
+                Submit Username
+            </button>
+        </form>
+        <div>
+            <p>Hello {userCredentials?.userName}!</p>
+            <p id="lblParsnips">Parsnips: {userData?.parsnipBalance}</p>
+            <p id="lblPPC">{userData?.parsnipsPerClick} Parsnips Per Click (PPC)</p>
+            <div className="boxing-cursor parsnip-animation" onClick={incrementParsnip}>
+                <img
+                    draggable="false"
+                    alt='The main parsnip'
+                    src={require('../assets/images/parsnip.png')}
+                />
+            </div>
+        </div></div>)
 }
