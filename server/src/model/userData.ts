@@ -22,7 +22,6 @@ export interface UserData {
     lifetimeClicks: number;
     lifetimeParsnipsEarned: number;
     lifetimeParsnipsSpent: number;
-    // TODO add all statistics
 }
 
 export interface UserStatistics {

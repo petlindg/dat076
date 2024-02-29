@@ -1,21 +1,15 @@
 import axios, {AxiosResponse} from "axios";
-import {UserCredentials} from "../Components/Home";
 import {baseUrl} from "../App";
 import {basicErrorHandler} from "./BasicErrorHandler";
-
-export interface PowerupActive {
-    id: string;
-    powerupName: string;
-    basePrice: number;
-    increment: number;
-    parsnipsPerSecond: number;
-    priceForUser: number;
-
-}
+import {PowerupActive, PowerupPassive, UserCredentials} from "../Models/Api";
 
 export class Api {
 
-    static async updateUserCredentials(): Promise<UserCredentials | undefined> {
+    /**
+     * Get the user credentials of the logged-in user from the api
+     * @return UserCredentials
+     */
+    static async getUserCredentials(): Promise<UserCredentials | undefined> {
         let userCredentials: UserCredentials | undefined
 
         await axios.get<UserCredentials>(baseUrl + "userCredentials")
@@ -27,12 +21,20 @@ export class Api {
         return userCredentials
     }
 
+    /**
+     * Purchases a given active powerup for the logged-in user
+     * @param powerupActiveId string of the objectId of the active powerup to purchase
+     */
     static async purchasePowerupActive(powerupActiveId: string): Promise<void> {
         await axios
             .post<String>(baseUrl + "userData/purchaseActivePowerUp", {powerupActiveId: powerupActiveId})
             .catch(basicErrorHandler)
     }
 
+    /**
+     * Retrieves a list of all active powerups from the API, including their prices for the logged-in user
+     * @returns PowerupActive[]
+     */
     static async getPowerupsActiveList(): Promise<PowerupActive[]> {
 
         let powerupActiveList : PowerupActive[] = []
@@ -44,6 +46,33 @@ export class Api {
             .catch(basicErrorHandler)
 
         return powerupActiveList
+    }
+
+    /**
+     * Purchases a given active powerup for the logged-in user
+     * @param powerupPassiveId string of the objectId of the passive powerup to purchase
+     */
+    static async purchasePowerupPassive(powerupPassiveId: string): Promise<void> {
+        await axios
+            .post<String>(baseUrl + "userData/purchasePassivePowerUp", {powerupPassiveId: powerupPassiveId})
+            .catch(basicErrorHandler)
+    }
+
+    /**
+     * Retrieves a list of all passive powerups from the API, including their prices for the logged-in user
+     * @returns PowerupPassive[]
+     */
+    static async getPowerupsPassiveList(): Promise<PowerupPassive[]> {
+
+        let powerupPassiveList : PowerupPassive[] = []
+
+        await axios.get(baseUrl + "powerUpPassive")
+            .then((response) => {
+                powerupPassiveList = response.data
+            })
+            .catch(basicErrorHandler)
+
+        return powerupPassiveList
     }
 }
 

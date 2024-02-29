@@ -5,32 +5,7 @@ import {basicErrorHandler} from "../Helpers/BasicErrorHandler";
 import {ClickableParsnip} from "./ClickableParsnip";
 import {User} from "./User";
 import {PowerupActiveList} from './PowerupActive';
-
-interface UserPurchases {
-    idPowerup: string;
-    purchaseCount: number;
-}
-
-export interface UserData {
-    id: string;
-    credentialsId: string;
-    parsnipsPerClick: number;
-    parsnipBalance: number;
-    powerupsActivePurchased: UserPurchases[];
-    powerupsPassivePurchased: UserPurchases[];
-    // TODO add all statistics
-}
-
-export interface UserCredentials {
-    id: string;
-    userName: String;
-    email: String;
-    password: String;
-}
-
-export interface IncrementParsnipsResponseModel {
-    newParsnipBalance: number
-}
+import {UserData} from "../Models/Api";
 
 // TODO this component should be divided into minimum of 3 (User, PowerupActive, Parsnip) components
 // interfaces functions... should also be moved accordingly
