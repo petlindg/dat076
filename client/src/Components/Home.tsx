@@ -1,10 +1,10 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import axios, { AxiosResponse } from "axios";
-import { baseUrl, socket } from "../App";
-import { basicErrorHandler } from "../Helpers/BasicErrorHandler";
-import { ClickableParsnip, incrementParsnip } from "./ClickableParsnip";
+import React, {useEffect, useState} from 'react';
+import axios, {AxiosResponse} from "axios";
+import {baseUrl} from "../App";
+import {basicErrorHandler} from "../Helpers/BasicErrorHandler";
+import {ClickableParsnip} from "./ClickableParsnip";
 import {User} from "./User";
-import { PowerupActive } from './PowerupActive';
+import {PowerupActive} from './PowerupActive';
 
 interface UserPurchases {
     idPowerup: string;

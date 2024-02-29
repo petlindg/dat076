@@ -5,17 +5,16 @@ import {basicErrorHandler} from "./BasicErrorHandler";
 
 export class Api {
 
-    static async updateUserCredentials(): Promise<UserCredentials | undefined>
-    {
-            let userCredentials : UserCredentials | undefined
+    static async updateUserCredentials(): Promise<UserCredentials | undefined> {
+        let userCredentials: UserCredentials | undefined
 
-                await axios.get<UserCredentials>(baseUrl + "userCredentials")
-                    .then((response: AxiosResponse<UserCredentials>) => {
-                        userCredentials = response.data
-                    })
-                    .catch(basicErrorHandler)
+        await axios.get<UserCredentials>(baseUrl + "userCredentials")
+            .then((response: AxiosResponse<UserCredentials>) => {
+                userCredentials = response.data
+            })
+            .catch(basicErrorHandler)
 
-            return userCredentials
+        return userCredentials
     }
 }
 
