@@ -3,8 +3,10 @@ import {baseUrl} from "../App";
 import {basicErrorHandler} from "./BasicErrorHandler";
 import {
     LeaderboardQuery,
+    LoginModel,
     PowerupActive,
     PowerupPassive,
+    RegisterModel,
     UserCredentials,
     UserData,
     UserLeaderboard,
@@ -82,9 +84,7 @@ export class Api {
         let powerupActiveList: PowerupActive[] = []
 
         await axios.get(baseUrl + "powerUpActive")
-            .then((response) => {
-                powerupActiveList = response.data
-            })
+            .then((response: AxiosResponse<PowerupActive[]>) => powerupActiveList = response.data)
             .catch(basicErrorHandler)
 
         return powerupActiveList
@@ -109,12 +109,53 @@ export class Api {
         let powerupPassiveList: PowerupPassive[] = []
 
         await axios.get(baseUrl + "powerUpPassive")
-            .then((response) => {
-                powerupPassiveList = response.data
-            })
+            .then((response: AxiosResponse<PowerupPassive[]>) => powerupPassiveList = response.data)
             .catch(basicErrorHandler)
 
         return powerupPassiveList
+    }
+
+    static async getIsLoggedIn(): Promise<boolean> {
+        let isLoggedIn: boolean = false
+
+        await axios.get(baseUrl + "auth")
+            .then((response: AxiosResponse<boolean>) => isLoggedIn = response.data)
+            .catch(basicErrorHandler)
+
+        return isLoggedIn
+    }
+
+    static async register(model: RegisterModel): Promise<boolean> {
+        let success: boolean = true
+
+        await axios.post<String>(baseUrl + "auth/register", {
+            email: model.email,
+            password: model.password,
+            username: model.username
+        }).catch(error => {
+            success = true
+            basicErrorHandler(error)
+        })
+
+        return success
+    }
+
+    static async login(model: LoginModel): Promise<boolean>{
+        let success: boolean = true
+
+        await axios.post<String>(baseUrl + "auth/login", {
+            email: model.email,
+            password: model.password,
+        }).catch(error => {
+            success = true
+            basicErrorHandler(error)
+        })
+
+        return success
+    }
+
+    static async logout(): Promise<void>{
+        await axios.delete(baseUrl + "auth/logout").catch(basicErrorHandler)
     }
 }
 
