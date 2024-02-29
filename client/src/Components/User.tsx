@@ -1,9 +1,9 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
-import { baseUrl, socket } from "../App";
-import { basicErrorHandler } from "../Helpers/BasicErrorHandler";
-import { incrementParsnip } from "./ClickableParsnip";
-import { UserCredentials, UserData } from "./Home";
+import React, {FormEvent, useEffect, useState} from "react";
+import axios from "axios";
+import {baseUrl, socket} from "../App";
+import {basicErrorHandler} from "../Helpers/BasicErrorHandler";
+import {UserCredentials, UserData} from "./Home";
+import {Api} from "../Helpers/Api";
 
 export function User({
   userData,
@@ -20,13 +20,10 @@ export function User({
   const [newUserName, setNewUserName] = useState<string>("");
 
   async function updateUserCredentials(): Promise<void> {
-    await axios
-      .get<UserCredentials>(baseUrl + "userCredentials")
-      .then((response: AxiosResponse<UserCredentials>) => {
-        const newUserCredentials: UserCredentials = response.data;
-        setUserCredentials(newUserCredentials);
-      })
-      .catch(basicErrorHandler);
+      const newUserCredentials: UserCredentials | undefined = await Api.updateUserCredentials()
+
+      if(newUserCredentials)
+          setUserCredentials(newUserCredentials)
   }
 
   async function changeUsername(e: FormEvent) {
