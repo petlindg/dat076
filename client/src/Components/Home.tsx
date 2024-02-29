@@ -3,8 +3,30 @@ import axios, { AxiosResponse } from "axios";
 import { baseUrl, socket } from "../App";
 import { basicErrorHandler } from "../Helpers/BasicErrorHandler";
 import { ClickableParsnip, incrementParsnip } from "./ClickableParsnip";
-import {UserData, UserCredentials, User} from "./User";
+import {User} from "./User";
 import { PowerupActive } from './PowerupActive';
+
+interface UserPurchases {
+    idPowerup: string;
+    purchaseCount: number;
+}
+
+export interface UserData {
+    id: string;
+    credentialsId: string;
+    parsnipsPerClick: number;
+    parsnipBalance: number;
+    powerupsActivePurchased: UserPurchases[];
+    powerupsPassivePurchased: UserPurchases[];
+    // TODO add all statistics
+}
+
+export interface UserCredentials {
+    id: string;
+    userName: String;
+    email: String;
+    password: String;
+}
 
 export interface IncrementParsnipsResponseModel {
     newParsnipBalance: number
@@ -16,15 +38,25 @@ export interface IncrementParsnipsResponseModel {
 // The home component is then rendered by the app at the "/" link
 // This is mainly to manage routing so "/" and "/something" can display separate views
 function Home() {
+    const [userData, setUserData] = useState<UserData | undefined>(undefined);
+
     useEffect(() => {
         document.title = 'Parsnip Puncher';
     }, []);
 
+    async function updateUserData(): Promise<void> {
+        await axios.get<UserData>(baseUrl + "userData")
+            .then((response: AxiosResponse<UserData>) => {
+                const newUserData: UserData = response.data;
+                setUserData(newUserData);
+            }).catch(basicErrorHandler)
+    }
+
     return (
         <div>
-            <User></User>
-            <ClickableParsnip></ClickableParsnip>
-            <PowerupActive></PowerupActive>
+            <User userData={userData} setUserData={setUserData} updateUserData={updateUserData}/>
+            <ClickableParsnip/>
+            <PowerupActive updateUserData={updateUserData}/>
         </div>
     );
 }

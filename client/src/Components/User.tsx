@@ -1,97 +1,88 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { baseUrl, socket } from "../App";
 import { basicErrorHandler } from "../Helpers/BasicErrorHandler";
 import { incrementParsnip } from "./ClickableParsnip";
+import { UserCredentials, UserData } from "./Home";
 
-interface UserPurchases {
-    idPowerup: string;
-    purchaseCount: number;
-}
+export function User({
+  userData,
+  setUserData,
+  updateUserData,
+}: {
+  userData: UserData | undefined;
+  setUserData: any;
+  updateUserData: () => void;
+}) {
+  const [userCredentials, setUserCredentials] = useState<
+    UserCredentials | undefined
+  >(undefined);
+  const [newUserName, setNewUserName] = useState<string>("");
 
-export interface UserData {
-    id: string;
-    credentialsId: string;
-    parsnipsPerClick: number;
-    parsnipBalance: number;
-    powerupsActivePurchased: UserPurchases[];
-    powerupsPassivePurchased: UserPurchases[];
-    // TODO add all statistics
-}
+  async function updateUserCredentials(): Promise<void> {
+    await axios
+      .get<UserCredentials>(baseUrl + "userCredentials")
+      .then((response: AxiosResponse<UserCredentials>) => {
+        const newUserCredentials: UserCredentials = response.data;
+        setUserCredentials(newUserCredentials);
+      })
+      .catch(basicErrorHandler);
+  }
 
-export interface UserCredentials {
-    id: string;
-    userName: String;
-    email: String;
-    password: String;
-}
-export function User() {
-    const [userCredentials, setUserCredentials] = useState<UserCredentials | undefined>(undefined);
-    const [userData, setUserData] = useState<UserData | undefined>(undefined);
-    const [newUserName, setNewUserName] = useState<string>("")
-
-    async function updateUserCredentials(): Promise<void> {
-        await axios.get<UserCredentials>(baseUrl + "userCredentials")
-            .then((response: AxiosResponse<UserCredentials>) => {
-                const newUserCredentials: UserCredentials = response.data;
-                setUserCredentials(newUserCredentials);
-            }).catch(basicErrorHandler)
+  async function changeUsername(e: FormEvent) {
+    e.preventDefault();
+    if (newUserName === "" || newUserName === undefined) {
+      alert("New username may not be empty");
+      return;
     }
 
-    async function updateUserData(): Promise<void> {
-        await axios.get<UserData>(baseUrl + "userData")
-            .then((response: AxiosResponse<UserData>) => {
-                const newUserData: UserData = response.data;
-                setUserData(newUserData);
-            }).catch(basicErrorHandler)
-    }
+    await axios
+      .patch<String>(baseUrl + "userCredentials", { newUsername: newUserName })
+      .catch(basicErrorHandler);
 
-    async function changeUsername(e: FormEvent) {
-        e.preventDefault()
-        if (newUserName === "" || newUserName === undefined) {
-            alert("New username may not be empty");
-            return;
-        }
+    setNewUserName("");
+    await updateUserCredentials();
+  }
 
-        await axios.patch<String>(baseUrl + "userCredentials", { newUsername: newUserName })
-            .catch(basicErrorHandler)
+  useEffect(() => {
+    updateUserCredentials();
+    updateUserData();
+    socket.on("parsnipBalance", (data) => {
+      setUserData((prevUserData: UserData | undefined) => {
+        if (prevUserData === undefined) return undefined;
 
-        setNewUserName("");
-        await updateUserCredentials();
-    }
+        return {
+          ...prevUserData,
+          parsnipBalance: parseInt(data),
+        };
+      });
+    });
+  }, []);
 
-    useEffect(() => {
-        updateUserCredentials();
-        updateUserData();
-        socket.on("parsnipBalance", (data) => {
-            setUserData((prevUserData: UserData | undefined) => {
-                if (prevUserData === undefined)
-                    return undefined
+  return (
+    <div>
+      <p>Change username</p>
+      <label htmlFor="userNameUpdateInput">Input your new username: </label>
+      <form onSubmit={async (e) => await changeUsername(e)}>
+        <input
+          data-testid="userNameUpdateInput"
+          id="userNameUpdateInput"
+          type="text"
+          value={newUserName}
+          onChange={(e) => {
+            setNewUserName(e.target.value);
+          }}
+        ></input>
 
-                return {
-                    ...prevUserData,
-                    parsnipBalance: parseInt(data)
-                };
-            })
-        })
-    }, []);
-
-    return (<div>
-        <p>Change username</p>
-        <label htmlFor="userNameUpdateInput">Input your new username: </label>
-        <form onSubmit={async e => await changeUsername(e)}>
-            <input data-testid="userNameUpdateInput" id="userNameUpdateInput" type="text" value={newUserName}
-                onChange={e => {
-                    setNewUserName(e.target.value);
-                }}></input>
-
-            <button id="userNameUpdateSubmitButton" type="submit">
-                Submit Username
-            </button>
-        </form>
-        <div>
-            <p>Hello {userCredentials?.userName}!</p>
-            <p id="lblParsnips">Parsnips: {userData?.parsnipBalance}</p>
-            <p id="lblPPC">{userData?.parsnipsPerClick} Parsnips Per Click (PPC)</p>
-        </div></div>)
+        <button id="userNameUpdateSubmitButton" type="submit">
+          Submit Username
+        </button>
+      </form>
+      <div>
+        <p>Hello {userCredentials?.userName}!</p>
+        <p id="lblParsnips">Parsnips: {userData?.parsnipBalance}</p>
+        <p id="lblPPC">{userData?.parsnipsPerClick} Parsnips Per Click (PPC)</p>
+      </div>
+    </div>
+  );
 }
