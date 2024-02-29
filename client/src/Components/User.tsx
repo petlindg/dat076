@@ -63,7 +63,17 @@ export function User() {
     useEffect(() => {
         updateUserCredentials();
         updateUserData();
-        
+        socket.on("parsnipBalance", (data) => {
+            setUserData((prevUserData: UserData | undefined) => {
+                if (prevUserData === undefined)
+                    return undefined
+
+                return {
+                    ...prevUserData,
+                    parsnipBalance: parseInt(data)
+                };
+            })
+        })
     }, []);
 
     return (<div>
@@ -72,6 +82,8 @@ export function User() {
                 onChange={e => {
                     setNewUserName(e.target.value);
                 }}></input>
+            <p>Change username</p>
+            <label htmlFor="userNameUpdateInput">Input your new username: </label>
             <button id="userNameUpdateSubmitButton" type="submit">
                 Submit Username
             </button>

@@ -2,8 +2,9 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import axios, { AxiosResponse } from "axios";
 import { baseUrl, socket } from "../App";
 import { basicErrorHandler } from "../Helpers/BasicErrorHandler";
-import { incrementParsnip } from "./ClickableParsnip";
+import { ClickableParsnip, incrementParsnip } from "./ClickableParsnip";
 import {UserData, UserCredentials, User} from "./User";
+import { purchasePowerup } from './PowerupActive';
 
 export interface IncrementParsnipsResponseModel {
     newParsnipBalance: number
@@ -15,38 +16,17 @@ export interface IncrementParsnipsResponseModel {
 // The home component is then rendered by the app at the "/" link
 // This is mainly to manage routing so "/" and "/something" can display separate views
 function Home() {
-    async function purchasePowerup() {//to powerupactive
-        // TODO this hardcoded the powerupActiveId, get it dynamically
-        // TODO to do that the list of powerups will have to be retrieved from the API
-        await axios.post<String>(baseUrl + "userData/purchaseActivePowerUp", { powerupActiveId: "65d8947a15e5748f2ed42b99" })
-            .then(async () => await updateUserData())
-            .catch(basicErrorHandler)
-    }
-
     useEffect(() => {
         document.title = 'Parsnip Puncher';
-        socket.on("parsnipBalance", (data) => {
-            setUserData((prevUserData: UserData | undefined) => {
-                if (prevUserData === undefined)
-                    return undefined
-
-                return {
-                    ...prevUserData,
-                    parsnipBalance: parseInt(data)
-                };
-            })
-        })
-
     }, []);
 
     return (
         <div>
             <User></User>
+            <ClickableParsnip></ClickableParsnip>
             <button onClick={purchasePowerup}>
                 Buy Powerup
             </button>
-            <p>Change username</p>
-            <label htmlFor="userNameUpdateInput">Input your new username: </label>
             
         </div>
     );
