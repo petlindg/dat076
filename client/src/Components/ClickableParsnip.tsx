@@ -1,16 +1,18 @@
 import {socket} from "../App";
 
-export function ClickableParsnip() { 
+export function ClickableParsnip() {
+
+    async function incrementParsnip() {
+        socket.emit("parsnipClick")
+    }
+
     return (<div className="boxing-cursor parsnip-animation" onClick={incrementParsnip}>
-    <img
-        draggable="false"
-        alt='The main parsnip'
-        src={require('../assets/images/parsnip.png')}
-    />
-</div>)
+        <img
+            draggable="false"
+            alt='The main parsnip'
+            src={require('../assets/images/parsnip.png')}
+        />
+    </div>)
 }
 
-export async function incrementParsnip() { 
-    socket.emit("parsnipClick")
-}
 

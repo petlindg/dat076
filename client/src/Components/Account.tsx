@@ -1,8 +1,6 @@
 import React, {FormEvent, useState} from 'react';
-import axios from "axios";
-import {baseUrl} from "../App";
 import {NavigateFunction, useNavigate} from "react-router-dom";
-import {basicErrorHandler} from "../Helpers/BasicErrorHandler";
+import {Api} from "../Helpers/Api";
 
 interface AccountProps {
     isLoggedIn: boolean;
@@ -24,22 +22,17 @@ const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
             return
         }
 
-        let errorOccurred = false
-
-        await axios.post<String>(baseUrl + "auth/register", {
+        const success: boolean = await Api.register({
             email: emailRegister,
             password: passwordRegister,
             username: userNameRegister
-        }).catch(error => {
-            errorOccurred = true
-            basicErrorHandler(error)
         })
 
         setEmailRegister("")
         setPasswordRegister("")
         setUserNameRegister("")
 
-        if (errorOccurred)
+        if (!success)
             return setIsLoggedIn(false)
 
         setIsLoggedIn(true)
@@ -53,20 +46,17 @@ const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
             return
         }
 
-        let errorOccurred = false
-
-        await axios.post<String>(baseUrl + "auth/login", {
+        const success: boolean = await Api.login({
             email: emailLogin,
             password: passwordLogin,
-        }).catch(error => {
-            errorOccurred = true
-            basicErrorHandler(error)
         })
+
+        console.log("Login ok " + success)
 
         setEmailLogin("")
         setPasswordLogin("")
 
-        if (errorOccurred)
+        if (!success)
             return setIsLoggedIn(false)
 
 

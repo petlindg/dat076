@@ -1,7 +1,5 @@
 import React, {FormEvent, useEffect, useState} from "react";
-import axios from "axios";
-import {baseUrl, socket} from "../App";
-import {basicErrorHandler} from "../Helpers/BasicErrorHandler";
+import {socket} from "../App";
 import {Api} from "../Helpers/Api";
 import {UserCredentials, UserData} from "../Models/Api";
 
@@ -14,16 +12,16 @@ export function User({
     setUserData: any;
     updateUserData: () => void;
 }) {
-    const [userCredentials, setUserCredentials] = useState<
-        UserCredentials | undefined
-    >(undefined);
+    const [userCredentials, setUserCredentials] = useState<UserCredentials | undefined>(undefined);
     const [newUserName, setNewUserName] = useState<string>("");
 
-    async function updateUserCredentials(): Promise<void> {
-        const newUserCredentials: UserCredentials | undefined = await Api.getUserCredentials()
 
-        if (newUserCredentials)
-            setUserCredentials(newUserCredentials)
+    async function updateUserCredentials(): Promise<void> {
+        await Api.getUserCredentials().then((response: UserCredentials | undefined) => {
+            if (response)
+                setUserCredentials(response)
+        })
+
     }
 
     async function changeUsername(e: FormEvent) {
@@ -33,15 +31,15 @@ export function User({
             return;
         }
 
-        await axios
-            .patch<String>(baseUrl + "userCredentials", {newUsername: newUserName})
-            .catch(basicErrorHandler);
+        await Api.updateUsername(newUserName)
 
         setNewUserName("");
         await updateUserCredentials();
     }
 
     useEffect(() => {
+
+
         updateUserCredentials();
         updateUserData();
         socket.on("parsnipBalance", (data) => {

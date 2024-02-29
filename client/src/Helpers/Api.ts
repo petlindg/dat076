@@ -141,7 +141,7 @@ export class Api {
             password: registerModel.password,
             username: registerModel.username
         }).catch(error => {
-            success = true
+            success = false
             basicErrorHandler(error)
         })
 
@@ -159,7 +159,7 @@ export class Api {
             email: loginModel.email,
             password: loginModel.password,
         }).catch(error => {
-            success = true
+            success = false
             basicErrorHandler(error)
         })
 
