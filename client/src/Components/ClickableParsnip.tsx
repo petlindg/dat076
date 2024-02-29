@@ -1,7 +1,6 @@
 import {socket} from "../App";
 
-export function ClickableParsnip() { //we tried
-
+export function ClickableParsnip() { 
     return (<div className="boxing-cursor parsnip-animation" onClick={incrementParsnip}>
     <img
         draggable="false"

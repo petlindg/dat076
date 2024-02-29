@@ -77,13 +77,14 @@ export function User() {
     }, []);
 
     return (<div>
+        <p>Change username</p>
+        <label htmlFor="userNameUpdateInput">Input your new username: </label>
         <form onSubmit={async e => await changeUsername(e)}>
             <input data-testid="userNameUpdateInput" id="userNameUpdateInput" type="text" value={newUserName}
                 onChange={e => {
                     setNewUserName(e.target.value);
                 }}></input>
-            <p>Change username</p>
-            <label htmlFor="userNameUpdateInput">Input your new username: </label>
+
             <button id="userNameUpdateSubmitButton" type="submit">
                 Submit Username
             </button>
@@ -92,12 +93,5 @@ export function User() {
             <p>Hello {userCredentials?.userName}!</p>
             <p id="lblParsnips">Parsnips: {userData?.parsnipBalance}</p>
             <p id="lblPPC">{userData?.parsnipsPerClick} Parsnips Per Click (PPC)</p>
-            <div className="boxing-cursor parsnip-animation" onClick={incrementParsnip}>
-                <img
-                    draggable="false"
-                    alt='The main parsnip'
-                    src={require('../assets/images/parsnip.png')}
-                />
-            </div>
         </div></div>)
 }

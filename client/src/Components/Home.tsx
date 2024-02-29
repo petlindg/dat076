@@ -4,7 +4,7 @@ import { baseUrl, socket } from "../App";
 import { basicErrorHandler } from "../Helpers/BasicErrorHandler";
 import { ClickableParsnip, incrementParsnip } from "./ClickableParsnip";
 import {UserData, UserCredentials, User} from "./User";
-import { purchasePowerup } from './PowerupActive';
+import { PowerupActive } from './PowerupActive';
 
 export interface IncrementParsnipsResponseModel {
     newParsnipBalance: number
@@ -24,10 +24,7 @@ function Home() {
         <div>
             <User></User>
             <ClickableParsnip></ClickableParsnip>
-            <button onClick={purchasePowerup}>
-                Buy Powerup
-            </button>
-            
+            <PowerupActive></PowerupActive>
         </div>
     );
 }
