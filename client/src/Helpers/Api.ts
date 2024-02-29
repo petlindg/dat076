@@ -115,6 +115,10 @@ export class Api {
         return powerupPassiveList
     }
 
+    /**
+     * Checks if user is logged in
+     * @returns boolean - true if validly logged in false else
+     */
     static async getIsLoggedIn(): Promise<boolean> {
         let isLoggedIn: boolean = false
 
@@ -125,13 +129,17 @@ export class Api {
         return isLoggedIn
     }
 
-    static async register(model: RegisterModel): Promise<boolean> {
+    /**
+     * Registers a new user into the system
+     * @param registerModel - credentials of the new user
+     */
+    static async register(registerModel: RegisterModel): Promise<boolean> {
         let success: boolean = true
 
         await axios.post<String>(baseUrl + "auth/register", {
-            email: model.email,
-            password: model.password,
-            username: model.username
+            email: registerModel.email,
+            password: registerModel.password,
+            username: registerModel.username
         }).catch(error => {
             success = true
             basicErrorHandler(error)
@@ -140,12 +148,16 @@ export class Api {
         return success
     }
 
-    static async login(model: LoginModel): Promise<boolean>{
+    /**
+     * Logs an existing user into the system
+     * @param loginModel - credentials of an existing user to login
+     */
+    static async login(loginModel: LoginModel): Promise<boolean>{
         let success: boolean = true
 
         await axios.post<String>(baseUrl + "auth/login", {
-            email: model.email,
-            password: model.password,
+            email: loginModel.email,
+            password: loginModel.password,
         }).catch(error => {
             success = true
             basicErrorHandler(error)
@@ -154,6 +166,9 @@ export class Api {
         return success
     }
 
+    /**
+     * Logs the user out by clearing their session
+     */
     static async logout(): Promise<void>{
         await axios.delete(baseUrl + "auth/logout").catch(basicErrorHandler)
     }
