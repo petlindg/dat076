@@ -41,3 +41,38 @@ export interface UserCredentials {
     email: String;
     password: String;
 }
+
+export interface UserStatistics {
+    idUserCredentials: string;
+    parsnipsPerClick: number;
+    parsnipsPerSecond: number;
+    parsnipBalance: number;
+    totalPowerupsPurchased: number;
+    lifetimeClicks: number;
+    lifetimeParsnipsEarned: number;
+    lifetimeParsnipsSpent: number;
+}
+export interface UserLeaderboard {
+    idUserCredentials: string;
+    place: number,
+    parsnipsPerClick: number;
+    parsnipsPerSecond: number;
+    totalPowerupsPurchased: number;
+    lifetimeClicks: number;
+    lifetimeParsnipsEarned: number;
+    lifetimeParsnipsSpent: number;
+    sortedBy: leaderboardSortBy
+}
+
+export enum leaderboardSortBy {
+    parsnipsPerClick = "parsnipsPerClick",
+    parsnipsPerSecond = "parsnipsPerSecond",
+    lifetimeClicks = "lifetimeClicks",
+    lifetimeParsnipsEarned = "lifetimeParsnipsEarned",
+    lifetimeParsnipsSpent = "lifetimeParsnipsSpent",
+}
+
+export interface LeaderboardQuery {
+    sortBy: leaderboardSortBy
+    limit?: number
+}

@@ -1,7 +1,15 @@
 import axios, {AxiosResponse} from "axios";
 import {baseUrl} from "../App";
 import {basicErrorHandler} from "./BasicErrorHandler";
-import {PowerupActive, PowerupPassive, UserCredentials} from "../Models/Api";
+import {
+    LeaderboardQuery,
+    PowerupActive,
+    PowerupPassive,
+    UserCredentials,
+    UserData,
+    UserLeaderboard,
+    UserStatistics
+} from "../Models/Api";
 
 export class Api {
 
@@ -21,6 +29,40 @@ export class Api {
         return userCredentials
     }
 
+    static async updateUsername(newUsername: string): Promise<void> {
+        await axios.patch(baseUrl + "userCredentials", {newUsername: newUsername}).catch(basicErrorHandler)
+    }
+
+    static async getUserData(): Promise<UserData | undefined> {
+        let userData: UserData | undefined
+
+        await axios.get(baseUrl + "userData")
+            .then((response: AxiosResponse<UserData>) => userData = response.data)
+            .catch(basicErrorHandler)
+
+        return userData
+    }
+
+    static async getUserStatistics(): Promise<UserStatistics | undefined> {
+        let userStatistics: UserStatistics | undefined
+
+        await axios.get(baseUrl + "userData/statistics")
+            .then((response: AxiosResponse<UserStatistics>) => userStatistics = response.data)
+            .catch(basicErrorHandler)
+
+        return userStatistics
+    }
+
+    static async getUsersLeaderboard(query: LeaderboardQuery): Promise<UserLeaderboard[]> {
+        let usersLeaderboard: UserLeaderboard[] = []
+
+        await axios.get(baseUrl + "userData/leaderboard", {params: query})
+            .then((response: AxiosResponse<UserLeaderboard[]>) => usersLeaderboard = response.data)
+            .catch(basicErrorHandler)
+
+        return usersLeaderboard
+    }
+
     /**
      * Purchases a given active powerup for the logged-in user
      * @param powerupActiveId string of the objectId of the active powerup to purchase
@@ -37,7 +79,7 @@ export class Api {
      */
     static async getPowerupsActiveList(): Promise<PowerupActive[]> {
 
-        let powerupActiveList : PowerupActive[] = []
+        let powerupActiveList: PowerupActive[] = []
 
         await axios.get(baseUrl + "powerUpActive")
             .then((response) => {
@@ -64,7 +106,7 @@ export class Api {
      */
     static async getPowerupsPassiveList(): Promise<PowerupPassive[]> {
 
-        let powerupPassiveList : PowerupPassive[] = []
+        let powerupPassiveList: PowerupPassive[] = []
 
         await axios.get(baseUrl + "powerUpPassive")
             .then((response) => {
