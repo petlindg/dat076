@@ -1,20 +1,46 @@
-import React from 'react';
-import {Api} from "../Helpers/Api";
+import React, { useEffect, useState } from 'react';
+import { Api, PowerupActive } from "../Helpers/Api";
 
-export function PowerupActive({updateUserData}: { updateUserData: () => void; }) {
+
+
+
+export function PowerupActiveList({updateUserData}: { updateUserData: () => void; }) {
+    const [powerUpList, setPowerUpList] = useState<PowerupActive[]> ([])
+
+
+    async function updatePowerupList(): Promise<void> {
+        const newPowerUpList:PowerupActive[] = await Api.getPowerupsActiveList()
+        setPowerUpList(newPowerUpList)
+    }
+
+    useEffect(() => {
+        updatePowerupList()
+    }, []);
+    
+
+    return (
+        <div>
+            {powerUpList.map((powerup:PowerupActive) => {
+                return <PowerupActiveComponent powerup={powerup} updateUserData={updateUserData}/>
+            })}
+        </div>
+    );
+}
+
+export function PowerupActiveComponent({powerup, updateUserData}: { powerup:PowerupActive, updateUserData: () => void; }) {
+
     async function purchasePowerupActive() {
-        // TODO this hardcoded the powerupActiveId, get it dynamically
-        // TODO to do that the list of powerups will have to be retrieved from the API
-
-        await Api.purchasePowerupActive("65d8947a15e5748f2ed42b99")
+        await Api.purchasePowerupActive(powerup.id)
         updateUserData()
     }
 
     return (
         <div>
+            <h1>{powerup.powerupName}</h1>
+            <h2>Cost: {powerup.priceForUser}</h2>
             <button onClick={purchasePowerupActive}>
                 Buy Powerup
             </button>
         </div>
-    );
+    )
 }

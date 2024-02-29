@@ -4,7 +4,7 @@ import {baseUrl} from "../App";
 import {basicErrorHandler} from "../Helpers/BasicErrorHandler";
 import {ClickableParsnip} from "./ClickableParsnip";
 import {User} from "./User";
-import {PowerupActive} from './PowerupActive';
+import {PowerupActiveList} from './PowerupActive';
 
 interface UserPurchases {
     idPowerup: string;
@@ -56,7 +56,7 @@ function Home() {
         <div>
             <User userData={userData} setUserData={setUserData} updateUserData={updateUserData}/>
             <ClickableParsnip/>
-            <PowerupActive updateUserData={updateUserData}/>
+            <PowerupActiveList updateUserData={updateUserData}/>
         </div>
     );
 }

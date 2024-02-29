@@ -3,7 +3,7 @@ import {UserCredentials} from "../Components/Home";
 import {baseUrl} from "../App";
 import {basicErrorHandler} from "./BasicErrorHandler";
 
-interface PowerupActive {
+export interface PowerupActive {
     id: string;
     powerupName: string;
     basePrice: number;
@@ -33,9 +33,9 @@ export class Api {
             .catch(basicErrorHandler)
     }
 
-    static async getPowerupsActiveList(): Promise<PowerupActive[] | undefined> {
+    static async getPowerupsActiveList(): Promise<PowerupActive[]> {
 
-        let powerupActiveList : PowerupActive[] | undefined
+        let powerupActiveList : PowerupActive[] = []
 
         await axios.get(baseUrl + "powerUpActive")
             .then((response) => {
