@@ -1,8 +1,8 @@
-import {sessionMiddleware} from "./src/start";
+import {sessionMiddleware} from "./start";
 import {Socket} from "socket.io";
-import {io} from "./src";
-import {IUserDataService} from "./src/service/interfaces/userData.interface";
-import {UserDataService} from "./src/service/userData";
+import {io} from "./index";
+import {IUserDataService} from "./service/interfaces/userData.interface";
+import {UserDataService} from "./service/userData";
 import {ObjectId} from "mongodb";
 
 const userDataService: IUserDataService = new UserDataService()

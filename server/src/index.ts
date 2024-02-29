@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-import {socketSetup} from "../socket";
+import {socketSetup} from "./socket";
 import {app, corsOptions} from "./start";
 import http from 'http';
 import {Server} from 'socket.io';
