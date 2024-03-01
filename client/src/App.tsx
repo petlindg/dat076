@@ -1,15 +1,17 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import './App.css';
-import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Account from "./Components/Account";
 import Home from "./Components/Home";
-import axios, {AxiosResponse} from "axios";
-import {basicErrorHandler} from "./Helpers/BasicErrorHandler";
-import io, {Socket} from "socket.io-client";
+import axios, { AxiosResponse } from "axios";
+import { basicErrorHandler } from "./Helpers/BasicErrorHandler";
+import io, { Socket } from "socket.io-client";
+import { Statistics } from './Components/Statistics';
+import { Settings } from './Components/Settings';
 
 axios.defaults.withCredentials = true;
 export const baseUrl: string = "http://localhost:8080/"
-export const socket: Socket = io(baseUrl, {withCredentials: true, autoConnect: false});
+export const socket: Socket = io(baseUrl, { withCredentials: true, autoConnect: false });
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
@@ -31,7 +33,7 @@ function App() {
             setIsLoading(false)
         }
         checkIsLoggedIn()
-        const interval= setInterval(passiveParsnips, 1000)
+        const interval = setInterval(passiveParsnips, 1000)
         return () => clearInterval(interval)
 
     }, [isLoggedIn, setIsLoggedIn]);
@@ -47,12 +49,10 @@ function App() {
         <div>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={
-                        <ProtectedRoute loggedIn={isLoggedIn}>
-                            <Home/>
-                        </ProtectedRoute>
-                    }/>
-                    <Route path="/account" element={<Account isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}/>
+                    <Route path="/" element={ <ProtectedRoute loggedIn={isLoggedIn}><Home /></ProtectedRoute>} />
+                    <Route path="/statistics" element={<ProtectedRoute loggedIn={isLoggedIn}><Statistics /></ProtectedRoute>} />
+                    <Route path="/settings" element={<ProtectedRoute loggedIn={isLoggedIn}><Settings /></ProtectedRoute>} />
+                    <Route path="/account" element={<Account isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
                 </Routes>
             </BrowserRouter>
         </div>
@@ -64,9 +64,9 @@ interface ProtectedRouteProps {
     children: ReactElement;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({loggedIn, children}) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loggedIn, children }) => {
     if (!loggedIn) {
-        return <Navigate to="/account" replace/>;
+        return <Navigate to="/account" replace />;
     }
 
     return children;
