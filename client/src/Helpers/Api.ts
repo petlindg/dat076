@@ -12,6 +12,7 @@ import {
     UserLeaderboard,
     UserStatistics
 } from "../Models/Api";
+import { FormEvent } from "react";
 
 export class Api {
 
@@ -34,6 +35,19 @@ export class Api {
     static async updateUsername(newUsername: string): Promise<void> {
         await axios.patch(baseUrl + "userCredentials", {newUsername: newUsername}).catch(basicErrorHandler)
     }
+
+    /* static async changeUsername(newUserName: string): Promise<void> {
+        
+        if (newUserName === "" || newUserName === undefined) {
+            alert("New username may not be empty");
+            return;
+        }
+
+        await Api.updateUsername(newUserName)
+
+        setNewUserName("");
+        await updateUserCredentials();
+    } */
 
     static async getUserData(): Promise<UserData | undefined> {
         let userData: UserData | undefined
