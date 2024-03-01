@@ -2,6 +2,9 @@ import React, {FormEvent, useEffect, useState} from "react";
 import {socket} from "../App";
 import {Api} from "../Helpers/Api";
 import {UserCredentials, UserData} from "../Models/Api";
+import Container from 'react-bootstrap/Container'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 
 export function User({
                          userData,
@@ -56,29 +59,39 @@ export function User({
 
     return (
         <div>
-            <p>Change username</p>
-            <label htmlFor="userNameUpdateInput">Input your new username: </label>
-            <form onSubmit={async (e) => await changeUsername(e)}>
-                <input
-                    data-testid="userNameUpdateInput"
-                    id="userNameUpdateInput"
-                    type="text"
-                    value={newUserName}
-                    onChange={(e) => {
-                        setNewUserName(e.target.value);
-                    }}
-                ></input>
-
-                <button id="userNameUpdateSubmitButton" type="submit">
-                    Submit Username
-                </button>
-            </form>
-            <div>
-                <p>Hello {userCredentials?.userName}!</p>
-                <p id="lblParsnips">Parsnips: {userData?.parsnipBalance}</p>
-                <p id="lblPPC">{userData?.parsnipsPerClick} Parsnips Per Click (PPC)</p>
-                <p id="lblPPS">{userData?.parsnipsPerSecond} Parsnips Per Second (PPS)</p>
-            </div>
+            <Container fluid>
+                <Row>
+                    <Col>
+                        <p>Change username</p>
+                        <label htmlFor="userNameUpdateInput">Input your new username: </label>
+                        <form onSubmit={async (e) => await changeUsername(e)}>
+                            <input
+                                data-testid="userNameUpdateInput"
+                                id="userNameUpdateInput"
+                                type="text"
+                                value={newUserName}
+                                onChange={(e) => {
+                                    setNewUserName(e.target.value);
+                                }}
+                            ></input>
+    
+                            <button id="userNameUpdateSubmitButton" type="submit">
+                                Submit Username
+                            </button>
+                        </form>
+                    </Col>
+                    <Col>
+                        <div>
+                            <p>Hello {userCredentials?.userName}!</p>
+                            <p id="lblParsnips">Parsnips: {userData?.parsnipBalance}</p>
+                            <p id="lblPPC">{userData?.parsnipsPerClick} Parsnips Per Click (PPC)</p>
+                            <p id="lblPPS">{userData?.parsnipsPerSecond} Parsnips Per Second (PPS)</p>
+                        </div>
+                    </Col>
+                    <Col>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     );
 }

@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useEffect, useState} from 'react';
 import {ClickableParsnip} from "./ClickableParsnip";
 import {User} from "./User";
@@ -5,10 +6,10 @@ import {PowerupActiveList} from './PowerupActive';
 import {UserData} from "../Models/Api";
 import {Api} from "../Helpers/Api";
 import { PowerupPassiveList } from './PowerupPassive';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import '../App.css'
 
 function Home() {
     const [userData, setUserData] = useState<UserData | undefined>(undefined);
@@ -24,8 +25,8 @@ function Home() {
         })
     }
 
-    return (
-        <div>
+    return (    
+        <div className="App App-header">
             <Container fluid>
                 <Row>
                     <User userData={userData} setUserData={setUserData} updateUserData={updateUserData}/>
