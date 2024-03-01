@@ -30,16 +30,17 @@ function Home() {
     return (
         <div className="App App-header">
             <Container fluid>
-                <Row>                    <Col>
+                <Row>                    
+                <Col >
                     <User userData={userData} setUserData={setUserData} updateUserData={updateUserData} />
                 </Col>
                     <Col>
-                        <Row>
+                        <Row className="justify-content-md-end" md="auto">
                             <button onClick={() => {
                                 navigate("/settings")
                             }}>Settings</button>
                         </Row>
-                        <Row>
+                        <Row className="justify-content-md-end" md="auto">
                             <button onClick={() => {
                                 navigate("/statistics")
                             }}>Statistics</button>

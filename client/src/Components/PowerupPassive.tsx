@@ -39,7 +39,7 @@ export function PowerupPassiveComponent({powerup, updatePowerupList}: {
     }
 
     return (
-        <div>
+        <div className="border border-2">
             <h1>{powerup.powerupName}</h1>
             <h2>Cost: {powerup.priceForUser}</h2>
             <h2>Parsnips Per Second: +{powerup.parsnipsPerSecond}</h2>
