@@ -9,7 +9,6 @@ import Col from 'react-bootstrap/Col'
 import '../App.css'
 
 export function Statistics() {
-    const navigate: NavigateFunction = useNavigate();
     const [userStatistics, setUserStatistics] = useState<UserStatistics | undefined>(undefined);
     useEffect(() => {
         updateUserStatistics();
@@ -27,19 +26,14 @@ export function Statistics() {
         <div>
             <Container fluid>
                 <Col>
-                    <Row className="justify-content-md-end" md="auto">
-                    <button onClick={() => {navigate("/")}} >Return</button>
-                    </Row>
-                </Col> 
-                <Col>
-                {/* TODO Make actual username instead of id */}
-                <Row ><h1>Statistics for {userStatistics?.idUserCredentials}</h1></Row>
-                <Row><p>Parsnips per click: {userStatistics?.parsnipsPerClick}</p></Row>
-                <Row><p>Parsnips per Second: {userStatistics?.parsnipsPerSecond}</p></Row>
-                <Row><p>Total powerups purchased: {userStatistics?.totalPowerupsPurchased}</p></Row>
-                <Row><p>Lifetime Clicks: {userStatistics?.lifetimeClicks}</p></Row>
-                <Row><p>Lifetime Parsnips Earned: {userStatistics?.lifetimeParsnipsEarned}</p></Row>
-                <Row><p>Lifetime Parsnips Spent: {userStatistics?.lifetimeParsnipsSpent}</p></Row>
+                    {/* TODO Make actual username instead of id */}
+                    <Row ><h1>Statistics for {userStatistics?.idUserCredentials}</h1></Row>
+                    <Row><p>Parsnips per click: {userStatistics?.parsnipsPerClick}</p></Row>
+                    <Row><p>Parsnips per Second: {userStatistics?.parsnipsPerSecond}</p></Row>
+                    <Row><p>Total powerups purchased: {userStatistics?.totalPowerupsPurchased}</p></Row>
+                    <Row><p>Lifetime Clicks: {userStatistics?.lifetimeClicks}</p></Row>
+                    <Row><p>Lifetime Parsnips Earned: {userStatistics?.lifetimeParsnipsEarned}</p></Row>
+                    <Row><p>Lifetime Parsnips Spent: {userStatistics?.lifetimeParsnipsSpent}</p></Row>
                 </Col>
             </Container>
         </div>

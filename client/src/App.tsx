@@ -6,8 +6,8 @@ import Home from "./Components/Home";
 import axios, { AxiosResponse } from "axios";
 import { basicErrorHandler } from "./Helpers/BasicErrorHandler";
 import io, { Socket } from "socket.io-client";
-import { Statistics } from './Components/Statistics';
 import { Settings } from './Components/Settings';
+import { Info } from './Components/Info';
 
 axios.defaults.withCredentials = true;
 export const baseUrl: string = "http://localhost:8080/"
@@ -50,7 +50,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={ <ProtectedRoute loggedIn={isLoggedIn}><Home /></ProtectedRoute>} />
-                    <Route path="/statistics" element={<ProtectedRoute loggedIn={isLoggedIn}><Statistics /></ProtectedRoute>} />
+                    <Route path="/info" element={<ProtectedRoute loggedIn={isLoggedIn}><Info /></ProtectedRoute>} />
                     <Route path="/settings" element={<ProtectedRoute loggedIn={isLoggedIn}><Settings /></ProtectedRoute>} />
                     <Route path="/account" element={<Account isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
                 </Routes>
