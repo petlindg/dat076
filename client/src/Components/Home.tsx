@@ -42,7 +42,7 @@ function Home() {
                         </Row>
                         <Row className="justify-content-md-end" md="auto">
                             <button onClick={() => {
-                                navigate("/statistics")
+                                navigate("/info")
                             }}>Statistics</button>
                         </Row>
                     </Col>

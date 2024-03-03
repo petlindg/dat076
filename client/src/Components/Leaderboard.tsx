@@ -7,9 +7,9 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import '../App.css'
+import Dropdown from 'react-bootstrap/esm/Dropdown';
 
 export function Leaderboard() {
-    const navigate: NavigateFunction = useNavigate();
     const [userLeaderboard, setUserLeaderboard] = useState<UserLeaderboard[]>([]);
 
     let query:LeaderboardQuery = {sortBy:leaderboardSortBy.lifetimeParsnipsEarned, limit:30}
@@ -17,6 +17,11 @@ export function Leaderboard() {
     useEffect(() => {
         updateUsersLeaderboard(query);
     }, []);
+
+    async function updateQuery(sortBy:leaderboardSortBy) {
+        query.sortBy=sortBy
+        updateUsersLeaderboard(query)
+    }
 
     async function updateUsersLeaderboard(query:LeaderboardQuery): Promise<void> {
         await Api.getUsersLeaderboard(query).then((response: UserLeaderboard[] | undefined) => {
@@ -29,6 +34,9 @@ export function Leaderboard() {
         <div>
             <Container fluid>
                 <Col>
+                    <Row>
+                        <SortSelector updateQuery={updateQuery}/>
+                    </Row>
                     <Row>
                         {userLeaderboard.map((leaderboardEntry:UserLeaderboard) => {
                             return <LeaderboardEntry leaderboardEntry={leaderboardEntry}/>
@@ -56,3 +64,19 @@ function LeaderboardEntry({leaderboardEntry} : {leaderboardEntry:UserLeaderboard
     )
 }
 
+function SortSelector({updateQuery} : {updateQuery : (sortBy:leaderboardSortBy) => void}) {
+
+    return (
+        <Dropdown>
+            <Dropdown.Toggle variant="success">
+                Sort by
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+                {(Object.keys(leaderboardSortBy) as Array<leaderboardSortBy>).map((sortBy) => 
+                    <Dropdown.Item onClick={() => updateQuery(sortBy)}>{sortBy}</Dropdown.Item>
+                )}
+            </Dropdown.Menu>
+        </Dropdown>
+    )
+}
