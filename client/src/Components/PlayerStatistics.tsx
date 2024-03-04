@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import '../App.css'
 
-export function Statistics() {
+export function PlayerStatistics() {
     const [userStatistics, setUserStatistics] = useState<UserStatistics | undefined>(undefined);
     useEffect(() => {
         updateUserStatistics();
