@@ -8,6 +8,8 @@ import { basicErrorHandler } from "./Helpers/BasicErrorHandler";
 import io, { Socket } from "socket.io-client";
 import { Settings } from './Components/Settings';
 import { Info } from './Components/Info';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { NavigationBar } from './Components/NavigationBar';
 
 axios.defaults.withCredentials = true;
 export const baseUrl: string = "http://localhost:8080/"
@@ -21,6 +23,10 @@ function App() {
         if (isLoggedIn)
             socket.emit('parsnipPassive')
     }
+
+    useEffect(() => {
+        document.title = 'Parsnip Puncher';
+    }, []);
 
     useEffect(() => {
         async function checkIsLoggedIn() {
@@ -47,6 +53,7 @@ function App() {
 
     return (
         <div>
+            <NavigationBar/>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={ <ProtectedRoute loggedIn={isLoggedIn}><Home /></ProtectedRoute>} />
