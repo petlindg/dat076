@@ -22,7 +22,7 @@ export function PlayerStatistics() {
 
     return (
         <div>
-            <Container fluid>
+            <Container fluid className="powerupElement c2">
                 <Col>
                     {/* TODO Make actual username instead of id */}
                     <Row ><h1>Statistics for {userStatistics?.idUserCredentials}</h1></Row>

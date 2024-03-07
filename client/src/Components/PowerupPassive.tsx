@@ -20,7 +20,7 @@ export function PowerupPassiveList({updateUserData}: { updateUserData: () => voi
 
 
     return (
-        <div className="powerup">
+        <div className="powerup c1">
             {powerUpList.map((powerup: PowerupPassive) => {
                 return <PowerupPassiveComponent powerup={powerup} updatePowerupList={updatePowerupList}/>
             })}
@@ -39,11 +39,11 @@ export function PowerupPassiveComponent({powerup, updatePowerupList}: {
     }
 
     return (
-        <div className="border border-2">
+        <div className="powerupElement c3">
             <h1>{powerup.powerupName}</h1>
             <h2>Cost: {powerup.priceForUser}</h2>
             <h2>Parsnips Per Second: +{powerup.parsnipsPerSecond}</h2>
-            <Button onClick={purchasePowerupPassive}>
+            <Button className="c2 b1" onClick={purchasePowerupPassive}>
                 Buy Powerup
             </Button>
         </div>

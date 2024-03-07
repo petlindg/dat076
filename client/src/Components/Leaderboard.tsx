@@ -28,7 +28,7 @@ export function Leaderboard() {
     }
 
     return (
-        <Container fluid>
+        <Container fluid className="powerup c2">
             <Col>
                 <Row>
                     <SortSelector updateQuery={updateQuery}/>
@@ -48,7 +48,7 @@ export function Leaderboard() {
 function LeaderboardEntry({leaderboardEntry} : {leaderboardEntry:UserLeaderboard}) {
 
     return (
-        <div>
+        <div className="powerupElement c4">
             <h2>Username: {leaderboardEntry.username}</h2>
             <p>Place: {leaderboardEntry.place}</p>
             <p>Parsnips earned: {leaderboardEntry.lifetimeParsnipsEarned}</p>

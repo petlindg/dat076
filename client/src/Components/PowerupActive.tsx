@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Api} from "../Helpers/Api";
 import {PowerupActive} from "../Models/Api";
 import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/esm/Container';
+import Row from 'react-bootstrap/esm/Row';
 
 
 export function PowerupActiveList({updateUserData}: { updateUserData: () => void; }) {
@@ -20,11 +22,14 @@ export function PowerupActiveList({updateUserData}: { updateUserData: () => void
 
 
     return (
-        <div className="powerup">
+        <Container fluid className="powerup c2">
+            <Row>
+                
+            </Row>
             {powerUpList.map((powerup: PowerupActive) => {
                 return <PowerupActiveComponent powerup={powerup} updatePowerupList={updatePowerupList}/>
             })}
-        </div>
+        </Container>
     );
 }
 
@@ -39,11 +44,11 @@ export function PowerupActiveComponent({powerup, updatePowerupList}: {
     }
 
     return (
-        <div className="box">
+        <div className="powerupElement c3">
             <h1>{powerup.powerupName}</h1>
             <h2>Cost: {powerup.priceForUser}</h2>
             <h2>Parsnips Per Click: +{powerup.parsnipsPerClick}</h2>
-            <Button onClick={purchasePowerupActive}>
+            <Button className="c1 b1"onClick={purchasePowerupActive}>
                 Buy Powerup
             </Button>
         </div>

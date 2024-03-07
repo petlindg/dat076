@@ -5,11 +5,11 @@ import Navbar from "react-bootstrap/esm/Navbar";
 
 export function NavigationBar() {
     return (
-        <Navbar className="bg-secondary">
+        <Navbar className="c2">
             <Nav>
-                <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="/stats">Statistics</Nav.Link>
-                <Nav.Link href="/settings">Settings</Nav.Link>
+                <Nav.Link className="navButton c1" href="/">Home</Nav.Link>
+                <Nav.Link className="navButton c1" href="/stats">Statistics</Nav.Link>
+                <Nav.Link className="navButton c1" href="/settings">Settings</Nav.Link>
             </Nav>
         </Navbar>
     )

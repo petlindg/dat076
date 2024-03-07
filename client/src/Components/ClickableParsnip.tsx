@@ -7,7 +7,7 @@ export function ClickableParsnip() {
     }
 
     return (
-        <div className="parsnip">
+        <div className="parsnip c3">
             <div className="boxing-cursor parsnip-animation" onClick={incrementParsnip}>
                 <img
                     draggable="false"
