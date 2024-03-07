@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { FormEvent, useEffect, useState } from 'react';
-import { UserCredentials } from "../Models/Api";
-import { Api } from "../Helpers/Api";
+import React, {FormEvent, useEffect, useState} from 'react';
+import {UserCredentials} from "../Models/Api";
+import {Api} from "../Helpers/Api";
 
 import '../App.css'
 
@@ -43,6 +43,7 @@ export function Settings() {
                 id="userNameUpdateInput"
                 type="text"
                 value={newUserName}
+                required
                 onChange={(e) => {
                     setNewUserName(e.target.value);
                 }}></input>

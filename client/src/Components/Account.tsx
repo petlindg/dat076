@@ -73,11 +73,11 @@ const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
                 <label htmlFor="emailRegisterInput">Email: </label>
                 <label htmlFor="passwordRegisterInput">Password: </label>
                 <form onSubmit={async e => await register(e)}>
-                    <input id="userNameRegisterInput" type="text" value={userNameRegister}
+                    <input id="userNameRegisterInput" type="text" required value={userNameRegister}
                            onChange={e => setUserNameRegister(e.target.value)}/>
-                    <input id="emailRegisterInput" type="text" value={emailRegister}
+                    <input id="emailRegisterInput" type="email" required value={emailRegister}
                            onChange={e => setEmailRegister(e.target.value)}/>
-                    <input id="passwordRegisterInput" type="password" value={passwordRegister}
+                    <input id="passwordRegisterInput" type="password" required value={passwordRegister}
                            onChange={e => setPasswordRegister(e.target.value)}/>
                     <button type="submit">
                         Register
@@ -89,9 +89,9 @@ const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
                 <label htmlFor="emailLoginInput">Email: </label>
                 <label htmlFor="passwordLoginInput">Password: </label>
                 <form onSubmit={async e => await login(e)}>
-                    <input id="emailLoginInput" type="text" value={emailLogin}
+                    <input id="emailLoginInput" type="email" required value={emailLogin}
                            onChange={e => setEmailLogin(e.target.value)}/>
-                    <input id="passwordLoginInput" type="password" value={passwordLogin}
+                    <input id="passwordLoginInput" type="password" required value={passwordLogin}
                            onChange={e => setPasswordLogin(e.target.value)}/>
                     <button type="submit">
                         Login
