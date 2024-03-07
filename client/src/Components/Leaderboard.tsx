@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useEffect, useState } from 'react';
-import {UserLeaderboard, LeaderboardQuery, leaderboardSortBy } from "../Models/Api";
-import { Api } from "../Helpers/Api";
+import React, {useEffect, useState} from 'react';
+import {LeaderboardQuery, leaderboardSortBy, UserLeaderboard} from "../Models/Api";
+import {Api} from "../Helpers/Api";
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -51,7 +51,7 @@ function LeaderboardEntry({leaderboardEntry} : {leaderboardEntry:UserLeaderboard
 
     return (
         <div>
-            <h2>User: {leaderboardEntry.idUserCredentials}</h2>
+            <h2>Username: {leaderboardEntry.username}</h2>
             <p>Place: {leaderboardEntry.place}</p>
             <p>Parsnips earned: {leaderboardEntry.lifetimeParsnipsEarned}</p>
             <p>Parsnips spent: {leaderboardEntry.lifetimeParsnipsSpent}</p>
