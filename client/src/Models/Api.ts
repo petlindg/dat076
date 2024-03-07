@@ -54,6 +54,7 @@ export interface UserStatistics {
 }
 export interface UserLeaderboard {
     idUserCredentials: string;
+    username: string,
     place: number,
     parsnipsPerClick: number;
     parsnipsPerSecond: number;
