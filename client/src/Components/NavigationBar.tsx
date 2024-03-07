@@ -8,7 +8,7 @@ export function NavigationBar() {
         <Navbar>
             <Nav>
                 <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="/info">Statistics</Nav.Link>
+                <Nav.Link href="/stats">Statistics</Nav.Link>
                 <Nav.Link href="/settings">Settings</Nav.Link>
             </Nav>
         </Navbar>

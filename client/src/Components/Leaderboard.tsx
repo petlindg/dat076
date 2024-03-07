@@ -30,20 +30,20 @@ export function Leaderboard() {
     }
 
     return (
-        <div>
-            <Container fluid>
-                <Col>
-                    <Row>
-                        <SortSelector updateQuery={updateQuery}/>
-                    </Row>
+        <Container fluid>
+            <Col>
+                <Row>
+                    <SortSelector updateQuery={updateQuery}/>
+                </Row>
+                <div className="leaderboard">
                     <Row>
                         {userLeaderboard.map((leaderboardEntry:UserLeaderboard) => {
                             return <LeaderboardEntry leaderboardEntry={leaderboardEntry}/>
                         })}
                     </Row>
-                </Col>
-            </Container>
-        </div>
+                </div>
+            </Col>
+        </Container>
     )
 }
 
@@ -68,7 +68,7 @@ function SortSelector({updateQuery} : {updateQuery : (sortBy:leaderboardSortBy) 
     return (
         <Dropdown>
             <Dropdown.Toggle variant="success">
-                Sort by
+                Sort by:
             </Dropdown.Toggle>
 
             <Dropdown.Menu>

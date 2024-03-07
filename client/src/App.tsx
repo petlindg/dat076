@@ -7,8 +7,7 @@ import axios, { AxiosResponse } from "axios";
 import { basicErrorHandler } from "./Helpers/BasicErrorHandler";
 import io, { Socket } from "socket.io-client";
 import { Settings } from './Components/Settings';
-import { Info } from './Components/Info';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Stats } from './Components/Stats';
 import { NavigationBar } from './Components/NavigationBar';
 
 axios.defaults.withCredentials = true;
@@ -52,12 +51,12 @@ function App() {
         )
 
     return (
-        <div>
+        <div className="App App-body" >
             <NavigationBar/>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={ <ProtectedRoute loggedIn={isLoggedIn}><Home /></ProtectedRoute>} />
-                    <Route path="/info" element={<ProtectedRoute loggedIn={isLoggedIn}><Info /></ProtectedRoute>} />
+                    <Route path="/stats" element={<ProtectedRoute loggedIn={isLoggedIn}><Stats /></ProtectedRoute>} />
                     <Route path="/settings" element={<ProtectedRoute loggedIn={isLoggedIn}><Settings /></ProtectedRoute>} />
                     <Route path="/account" element={<Account isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
                 </Routes>

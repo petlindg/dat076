@@ -6,7 +6,7 @@ import '../App.css'
 import { Leaderboard } from './Leaderboard';
 import { PlayerStatistics } from './PlayerStatistics';
 
-export function Info() {
+export function Stats() {
 
     return (
         <div>

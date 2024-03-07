@@ -20,7 +20,7 @@ export function PowerupActiveList({updateUserData}: { updateUserData: () => void
 
 
     return (
-        <div>
+        <div className="powerup">
             {powerUpList.map((powerup: PowerupActive) => {
                 return <PowerupActiveComponent powerup={powerup} updatePowerupList={updatePowerupList}/>
             })}
@@ -39,7 +39,7 @@ export function PowerupActiveComponent({powerup, updatePowerupList}: {
     }
 
     return (
-        <div className="border border-2" >
+        <div>
             <h1>{powerup.powerupName}</h1>
             <h2>Cost: {powerup.priceForUser}</h2>
             <h2>Parsnips Per Click: +{powerup.parsnipsPerClick}</h2>

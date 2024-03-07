@@ -20,7 +20,7 @@ export function PowerupPassiveList({updateUserData}: { updateUserData: () => voi
 
 
     return (
-        <div>
+        <div className="powerup">
             {powerUpList.map((powerup: PowerupPassive) => {
                 return <PowerupPassiveComponent powerup={powerup} updatePowerupList={updatePowerupList}/>
             })}

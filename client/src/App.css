@@ -1,17 +1,9 @@
 .App {
   text-align: center;
+  background-color: #61dafb;
+  height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
 .App-header {
   background-color: #282c34;
@@ -24,8 +16,15 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.leaderboard {
+  overflow-y: scroll;
+  max-height:90vh;
+}
+
+.powerup {
+  background-color:aquamarine;
+  overflow-y:scroll;
+  max-height:90vh;
 }
 
 @keyframes App-logo-spin {
@@ -53,4 +52,8 @@ img {
 
 .parsnip-animation:active {
     animation: blow-up-parsnip 0.1s ease-in-out; 
+}
+
+body {
+  background-color: gray;
 }
