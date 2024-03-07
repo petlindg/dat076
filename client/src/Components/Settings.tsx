@@ -1,9 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {FormEvent, useEffect, useState} from 'react';
 import {UserCredentials} from "../Models/Api";
 import {Api} from "../Helpers/Api";
-
-import '../App.css'
 
 export function Settings() {
     const [userCredentials, setUserCredentials] = useState<UserCredentials | undefined>(undefined);

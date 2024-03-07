@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
 import { ClickableParsnip } from "./ClickableParsnip";
 import { User } from "./User";
@@ -9,7 +8,6 @@ import { PowerupPassiveList } from './PowerupPassive';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import '../App.css'
 
 function Home() {
     const [userData, setUserData] = useState<UserData | undefined>(undefined);

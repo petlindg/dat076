@@ -1,11 +1,9 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useEffect, useState} from 'react';
 import {LeaderboardQuery, leaderboardSortBy, UserLeaderboard} from "../Models/Api";
 import {Api} from "../Helpers/Api";
 import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
+import Row from 'react-bootstrap/Row' 
 import Col from 'react-bootstrap/Col'
-import '../App.css'
 import Dropdown from 'react-bootstrap/esm/Dropdown';
 
 export function Leaderboard() {

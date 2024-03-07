@@ -1,9 +1,19 @@
 .App {
   text-align: center;
-  background-color: #61dafb;
-  height: 100vh;
+  background-color:darkolivegreen;
 }
 
+.bg-primary {
+  background-color: darkgreen
+}
+.bg-secondary {
+  background-color: lightgreen
+}
+
+.parsnip {
+  border-radius:100%;
+  background-color: lightgreen;
+}
 
 .App-header {
   background-color: #282c34;
@@ -19,6 +29,20 @@
 .leaderboard {
   overflow-y: scroll;
   max-height:90vh;
+}
+
+.box {
+  padding:5pt;
+  border-radius:25pt;
+}
+
+.user-stats {
+  margin:5pt;
+
+}
+
+.user-data {
+  margin:5pt
 }
 
 .powerup {
@@ -55,5 +79,5 @@ img {
 }
 
 body {
-  background-color: gray;
+  background-color:darkolivegreen;
 }
