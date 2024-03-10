@@ -62,6 +62,14 @@ Button:hover {
   max-height:90vh;
 }
 
+.leaderboardParent {
+  overflow:hidden;
+  overflow-y:scroll;
+  border-radius:30px;
+  margin:2%;
+  max-height:90vh;
+}
+
 .powerupElement {
   border-radius:30px;
   margin:2%;
@@ -101,7 +109,7 @@ img {
   flex-direction: column;
   align-items: center;
   flex-wrap: wrap;
-  gap: 2em;
+  gap: 2rem;
 }
 
 .loginDiv {
@@ -115,7 +123,7 @@ img {
   flex-direction: column;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.5em;
+  gap: 0.5rem;
 }
 
 .loginInfoRow {
@@ -123,4 +131,8 @@ img {
   flex-direction: row;
   justify-items: center;
   align-items: center;
+}
+
+.dropdownFilter {
+  margin-top: 1rem;
 }

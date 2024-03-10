@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Api} from "../Helpers/Api";
 import {PowerupPassive} from "../Models/Api";
 import Button from "react-bootstrap/Button"
+import Container from "react-bootstrap/Container";
 
 
 export function PowerupPassiveList({updateUserData}: { updateUserData: () => void; }) {
@@ -20,11 +21,11 @@ export function PowerupPassiveList({updateUserData}: { updateUserData: () => voi
 
 
     return (
-        <div className="powerup c1">
+        <Container fluid className="powerup c2">
             {powerUpList.map((powerup: PowerupPassive) => {
                 return <PowerupPassiveComponent powerup={powerup} updatePowerupList={updatePowerupList}/>
             })}
-        </div>
+        </Container>
     );
 }
 
