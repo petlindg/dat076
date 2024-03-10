@@ -32,6 +32,12 @@ Request Body : { powerupPassiveId: string } - ObjectId of the powerup to purchas
 Increments the parsnipsPerSecond of logged in user by parsnipsPerSecond of purchased object and notes the purchase. Price is calculated automatically
 200 on success, 403 if user can not afford the purchase, 404 if user or powerup not found, 500 on other errors
 ```
+```
+GET /userData/cursor
+Reqest Body: { cursor: string} - string representation of user's cursor preference (boxingGlove / bat / crowbar) 
+Updates user's cursor preference
+200 on successs, 400 on bad request (invalid cursor value), 500 on other errors
+```
 
 ## userCredentialsRouter (base route: /userCredentials)
 ```

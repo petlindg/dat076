@@ -209,13 +209,21 @@ describe("End-to-end tests", () => {
         expect(res14.body[0].powerupName).toEqual(name1a)
         expect(res14.body[0].priceForUser).toEqual(PowerupPriceHelpers.computePrice(basePrice1a, 0.15, 1))
 
+        // attempt updating cursor to invalid value
+        const res15: Response = await request.post("/userData/cursor").send({cursor: "fireworks"})
+        expect(res15.statusCode).toEqual(400)
+
+        // update cursor
+        const res16: Response = await request.post("/userData/cursor").send({cursor: "bat"})
+        expect(res16.statusCode).toEqual(200)
+
         // logout
-        const res15: Response = await request.delete("/auth/logout").send()
-        expect(res15.statusCode).toEqual(200)
+        const res17: Response = await request.delete("/auth/logout").send()
+        expect(res17.statusCode).toEqual(200)
 
         // attempt access without logging in
-        const res16: Response = await request.patch("/userCredentials").send({newUsername: newUsername})
-        expect(res16.statusCode).toEqual(401)
+        const res18: Response = await request.patch("/userCredentials").send({newUsername: newUsername})
+        expect(res18.statusCode).toEqual(401)
     })
 
 })

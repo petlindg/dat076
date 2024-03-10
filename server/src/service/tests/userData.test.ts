@@ -4,7 +4,7 @@ import {UserDataService} from "../userData";
 import {userDataModel} from "../../db/userData.db";
 import {powerupActiveModel} from "../../db/powerupActive.db";
 import {UserCredentials} from "../../model/userCredentials";
-import {leaderboardSortBy, UserData, UserLeaderboard, UserStatistics} from "../../model/userData";
+import {leaderboardSortBy, userCursor, UserData, UserLeaderboard, UserStatistics} from "../../model/userData";
 import {PowerupActive} from "../../model/powerupActive";
 import {ObjectId} from "mongodb";
 import {PowerupPriceHelpers} from "../../helpers/powerupPriceHelpers";
@@ -263,5 +263,18 @@ describe("User Data Service tests", () => {
 
         expect(res).toEqual(userData2.parsnipBalance)
         expect(userData2.parsnipBalance).toEqual(userData.parsnipBalance + userData.parsnipsPerSecond)
+    })
+
+    it("Updating cursor should update it correctly", async () =>{
+        const userCredentials: UserCredentials = await buildUserCredentials(userName1, email1, password1)
+        const powerUpActive1: PowerupActive = await buildPowerupActive(powerupName1)
+        const userData: UserData = await buildUserData(true, userCredentials.id, powerUpActive1.id, parsnipBalance1, parsnipsPerClick1, lifetimeClicks1, lifetimeParsnipEarned1, lifetimeParsnipSpent1, parsnipsPerSecond1)
+
+        await expect(userDataService.updateCursor(userData.credentialsId, "fireworks" as userCursor)).rejects.toThrow()
+
+        expect(await userDataService.updateCursor(userData.credentialsId, "bat" as userCursor)).toBeTruthy()
+        const userData2: UserData = await userDataService.getUserData(userCredentials.id)
+
+        expect(userData2.cursor as string).toEqual("bat")
     })
 })
