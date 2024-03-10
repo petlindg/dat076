@@ -5,7 +5,11 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 
-
+/**
+ * React component, a list of active powerups that are purchasable by the player.
+ * @param {updateUserData: () => void} updateUserData
+ * @returns {Component}
+ */
 export function PowerupActiveList({updateUserData}: { updateUserData: () => void; }) {
     const [powerUpList, setPowerUpList] = useState<PowerupActive[]>([])
 

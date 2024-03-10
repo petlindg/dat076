@@ -9,6 +9,11 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+/**
+ * React component, the home page, contents of the page
+ * consisting of purchasable powerups, userdata and a clickable parsnip
+ * @returns {Component}
+ */
 function Home() {
     const [userData, setUserData] = useState<UserData | undefined>(undefined);
 

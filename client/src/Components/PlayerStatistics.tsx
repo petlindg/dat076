@@ -6,6 +6,10 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import '../App.css'
 
+/**
+ * React component, the accumulated statistics of the currently logged in player
+ * @returns {Component}
+ */
 export function PlayerStatistics() {
     const [userStatistics, setUserStatistics] = useState<UserStatistics | undefined>(undefined);
     useEffect(() => {

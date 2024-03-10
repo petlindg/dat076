@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Nav from "react-bootstrap/esm/Nav";
 import Navbar from "react-bootstrap/esm/Navbar";
 
-
+/**
+ * React component, navigation bar of the website redirecting to all hrefs relevant to the user
+ * @returns {Component}
+ */
 export function NavigationBar() {
     return (
         <Navbar className="c2">

@@ -6,6 +6,10 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Dropdown from 'react-bootstrap/esm/Dropdown';
 
+/**
+ * React component, the leaderboard of the game displaying the top users in different criteria
+ * @returns {Component}
+ */
 export function Leaderboard() {
     const [userLeaderboard, setUserLeaderboard] = useState<UserLeaderboard[]>([]);
 

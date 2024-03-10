@@ -1,5 +1,9 @@
 import {socket} from "../App";
 
+/**
+ * React component, a clickable parsnip that increases your parsnips.
+ * @returns {Component}
+ */
 export function ClickableParsnip() {
 
     async function incrementParsnip() {

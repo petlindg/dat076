@@ -6,6 +6,13 @@ import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
+/**
+ * React component, displays username, parsnip count, ppc and pps
+ * @param {UserData} userData
+ * @param {React.SetStateAction} setUserData
+ * @param {updateUserData: () => void} updateUserData
+ * @returns {Component}
+ */
 export function User({
                          userData,
                          setUserData,

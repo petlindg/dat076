@@ -32,23 +32,18 @@ export class Api {
         return userCredentials
     }
 
+    /**
+     * Updates the username of the current UserCredentials user
+     * @param {string} newUsername 
+     */
     static async updateUsername(newUsername: string): Promise<void> {
         await axios.patch(baseUrl + "userCredentials", {newUsername: newUsername}).catch(basicErrorHandler)
     }
 
-    /* static async changeUsername(newUserName: string): Promise<void> {
-        
-        if (newUserName === "" || newUserName === undefined) {
-            alert("New username may not be empty");
-            return;
-        }
-
-        await Api.updateUsername(newUserName)
-
-        setNewUserName("");
-        await updateUserCredentials();
-    } */
-
+    /**
+     * gets userData from the backend for the current UserCredentials
+     * @returns {Promise<UserData>}
+     */
     static async getUserData(): Promise<UserData | undefined> {
         let userData: UserData | undefined
 
@@ -59,6 +54,10 @@ export class Api {
         return userData
     }
 
+    /**
+     * gets UserStatistics from the backend for the current UserCredentials
+     * @returns {Promise<UserStatistics>}
+     */
     static async getUserStatistics(): Promise<UserStatistics | undefined> {
         let userStatistics: UserStatistics | undefined
 
@@ -69,6 +68,11 @@ export class Api {
         return userStatistics
     }
 
+    /**
+     * gets leaderboard sorted by a query from the backend
+     * @param {LeaderboardQuery} query
+     * @returns {Promise<UserLeaderboard>}
+     */
     static async getUsersLeaderboard(query: LeaderboardQuery): Promise<UserLeaderboard[]> {
         let usersLeaderboard: UserLeaderboard[] = []
 

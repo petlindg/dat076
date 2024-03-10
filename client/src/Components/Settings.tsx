@@ -2,6 +2,10 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import {UserCredentials} from "../Models/Api";
 import {Api} from "../Helpers/Api";
 
+/**
+ * React component, a page consisting of changable settings available for the user
+ * @returns {Component}
+ */
 export function Settings() {
     const [userCredentials, setUserCredentials] = useState<UserCredentials | undefined>(undefined);
     const [newUserName, setNewUserName] = useState<string>("");

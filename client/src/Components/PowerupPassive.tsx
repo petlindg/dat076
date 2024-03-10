@@ -3,7 +3,11 @@ import {Api} from "../Helpers/Api";
 import {PowerupPassive} from "../Models/Api";
 import Button from "react-bootstrap/Button"
 
-
+/**
+ * React component, a list of passive powerups that are purchasable by the player.
+ * @param {updateUserData: () => void} updateUserData
+ * @returns {Component}
+ */
 export function PowerupPassiveList({updateUserData}: { updateUserData: () => void; }) {
     const [powerUpList, setPowerUpList] = useState<PowerupPassive[]>([])
 
