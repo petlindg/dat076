@@ -31,6 +31,20 @@
   margin-right: 2%;
 }
 
+.logoutButton {
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: 1%;
+}
+
+Button {
+  border: 1px solid #b9994e !important;
+}
+
+Button:hover {
+  background-color: #F9D876 !important;
+}
+
 .parsnip {
   border-radius:100%;
 }
@@ -80,4 +94,33 @@ img {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.loginParentDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2em;
+}
+
+.loginDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.loginInfoRow {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
 }

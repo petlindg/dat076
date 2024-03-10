@@ -43,7 +43,7 @@ export function PowerupPassiveComponent({powerup, updatePowerupList}: {
             <h1>{powerup.powerupName}</h1>
             <h2>Cost: {powerup.priceForUser}</h2>
             <h2>Parsnips Per Second: +{powerup.parsnipsPerSecond}</h2>
-            <Button className="c2 b1" onClick={purchasePowerupPassive}>
+            <Button className="c1 b1" onClick={purchasePowerupPassive}>
                 Buy Powerup
             </Button>
         </div>
