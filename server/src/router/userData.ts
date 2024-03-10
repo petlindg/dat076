@@ -2,7 +2,14 @@ import {ObjectId} from "mongodb";
 import {UserDataService} from "../service/userData";
 import {IUserDataService} from "../service/interfaces/userData.interface";
 import express, {Request, Response, Router} from "express";
-import {LeaderboardQuery, leaderboardSortBy, UserData, UserLeaderboard, UserStatistics} from "../model/userData";
+import {
+    LeaderboardQuery,
+    leaderboardSortBy,
+    userCursor,
+    UserData,
+    UserLeaderboard,
+    UserStatistics
+} from "../model/userData";
 import {objectIdHelpers} from "../helpers/objecIdHelpers";
 import {IncrementParsnipsResponseModel} from "../model/incrementParsnipsResponseModel";
 
@@ -114,6 +121,28 @@ userDataRouter.post("/purchasePassivePowerUp", async (
             return res.status(403).send("Could not purchase the powerup, not enough balance")
 
         res.status(200).send("Successfully purchased the powerup")
+    } catch (error: any) {
+        res.status(error.statusCode ?? 500).send(error.message ?? error)
+    }
+})
+
+userDataRouter.post("/cursor", async (
+    req: Request<{}, {}, { cursor: userCursor }>,
+    res: Response<string>
+) => {
+    try {
+
+        const userId: ObjectId = req.session.user!.id
+
+        if (!Object.values(userCursor).includes(req.body.cursor))
+            return res.status(400).send("Invalid cursor value")
+
+        const success: boolean = await userDataService.updateCursor(userId, req.body.cursor)
+
+        if(!success)
+            return res.status(500).send("Unknown error occurred while saving cursor preference")
+
+        res.status(200).send("Cursor successfully updated")
     } catch (error: any) {
         res.status(error.statusCode ?? 500).send(error.message ?? error)
     }

@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {leaderboardSortBy, UserData, UserLeaderboard, UserStatistics} from "../model/userData";
+import {leaderboardSortBy, userCursor, UserData, UserLeaderboard, UserStatistics} from "../model/userData";
 import {IUserDataService} from "./interfaces/userData.interface";
 import {userDataModel} from "../db/userData.db";
 import {UpdateWriteOpResult} from "mongoose";
@@ -285,5 +285,18 @@ export class UserDataService implements IUserDataService {
             throw new WebError("An error has occurred while writing results to the DB", 500)
 
         return newBalance;
+    }
+
+    async updateCursor(userId: ObjectId, cursor: userCursor): Promise<boolean> {
+
+        if(!Object.values(userCursor).includes(cursor))
+            throw new WebError("Invalid cursor format", 400)
+
+        const res : UpdateWriteOpResult = await (await userDataModel).updateOne(
+            {credentialsId: userId},
+            {cursor: cursor as string}
+        )
+
+        return res.acknowledged
     }
 }
