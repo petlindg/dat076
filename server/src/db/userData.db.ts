@@ -1,5 +1,5 @@
 import {Model, Schema} from "mongoose";
-import {UserData} from "../model/userData";
+import {userCursor, UserData} from "../model/userData";
 import {db} from "./conn";
 import {ObjectId} from "mongodb";
 
@@ -80,6 +80,13 @@ const userDataSchema: Schema = new Schema({
         required: true,
         default: 0
     },
+
+    cursor: {
+        type: String,
+        enum: Object.values(userCursor),
+        required: true,
+        default: userCursor.boxingGlove,
+    }
 });
 
 async function modelAsPromise(): Promise<Model<UserData>> {

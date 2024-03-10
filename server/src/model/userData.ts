@@ -17,6 +17,7 @@ export interface UserData {
     parsnipsPerSecond: number;
     powerupsActivePurchased: UserPurchases[];
     powerupsPassivePurchased: UserPurchases[];
+    cursor: userCursor;
 
     // Stats
     lifetimeClicks: number;
@@ -54,6 +55,12 @@ export enum leaderboardSortBy {
     lifetimeClicks = "lifetimeClicks",
     lifetimeParsnipsEarned = "lifetimeParsnipsEarned",
     lifetimeParsnipsSpent = "lifetimeParsnipsSpent",
+}
+
+export enum userCursor {
+    boxingGlove = "boxingGlove",
+    bat = "bat",
+    crowbar = "crowbar",
 }
 
 export interface LeaderboardQuery {
