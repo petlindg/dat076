@@ -56,8 +56,8 @@ Button:hover {
 }
 
 .powerup {
-  overflow-y:scroll;
   overflow:hidden;
+  overflow-y:scroll;
   border-radius:20px;
   max-height:90vh;
 }
