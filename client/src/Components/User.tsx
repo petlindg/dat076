@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {socket} from "../App";
 import {Api} from "../Helpers/Api";
 import {UserCredentials, UserData} from "../Models/Api";
@@ -60,8 +60,6 @@ export function User({
                             <p id="lblPPC">{userData?.parsnipsPerClick} Parsnips Per Click (PPC)</p>
                             <p id="lblPPS">{userData?.parsnipsPerSecond} Parsnips Per Second (PPS)</p>
                         </div>
-                    </Col>
-                    <Col>
                     </Col>
                 </Row>
             </Container>

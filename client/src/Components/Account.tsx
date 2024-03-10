@@ -1,6 +1,7 @@
 import React, {FormEvent, useState} from 'react';
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import {Api} from "../Helpers/Api";
+import Button from "react-bootstrap/Button";
 
 interface AccountProps {
     isLoggedIn: boolean;
@@ -65,37 +66,47 @@ const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
     }
 
     return (
-        <div>
-            <h2>Account Page</h2>
-            <div>
+        <div className="loginParentDiv">
+            <h2>Account</h2>
+            <div className="loginDiv">
                 <h3>Register</h3>
-                <label htmlFor="userNameRegisterInput">Username: </label>
-                <label htmlFor="emailRegisterInput">Email: </label>
-                <label htmlFor="passwordRegisterInput">Password: </label>
-                <form onSubmit={async e => await register(e)}>
-                    <input id="userNameRegisterInput" type="text" required value={userNameRegister}
-                           onChange={e => setUserNameRegister(e.target.value)}/>
-                    <input id="emailRegisterInput" type="email" required value={emailRegister}
-                           onChange={e => setEmailRegister(e.target.value)}/>
-                    <input id="passwordRegisterInput" type="password" required value={passwordRegister}
-                           onChange={e => setPasswordRegister(e.target.value)}/>
-                    <button type="submit">
+                <form className="loginForm" onSubmit={async e => await register(e)}>
+                    <div className="loginInfoRow">
+                        <label htmlFor="userNameRegisterInput">Username: </label>
+                        <input id="userNameRegisterInput" type="text" required value={userNameRegister}
+                               onChange={e => setUserNameRegister(e.target.value)}/>
+                    </div>
+                    <div className="loginInfoRow">
+                        <label htmlFor="emailRegisterInput">Email: </label>
+                        <input id="emailRegisterInput" type="email" required value={emailRegister}
+                               onChange={e => setEmailRegister(e.target.value)}/>
+                    </div>
+                    <div className="loginInfoRow">
+                        <label htmlFor="passwordRegisterInput">Password: </label>
+                        <input id="passwordRegisterInput" type="password" required value={passwordRegister}
+                               onChange={e => setPasswordRegister(e.target.value)}/>
+                    </div>
+                    <Button className="c1 b1" type="submit">
                         Register
-                    </button>
+                    </Button>
                 </form>
             </div>
-            <div>
+            <div className="loginDiv">
                 <h3>Login</h3>
-                <label htmlFor="emailLoginInput">Email: </label>
-                <label htmlFor="passwordLoginInput">Password: </label>
-                <form onSubmit={async e => await login(e)}>
-                    <input id="emailLoginInput" type="email" required value={emailLogin}
-                           onChange={e => setEmailLogin(e.target.value)}/>
-                    <input id="passwordLoginInput" type="password" required value={passwordLogin}
-                           onChange={e => setPasswordLogin(e.target.value)}/>
-                    <button type="submit">
+                <form className="loginForm" onSubmit={async e => await login(e)}>
+                    <div className="loginInfoRow">
+                        <label htmlFor="emailLoginInput">Email: </label>
+                        <input id="emailLoginInput" type="email" required value={emailLogin}
+                               onChange={e => setEmailLogin(e.target.value)}/>
+                    </div>
+                    <div className="loginInfoRow">
+                        <label htmlFor="passwordLoginInput">Password: </label>
+                        <input id="passwordLoginInput" type="password" required value={passwordLogin}
+                               onChange={e => setPasswordLogin(e.target.value)}/>
+                    </div>
+                    <Button className="c1 b1" type="submit">
                         Login
-                    </button>
+                    </Button>
                 </form>
             </div>
         </div>

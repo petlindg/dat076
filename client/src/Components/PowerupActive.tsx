@@ -3,7 +3,6 @@ import {Api} from "../Helpers/Api";
 import {PowerupActive} from "../Models/Api";
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/esm/Container';
-import Row from 'react-bootstrap/esm/Row';
 
 /**
  * React component, a list of active powerups that are purchasable by the player.
@@ -26,10 +25,7 @@ export function PowerupActiveList({updateUserData}: { updateUserData: () => void
 
 
     return (
-        <Container fluid className="powerup c2">
-            <Row>
-                
-            </Row>
+        <Container fluid className="leaderboardParent c2">
             {powerUpList.map((powerup: PowerupActive) => {
                 return <PowerupActiveComponent powerup={powerup} updatePowerupList={updatePowerupList}/>
             })}
@@ -52,7 +48,7 @@ export function PowerupActiveComponent({powerup, updatePowerupList}: {
             <h1>{powerup.powerupName}</h1>
             <h2>Cost: {powerup.priceForUser}</h2>
             <h2>Parsnips Per Click: +{powerup.parsnipsPerClick}</h2>
-            <Button className="c1 b1"onClick={purchasePowerupActive}>
+            <Button className="c1 b1" onClick={purchasePowerupActive}>
                 Buy Powerup
             </Button>
         </div>

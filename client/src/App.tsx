@@ -1,15 +1,15 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import Account from "./Components/Account";
 import Home from "./Components/Home";
-import axios, { AxiosResponse } from "axios";
-import { basicErrorHandler } from "./Helpers/BasicErrorHandler";
-import io, { Socket } from "socket.io-client";
-import { Settings } from './Components/Settings';
-import { Stats } from './Components/Stats';
-import { NavigationBar } from './Components/NavigationBar';
+import axios, {AxiosResponse} from "axios";
+import {basicErrorHandler} from "./Helpers/BasicErrorHandler";
+import io, {Socket} from "socket.io-client";
+import {Settings} from './Components/Settings';
+import {Stats} from './Components/Stats';
+import {NavigationBar} from './Components/NavigationBar';
 
 axios.defaults.withCredentials = true;
 export const baseUrl: string = "http://localhost:8080/"
@@ -53,7 +53,7 @@ function App() {
 
     return (
         <div className="App App-body" >
-            <NavigationBar/>
+            <NavigationBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={ <ProtectedRoute loggedIn={isLoggedIn}><Home /></ProtectedRoute>} />

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {LeaderboardQuery, leaderboardSortBy, UserLeaderboard} from "../Models/Api";
 import {Api} from "../Helpers/Api";
 import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row' 
+import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Dropdown from 'react-bootstrap/esm/Dropdown';
 
@@ -32,7 +32,7 @@ export function Leaderboard() {
     }
 
     return (
-        <Container fluid className="powerup c2">
+        <Container fluid className="leaderboardParent c2">
             <Col>
                 <Row>
                     <SortSelector updateQuery={updateQuery}/>
@@ -68,7 +68,7 @@ function LeaderboardEntry({leaderboardEntry} : {leaderboardEntry:UserLeaderboard
 function SortSelector({updateQuery} : {updateQuery : (sortBy:leaderboardSortBy) => void}) {
 
     return (
-        <Dropdown>
+        <Dropdown className="dropdownFilter">
             <Dropdown.Toggle variant="success">
                 Sort by:
             </Dropdown.Toggle>

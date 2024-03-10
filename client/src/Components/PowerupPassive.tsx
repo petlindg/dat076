@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Api} from "../Helpers/Api";
 import {PowerupPassive} from "../Models/Api";
 import Button from "react-bootstrap/Button"
+import Container from "react-bootstrap/Container";
 
 /**
  * React component, a list of passive powerups that are purchasable by the player.
@@ -24,11 +25,11 @@ export function PowerupPassiveList({updateUserData}: { updateUserData: () => voi
 
 
     return (
-        <div className="powerup c1">
+        <Container fluid className="powerup c2">
             {powerUpList.map((powerup: PowerupPassive) => {
                 return <PowerupPassiveComponent powerup={powerup} updatePowerupList={updatePowerupList}/>
             })}
-        </div>
+        </Container>
     );
 }
 
@@ -47,7 +48,7 @@ export function PowerupPassiveComponent({powerup, updatePowerupList}: {
             <h1>{powerup.powerupName}</h1>
             <h2>Cost: {powerup.priceForUser}</h2>
             <h2>Parsnips Per Second: +{powerup.parsnipsPerSecond}</h2>
-            <Button className="c2 b1" onClick={purchasePowerupPassive}>
+            <Button className="c1 b1" onClick={purchasePowerupPassive}>
                 Buy Powerup
             </Button>
         </div>
