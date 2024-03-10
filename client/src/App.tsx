@@ -71,6 +71,13 @@ interface ProtectedRouteProps {
     children: ReactElement;
 }
 
+/**
+ * Used to protect routes that require login
+ * Will redirect users that are not logged in to the account page
+ * @param loggedIn
+ * @param children
+ * @constructor
+ */
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ loggedIn, children }) => {
     if (!loggedIn) {
         return <Navigate to="/account" replace />;

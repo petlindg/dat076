@@ -30,6 +30,7 @@ export interface UserData {
     parsnipBalance: number;
     powerupsActivePurchased: UserPurchases[];
     powerupsPassivePurchased: UserPurchases[];
+    cursor: userCursor;
     lifetimeClicks: number;
     lifetimeParsnipsEarned: number;
     lifetimeParsnipsSpent: number;
@@ -85,4 +86,10 @@ export interface LoginModel {
 
 export interface RegisterModel extends LoginModel {
     username: string,
+}
+
+export enum userCursor {
+    boxingGlove = "boxingGlove",
+    bat = "bat",
+    crowbar = "crowbar",
 }

@@ -8,11 +8,11 @@ import {
     PowerupPassive,
     RegisterModel,
     UserCredentials,
+    userCursor,
     UserData,
     UserLeaderboard,
     UserStatistics
 } from "../Models/Api";
-import { FormEvent } from "react";
 
 export class Api {
 
@@ -90,6 +90,12 @@ export class Api {
     static async purchasePowerupActive(powerupActiveId: string): Promise<void> {
         await axios
             .post<String>(baseUrl + "userData/purchaseActivePowerUp", {powerupActiveId: powerupActiveId})
+            .catch(basicErrorHandler)
+    }
+
+    static async updateCursor(cursor: userCursor): Promise<void> {
+        await axios
+            .post<String>(baseUrl + "userData/cursor", {cursor: cursor})
             .catch(basicErrorHandler)
     }
 
