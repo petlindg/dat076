@@ -79,10 +79,6 @@ img {
   user-select: none;
 }
 
-.boxing-cursor:hover {
-  cursor: url("./assets/images/cursors/crowbar.png"), auto;
-}
-
 @keyframes blow-up-parsnip {
   0% { transform: scale(1); /*Initial scale 100%*/}
   50% { transform: scale(1.1);  /*Increased scale to 110%*/}
