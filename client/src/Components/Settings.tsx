@@ -3,7 +3,7 @@ import {Api} from "../Helpers/Api";
 import Button from "react-bootstrap/Button";
 
 /**
- * React component, a page consisting of changable settings available for the user
+ * React component, a page consisting of changeable settings available for the user
  * @returns {Component}
  */
 export function Settings() {

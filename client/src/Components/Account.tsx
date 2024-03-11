@@ -8,6 +8,13 @@ interface AccountProps {
     setIsLoggedIn: (isLoggedIn: boolean) => void;
 }
 
+/**
+ * React Component, contains account registration and login logic and forms
+ * @param isLoggedIn
+ * @param setIsLoggedIn
+ * @constructor
+ * @returns {Component}
+ */
 const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
     const navigate: NavigateFunction = useNavigate();
     const [userNameRegister, setUserNameRegister] = useState<string>("")
