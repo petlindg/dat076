@@ -131,6 +131,8 @@ img {
   flex-direction: row;
   justify-items: center;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.2rem;
 }
 
 .dropdownFilter {

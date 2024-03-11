@@ -7,7 +7,7 @@ import { UserData, leaderboardSortBy, userCursor } from '../Models/Api';
 import Dropdown from 'react-bootstrap/esm/Dropdown';
 
 /**
- * React component, a page consisting of changable settings available for the user
+ * React component, a page consisting of changeable settings available for the user
  * @returns {Component}
  */
 export function Settings() {

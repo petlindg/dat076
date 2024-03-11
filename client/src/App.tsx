@@ -59,8 +59,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<ProtectedRoute loggedIn={isLoggedIn}><Home/></ProtectedRoute>}/>
                     <Route path="/stats" element={<ProtectedRoute loggedIn={isLoggedIn}><Stats/></ProtectedRoute>}/>
-                    <Route path="/settings"
-                           element={<ProtectedRoute loggedIn={isLoggedIn}><Settings/></ProtectedRoute>}/>
+                    <Route path="/settings" element={<ProtectedRoute loggedIn={isLoggedIn}><Settings/></ProtectedRoute>}/>
                     <Route path="/account" element={<Account isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}/>
                 </Routes>
             </BrowserRouter>
