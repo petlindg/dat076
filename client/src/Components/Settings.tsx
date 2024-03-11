@@ -1,12 +1,52 @@
-import React, {FormEvent, useState} from 'react';
+import React, {Dispatch, FormEvent, SetStateAction, useState} from 'react';
 import {Api} from "../Helpers/Api";
 import Button from "react-bootstrap/Button";
+import Container from 'react-bootstrap/esm/Container';
+import Row from 'react-bootstrap/esm/Row';
+import { UserData, leaderboardSortBy, userCursor } from '../Models/Api';
+import Dropdown from 'react-bootstrap/esm/Dropdown';
 
 /**
  * React component, a page consisting of changable settings available for the user
  * @returns {Component}
  */
 export function Settings() {
+    return (
+        <Container fluid>
+            <Row>
+                <ChangeUsername></ChangeUsername>
+            </Row>
+            <Row>
+                <ChangeCursor></ChangeCursor>
+            </Row>
+        </Container>
+    )
+}
+
+function ChangeCursor() {
+    async function changeCursor(newCursor:userCursor) {
+        await Api.updateCursor(newCursor)
+    }
+
+    return (
+        <div>
+            <h3>Change cursor</h3>
+            <Dropdown className="dropdownFilter">
+                <Dropdown.Toggle variant="success">
+                    Cursor:
+                </Dropdown.Toggle>
+        
+                <Dropdown.Menu>
+                    {(Object.keys(userCursor) as Array<userCursor>).map((newCursor) => 
+                        <Dropdown.Item onClick={() => changeCursor(newCursor)}>{newCursor}</Dropdown.Item>
+                    )}
+                </Dropdown.Menu>
+            </Dropdown>
+        </div>
+    )
+}
+
+function ChangeUsername() {
     const [newUserName, setNewUserName] = useState<string>("");
 
     async function changeUsername(e: FormEvent) {
@@ -43,5 +83,3 @@ export function Settings() {
             </form>
         </div>)
 }
-
-

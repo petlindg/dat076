@@ -80,7 +80,7 @@ img {
 }
 
 .boxing-cursor:hover {
-  cursor: url("./assets/images/glove.png"), auto;
+  cursor: url("./assets/images/cursors/crowbar.png"), auto;
 }
 
 @keyframes blow-up-parsnip {

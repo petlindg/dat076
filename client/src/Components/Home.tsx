@@ -35,7 +35,7 @@ function Home() {
                         <PowerupActiveList updateUserData={updateUserData} />
                     </Col>
                     <Col>
-                        <ClickableParsnip />
+                        <ClickableParsnip userData={userData}/>
                     </Col>
                     <Col>
                         <PowerupPassiveList updateUserData={updateUserData} />
