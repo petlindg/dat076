@@ -32,7 +32,7 @@ function ChangeCursor() {
         <div>
             <h3>Change cursor</h3>
             <Dropdown className="dropdownFilter">
-                <Dropdown.Toggle variant="success">
+                <Dropdown.Toggle className="c1">
                     Cursor:
                 </Dropdown.Toggle>
         

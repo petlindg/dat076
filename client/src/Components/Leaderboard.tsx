@@ -69,7 +69,7 @@ function SortSelector({updateQuery} : {updateQuery : (sortBy:leaderboardSortBy) 
 
     return (
         <Dropdown className="dropdownFilter">
-            <Dropdown.Toggle variant="success">
+            <Dropdown.Toggle className="c1">
                 Sort by:
             </Dropdown.Toggle>
 
