@@ -55,7 +55,7 @@ Button:hover {
   max-height:90vh;
   border-radius:20px;
   margin-top:2%;
-  scrollbar-width:none;
+  scrollbar-width:thin;
 }
 
 .leaderboardElement {
@@ -72,7 +72,7 @@ Button:hover {
   overflow-y:scroll;
   border-radius:20px;
   max-height:70vh;
-  scrollbar-width:none
+  scrollbar-width:thin
 }
 
 .powerupElement {
