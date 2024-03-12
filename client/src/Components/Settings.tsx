@@ -1,9 +1,9 @@
-import React, {Dispatch, FormEvent, SetStateAction, useState} from 'react';
+import React, {FormEvent, useState} from 'react';
 import {Api} from "../Helpers/Api";
 import Button from "react-bootstrap/Button";
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
-import { UserData, leaderboardSortBy, userCursor } from '../Models/Api';
+import {userCursor} from '../Models/Api';
 import Dropdown from 'react-bootstrap/esm/Dropdown';
 
 /**
@@ -38,7 +38,7 @@ function ChangeCursor() {
         
                 <Dropdown.Menu>
                     {(Object.keys(userCursor) as Array<userCursor>).map((newCursor) => 
-                        <Dropdown.Item onClick={() => changeCursor(newCursor)}>{newCursor}</Dropdown.Item>
+                        <Dropdown.Item key={newCursor} onClick={() => changeCursor(newCursor)}>{newCursor}</Dropdown.Item>
                     )}
                 </Dropdown.Menu>
             </Dropdown>

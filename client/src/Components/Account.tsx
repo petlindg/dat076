@@ -59,14 +59,11 @@ const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
             password: passwordLogin,
         })
 
-        console.log("Login ok " + success)
-
         setEmailLogin("")
         setPasswordLogin("")
 
         if (!success)
             return setIsLoggedIn(false)
-
 
         setIsLoggedIn(true)
         return navigate("/")
@@ -103,12 +100,12 @@ const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
                 <form className="loginForm" onSubmit={async e => await login(e)}>
                     <div className="loginInfoRow">
                         <label htmlFor="emailLoginInput">Email: </label>
-                        <input id="emailLoginInput" type="email" required value={emailLogin}
+                        <input data-testid="emailLoginInput" id="emailLoginInput" type="email" required value={emailLogin}
                                onChange={e => setEmailLogin(e.target.value)}/>
                     </div>
                     <div className="loginInfoRow">
                         <label htmlFor="passwordLoginInput">Password: </label>
-                        <input id="passwordLoginInput" type="password" required value={passwordLogin}
+                        <input data-testid="passwordLoginInput" id="passwordLoginInput" type="password" required value={passwordLogin}
                                onChange={e => setPasswordLogin(e.target.value)}/>
                     </div>
                     <Button className="c1 b1" type="submit">
