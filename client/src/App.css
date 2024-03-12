@@ -1,16 +1,97 @@
 .App {
   text-align: center;
+  background-color:#98B66E;
+  height:100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.c1 {
+  background-color: #FBE39D;
+  color:black;
+}
+.c2 {
+  background-color: #F9D876;
+  color:black;
+}
+.c3 {
+  background-color: #C5E5A5;
+  color:black;
+}
+.c4 {
+  background-color: #98B66E;
+  color:black;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.b1 {
+  margin-bottom:1%;
+}
+
+.navButton {
+  border-radius: 10px;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.logoutButton {
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: 0%;
+}
+
+Button {
+  border: 1px solid #b9994e !important;
+}
+
+Button:hover {
+  background-color: #F9D876 !important;
+}
+
+.parsnip {
+  border-radius:100%;
+}
+
+.leaderboard {
+  overflow:hidden;
+  overflow-y: scroll;
+  max-height:90vh;
+  border-radius:20px;
+  margin-top:2%;
+  scrollbar-width:thin;
+}
+
+.leaderboardElement {
+  border-radius:30px;
+  margin:2%
+}
+
+.statistics {
+  border-radius:20px;
+  margin-top:2%
+}
+
+.powerup {
+  overflow-y:scroll;
+  border-radius:20px;
+  max-height:70vh;
+  scrollbar-width:thin
+}
+
+.powerupElement {
+  border-radius:30px;
+  margin:2%;
+}
+
+img {
+  user-select: none;
+}
+
+@keyframes blow-up-parsnip {
+  0% { transform: scale(1); /*Initial scale 100%*/}
+  50% { transform: scale(1.1);  /*Increased scale to 110%*/}
+  100% { transform: scale(1); /*Back to scale 100%*/}
+}
+
+.parsnip-animation:active {
+  animation: blow-up-parsnip 0.1s ease-in-out; 
 }
 
 .App-header {
@@ -24,33 +105,37 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.loginParentDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.loginDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-img {
-  user-select: none;
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-.boxing-cursor:hover {
-  cursor: url("./assets/images/glove.png"), auto;
+.loginInfoRow {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.2rem;
 }
 
-@keyframes blow-up-parsnip {
-    0% { transform: scale(1); /*Initial scale 100%*/}
-    50% { transform: scale(1.1);  /*Increased scale to 110%*/}
-    100% { transform: scale(1); /*Back to scale 100%*/}
-}
-
-.parsnip-animation:active {
-    animation: blow-up-parsnip 0.1s ease-in-out; 
+.dropdownFilter {
+  margin-top: 1rem;
 }

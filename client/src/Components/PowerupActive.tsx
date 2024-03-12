@@ -1,20 +1,56 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Api} from "../Helpers/Api";
+import {PowerupActive} from "../Models/Api";
+import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/esm/Container';
 
-export function PowerupActive({updateUserData}: { updateUserData: () => void; }) {
-    async function purchasePowerupActive() {
-        // TODO this hardcoded the powerupActiveId, get it dynamically
-        // TODO to do that the list of powerups will have to be retrieved from the API
+/**
+ * React component, a list of active powerups that are purchasable by the player.
+ * @param {updateUserData: () => void} updateUserData
+ * @returns {Component}
+ */
+export function PowerupActiveList({updateUserData}: { updateUserData: () => void; }) {
+    const [powerUpList, setPowerUpList] = useState<PowerupActive[]>([])
 
-        await Api.purchasePowerupActive("65d8947a15e5748f2ed42b99")
+
+    async function updatePowerupList(): Promise<void> {
+        const newPowerUpList: PowerupActive[] = await Api.getPowerupsActiveList()
+        setPowerUpList(newPowerUpList)
         updateUserData()
     }
 
+    useEffect(() => {
+        updatePowerupList()
+    }, []);
+
+
     return (
-        <div>
-            <button onClick={purchasePowerupActive}>
-                Buy Powerup
-            </button>
-        </div>
+        <Container fluid className="powerup c2">
+            {powerUpList.map((powerup: PowerupActive) => {
+                return <PowerupActiveComponent powerup={powerup} updatePowerupList={updatePowerupList}/>
+            })}
+        </Container>
     );
+}
+
+export function PowerupActiveComponent({powerup, updatePowerupList}: {
+    powerup: PowerupActive,
+    updatePowerupList: () => void;
+}) {
+
+    async function purchasePowerupActive() {
+        await Api.purchasePowerupActive(powerup.id)
+        updatePowerupList()
+    }
+
+    return (
+        <div className="powerupElement c3">
+            <h1>{powerup.powerupName}</h1>
+            <h2>Cost: {powerup.priceForUser}</h2>
+            <h2>Parsnips Per Click: +{powerup.parsnipsPerClick}</h2>
+            <Button className="c1 b1" onClick={purchasePowerupActive}>
+                Buy Powerup
+            </Button>
+        </div>
+    )
 }

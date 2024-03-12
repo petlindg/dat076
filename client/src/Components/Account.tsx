@@ -1,14 +1,20 @@
 import React, {FormEvent, useState} from 'react';
-import axios from "axios";
-import {baseUrl} from "../App";
 import {NavigateFunction, useNavigate} from "react-router-dom";
-import {basicErrorHandler} from "../Helpers/BasicErrorHandler";
+import {Api} from "../Helpers/Api";
+import Button from "react-bootstrap/Button";
 
 interface AccountProps {
     isLoggedIn: boolean;
     setIsLoggedIn: (isLoggedIn: boolean) => void;
 }
 
+/**
+ * React Component, contains account registration and login logic and forms
+ * @param isLoggedIn
+ * @param setIsLoggedIn
+ * @constructor
+ * @returns {Component}
+ */
 const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
     const navigate: NavigateFunction = useNavigate();
     const [userNameRegister, setUserNameRegister] = useState<string>("")
@@ -24,22 +30,17 @@ const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
             return
         }
 
-        let errorOccurred = false
-
-        await axios.post<String>(baseUrl + "auth/register", {
+        const success: boolean = await Api.register({
             email: emailRegister,
             password: passwordRegister,
             username: userNameRegister
-        }).catch(error => {
-            errorOccurred = true
-            basicErrorHandler(error)
         })
 
         setEmailRegister("")
         setPasswordRegister("")
         setUserNameRegister("")
 
-        if (errorOccurred)
+        if (!success)
             return setIsLoggedIn(false)
 
         setIsLoggedIn(true)
@@ -53,59 +54,63 @@ const Account: React.FC<AccountProps> = ({isLoggedIn, setIsLoggedIn}) => {
             return
         }
 
-        let errorOccurred = false
-
-        await axios.post<String>(baseUrl + "auth/login", {
+        const success: boolean = await Api.login({
             email: emailLogin,
             password: passwordLogin,
-        }).catch(error => {
-            errorOccurred = true
-            basicErrorHandler(error)
         })
 
         setEmailLogin("")
         setPasswordLogin("")
 
-        if (errorOccurred)
+        if (!success)
             return setIsLoggedIn(false)
-
 
         setIsLoggedIn(true)
         return navigate("/")
     }
 
     return (
-        <div>
-            <h2>Account Page</h2>
-            <div>
+        <div className="loginParentDiv">
+            <h2>Account</h2>
+            <div className="loginDiv">
                 <h3>Register</h3>
-                <label htmlFor="userNameRegisterInput">Username: </label>
-                <label htmlFor="emailRegisterInput">Email: </label>
-                <label htmlFor="passwordRegisterInput">Password: </label>
-                <form onSubmit={async e => await register(e)}>
-                    <input id="userNameRegisterInput" type="text" value={userNameRegister}
-                           onChange={e => setUserNameRegister(e.target.value)}/>
-                    <input id="emailRegisterInput" type="text" value={emailRegister}
-                           onChange={e => setEmailRegister(e.target.value)}/>
-                    <input id="passwordRegisterInput" type="password" value={passwordRegister}
-                           onChange={e => setPasswordRegister(e.target.value)}/>
-                    <button type="submit">
+                <form className="loginForm" onSubmit={async e => await register(e)}>
+                    <div className="loginInfoRow">
+                        <label htmlFor="userNameRegisterInput">Username: </label>
+                        <input id="userNameRegisterInput" type="text" required value={userNameRegister}
+                               onChange={e => setUserNameRegister(e.target.value)}/>
+                    </div>
+                    <div className="loginInfoRow">
+                        <label htmlFor="emailRegisterInput">Email: </label>
+                        <input id="emailRegisterInput" type="email" required value={emailRegister}
+                               onChange={e => setEmailRegister(e.target.value)}/>
+                    </div>
+                    <div className="loginInfoRow">
+                        <label htmlFor="passwordRegisterInput">Password: </label>
+                        <input id="passwordRegisterInput" type="password" required value={passwordRegister}
+                               onChange={e => setPasswordRegister(e.target.value)}/>
+                    </div>
+                    <Button className="c1 b1" type="submit">
                         Register
-                    </button>
+                    </Button>
                 </form>
             </div>
-            <div>
+            <div className="loginDiv">
                 <h3>Login</h3>
-                <label htmlFor="emailLoginInput">Email: </label>
-                <label htmlFor="passwordLoginInput">Password: </label>
-                <form onSubmit={async e => await login(e)}>
-                    <input id="emailLoginInput" type="text" value={emailLogin}
-                           onChange={e => setEmailLogin(e.target.value)}/>
-                    <input id="passwordLoginInput" type="password" value={passwordLogin}
-                           onChange={e => setPasswordLogin(e.target.value)}/>
-                    <button type="submit">
+                <form className="loginForm" onSubmit={async e => await login(e)}>
+                    <div className="loginInfoRow">
+                        <label htmlFor="emailLoginInput">Email: </label>
+                        <input data-testid="emailLoginInput" id="emailLoginInput" type="email" required value={emailLogin}
+                               onChange={e => setEmailLogin(e.target.value)}/>
+                    </div>
+                    <div className="loginInfoRow">
+                        <label htmlFor="passwordLoginInput">Password: </label>
+                        <input data-testid="passwordLoginInput" id="passwordLoginInput" type="password" required value={passwordLogin}
+                               onChange={e => setPasswordLogin(e.target.value)}/>
+                    </div>
+                    <Button className="c1 b1" type="submit">
                         Login
-                    </button>
+                    </Button>
                 </form>
             </div>
         </div>

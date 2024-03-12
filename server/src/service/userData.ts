@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {leaderboardSortBy, UserData, UserLeaderboard, UserStatistics} from "../model/userData";
+import {leaderboardSortBy, userCursor, UserData, UserLeaderboard, UserStatistics} from "../model/userData";
 import {IUserDataService} from "./interfaces/userData.interface";
 import {userDataModel} from "../db/userData.db";
 import {UpdateWriteOpResult} from "mongoose";
@@ -9,6 +9,8 @@ import {PowerupPriceHelpers} from "../helpers/powerupPriceHelpers";
 import {WebError} from "../model/error";
 import {powerupPassiveModel} from "../db/powerupPassive.db";
 import {PowerupPassive} from "../model/powerupPassive";
+import {UserCredentials} from "../model/userCredentials";
+import {userCredentialsModel} from "../db/userCredentials.db";
 
 export class UserDataService implements IUserDataService {
     async getUserData(userId: ObjectId): Promise<UserData> {
@@ -165,7 +167,7 @@ export class UserDataService implements IUserDataService {
         let result: UserLeaderboard[] = []
 
         let place: number = 1
-        allUserData.forEach((ud: UserData) => {
+        for (const ud of allUserData) {
 
             const totalPowerupsPurchased: number =
                 ud.powerupsPassivePurchased
@@ -173,8 +175,14 @@ export class UserDataService implements IUserDataService {
                 ud.powerupsActivePurchased
                     .reduce((sum: number, up) => sum + up.purchaseCount, 0)
 
+            const userCredentials: UserCredentials | null = await (await userCredentialsModel).findById(ud.credentialsId)
+
+            if (!userCredentials)
+                throw new WebError("User credentials not found", 404)
+
             const userLeaderboard: UserLeaderboard = {
                 idUserCredentials: ud.credentialsId,
+                username: userCredentials.userName,
                 place: place,
                 parsnipsPerClick: ud.parsnipsPerClick,
                 parsnipsPerSecond: ud.parsnipsPerSecond,
@@ -187,7 +195,7 @@ export class UserDataService implements IUserDataService {
 
             place++
             result.push(userLeaderboard)
-        })
+        }
 
         return result
     }
@@ -277,5 +285,18 @@ export class UserDataService implements IUserDataService {
             throw new WebError("An error has occurred while writing results to the DB", 500)
 
         return newBalance;
+    }
+
+    async updateCursor(userId: ObjectId, cursor: userCursor): Promise<boolean> {
+
+        if(!Object.values(userCursor).includes(cursor))
+            throw new WebError("Invalid cursor format", 400)
+
+        const res : UpdateWriteOpResult = await (await userDataModel).updateOne(
+            {credentialsId: userId},
+            {cursor: cursor as string}
+        )
+
+        return res.acknowledged
     }
 }

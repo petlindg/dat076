@@ -1,32 +1,50 @@
-import {ObjectId} from "mongodb";
+export interface PowerupActive {
+    id: string;
+    powerupName: string;
+    basePrice: number;
+    increment: number;
+    parsnipsPerClick: number;
+    priceForUser: number;
+}
+
+
+export interface PowerupPassive {
+    id: string;
+    powerupName: string;
+    basePrice: number;
+    increment: number;
+    parsnipsPerSecond: number;
+    priceForUser: number;
+}
 
 interface UserPurchases {
-    idPowerup: ObjectId;
+    idPowerup: string;
     purchaseCount: number;
 }
 
 export interface UserData {
-
-    // Management
-    id: ObjectId;
-    credentialsId: ObjectId;
-
-    // Gameplay
+    id: string;
+    credentialsId: string;
     parsnipsPerClick: number;
-    parsnipBalance: number;
     parsnipsPerSecond: number;
+    parsnipBalance: number;
     powerupsActivePurchased: UserPurchases[];
     powerupsPassivePurchased: UserPurchases[];
     cursor: userCursor;
-
-    // Stats
     lifetimeClicks: number;
     lifetimeParsnipsEarned: number;
     lifetimeParsnipsSpent: number;
 }
 
+export interface UserCredentials {
+    id: string;
+    userName: String;
+    email: String;
+    password: String;
+}
+
 export interface UserStatistics {
-    idUserCredentials: ObjectId;
+    idUserCredentials: string;
     parsnipsPerClick: number;
     parsnipsPerSecond: number;
     parsnipBalance: number;
@@ -35,9 +53,8 @@ export interface UserStatistics {
     lifetimeParsnipsEarned: number;
     lifetimeParsnipsSpent: number;
 }
-
 export interface UserLeaderboard {
-    idUserCredentials: ObjectId;
+    idUserCredentials: string;
     username: string,
     place: number,
     parsnipsPerClick: number;
@@ -57,13 +74,22 @@ export enum leaderboardSortBy {
     lifetimeParsnipsSpent = "lifetimeParsnipsSpent",
 }
 
+export interface LeaderboardQuery {
+    sortBy: leaderboardSortBy
+    limit?: number
+}
+
+export interface LoginModel {
+    email: string,
+    password: string
+}
+
+export interface RegisterModel extends LoginModel {
+    username: string,
+}
+
 export enum userCursor {
     boxingGlove = "boxingGlove",
     bat = "bat",
     crowbar = "crowbar",
-}
-
-export interface LeaderboardQuery {
-    sortBy: leaderboardSortBy
-    limit?: number
 }

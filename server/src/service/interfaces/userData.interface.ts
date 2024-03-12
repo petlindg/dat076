@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {leaderboardSortBy, UserData, UserLeaderboard, UserStatistics} from "../../model/userData";
+import {leaderboardSortBy, userCursor, UserData, UserLeaderboard, UserStatistics} from "../../model/userData";
 
 export interface IUserDataService {
     /**
@@ -63,10 +63,17 @@ export interface IUserDataService {
 
     /**
      * Increments parsnipBalance of the given user by their parsnipPerSecond
-     * TODO experiment with how often this function should be called for smooth display now that we have a socket (modify amount according to that)
      * @param userId - id of user to have parsnip incremented
      * @returns the new number of parsnips the user has
      * @throws WebError - if user not found
      */
     incrementParsnipsPassive(userId: ObjectId): Promise<number>;
+
+    /**
+     * Updates the cursor preference of the given user to the new one
+     * @param userId
+     * @param cursor
+     * @returns boolean - true on success, false else
+     */
+    updateCursor(userId: ObjectId, cursor: userCursor): Promise<boolean>
 }

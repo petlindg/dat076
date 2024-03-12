@@ -1,11 +1,15 @@
 import React, {ReactElement, useEffect, useState} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import Account from "./Components/Account";
 import Home from "./Components/Home";
-import axios, {AxiosResponse} from "axios";
-import {basicErrorHandler} from "./Helpers/BasicErrorHandler";
+import axios from "axios";
 import io, {Socket} from "socket.io-client";
+import {Settings} from './Components/Settings';
+import {Stats} from './Components/Stats';
+import {NavigationBar} from './Components/NavigationBar';
+import {Api} from "./Helpers/Api";
 
 axios.defaults.withCredentials = true;
 export const baseUrl: string = "http://localhost:8080/"
@@ -21,17 +25,22 @@ function App() {
     }
 
     useEffect(() => {
+        document.title = 'Parsnip Puncher';
+    }, []);
+
+    useEffect(() => {
         async function checkIsLoggedIn() {
-            await axios.get<boolean>(baseUrl + "auth")
-                .then((response: AxiosResponse<boolean>) => {
-                    setIsLoggedIn(response.data)
+            await Api.getIsLoggedIn()
+                .then((response: boolean) => {
+                    setIsLoggedIn(response)
                     if (isLoggedIn)
                         socket.connect()
-                }).catch(basicErrorHandler)
+                })
             setIsLoading(false)
         }
+
         checkIsLoggedIn()
-        const interval= setInterval(passiveParsnips, 1000)
+        const interval = setInterval(passiveParsnips, 1000)
         return () => clearInterval(interval)
 
     }, [isLoggedIn, setIsLoggedIn]);
@@ -44,14 +53,13 @@ function App() {
         )
 
     return (
-        <div>
+        <div className="App App-body">
+            <NavigationBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={
-                        <ProtectedRoute loggedIn={isLoggedIn}>
-                            <Home/>
-                        </ProtectedRoute>
-                    }/>
+                    <Route path="/" element={<ProtectedRoute loggedIn={isLoggedIn}><Home/></ProtectedRoute>}/>
+                    <Route path="/stats" element={<ProtectedRoute loggedIn={isLoggedIn}><Stats/></ProtectedRoute>}/>
+                    <Route path="/settings" element={<ProtectedRoute loggedIn={isLoggedIn}><Settings/></ProtectedRoute>}/>
                     <Route path="/account" element={<Account isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}/>
                 </Routes>
             </BrowserRouter>
@@ -64,6 +72,13 @@ interface ProtectedRouteProps {
     children: ReactElement;
 }
 
+/**
+ * Used to protect routes that require login
+ * Will redirect users that are not logged in to the account page
+ * @param loggedIn
+ * @param children
+ * @constructor
+ */
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({loggedIn, children}) => {
     if (!loggedIn) {
         return <Navigate to="/account" replace/>;
