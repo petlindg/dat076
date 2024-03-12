@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios, { AxiosStatic } from 'axios';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { UserData, userCursor } from '../Models/Api';
-import { baseUrl } from '../App';
-import Home from './Home';
+import { UserData, userCursor } from '../../Models/Api';
+import { baseUrl } from '../../App';
+import Home from '../Home';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<AxiosStatic>;
