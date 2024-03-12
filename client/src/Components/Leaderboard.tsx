@@ -32,27 +32,21 @@ export function Leaderboard() {
     }
 
     return (
-        <Container fluid className="leaderboardParent c2">
-            <Col>
-                <Row>
-                    <SortSelector updateQuery={updateQuery}/>
-                </Row>
-                <div className="leaderboard">
-                    <Row>
-                        {userLeaderboard.map((leaderboardEntry:UserLeaderboard) => {
-                            return <LeaderboardEntry leaderboardEntry={leaderboardEntry}/>
-                        })}
-                    </Row>
-                </div>
-            </Col>
-        </Container>
+        <div>
+            <Container fluid className="leaderboard c2">
+                <SortSelector updateQuery={updateQuery}/>
+                {userLeaderboard.map((leaderboardEntry:UserLeaderboard) => {
+                    return <LeaderboardEntry leaderboardEntry={leaderboardEntry}/>
+                })}
+            </Container>
+        </div>
     )
 }
 
 function LeaderboardEntry({leaderboardEntry} : {leaderboardEntry:UserLeaderboard}) {
 
     return (
-        <div className="powerupElement c4">
+        <div className="leaderboardElement c3">
             <h2>Username: {leaderboardEntry.username}</h2>
             <p>Place: {leaderboardEntry.place}</p>
             <p>Parsnips earned: {leaderboardEntry.lifetimeParsnipsEarned}</p>

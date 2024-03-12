@@ -34,7 +34,7 @@
 .logoutButton {
   border-radius: 10px;
   margin-left: auto;
-  margin-right: 1%;
+  margin-right: 0%;
 }
 
 Button {
@@ -50,24 +50,29 @@ Button:hover {
 }
 
 .leaderboard {
-  overflow: hidden;
+  overflow:hidden;
   overflow-y: scroll;
   max-height:90vh;
+  border-radius:20px;
+  margin-top:2%;
+  scrollbar-width:none;
+}
+
+.leaderboardElement {
+  border-radius:30px;
+  margin:2%
+}
+
+.statistics {
+  border-radius:20px;
+  margin-top:2%
 }
 
 .powerup {
-  overflow:hidden;
   overflow-y:scroll;
   border-radius:20px;
-  max-height:90vh;
-}
-
-.leaderboardParent {
-  overflow:hidden;
-  overflow-y:scroll;
-  border-radius:30px;
-  margin:2%;
-  max-height:90vh;
+  max-height:70vh;
+  scrollbar-width:none
 }
 
 .powerupElement {

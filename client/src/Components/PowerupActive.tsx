@@ -25,7 +25,7 @@ export function PowerupActiveList({updateUserData}: { updateUserData: () => void
 
 
     return (
-        <Container fluid className="leaderboardParent c2">
+        <Container fluid className="powerup c2">
             {powerUpList.map((powerup: PowerupActive) => {
                 return <PowerupActiveComponent powerup={powerup} updatePowerupList={updatePowerupList}/>
             })}
