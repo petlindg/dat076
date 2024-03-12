@@ -15,4 +15,5 @@
 
 ## Testing
 In both the client and server directories testing is done via `npm test`.<br>
+Note: running frontend test sometimes requires `a` to be pressed in order to run all of the tests.<br>
 All included tests are fully functional (including database integration and sessions) and have been tested on debian 11, windows and macOS 14.4
