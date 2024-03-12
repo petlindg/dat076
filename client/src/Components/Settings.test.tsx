@@ -2,9 +2,6 @@ import React from 'react';
 import { Settings } from './Settings';
 import axios, { AxiosStatic } from 'axios';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { userCursor } from '../Models/Api';
-
-const url: String = "http://localhost:8080/";
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<AxiosStatic>;
@@ -19,7 +16,6 @@ test('Changing the cursor should send a post request to change cursor', async ()
         status: 200,
         data: "Cursor successfully updated"
     })
-
     render(<Settings></Settings>)
     const b1 = screen.getByText(/Cursor/);
     await fireEvent.click(b1)
