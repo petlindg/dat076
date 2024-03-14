@@ -3,6 +3,7 @@ import Nav from "react-bootstrap/esm/Nav";
 import Navbar from "react-bootstrap/esm/Navbar";
 import {Api} from "../Helpers/Api";
 import Button from "react-bootstrap/Button";
+import {socket} from "../App";
 
 /**
  * React component, navigation bar of the website redirecting to all hrefs relevant to the user
@@ -15,6 +16,7 @@ export function NavigationBar({isLoggedIn, setIsLoggedIn}: {isLoggedIn: boolean;
             return
 
         Api.logout()
+        socket.disconnect()
         setIsLoggedIn(false)
     }
 
